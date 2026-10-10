@@ -1,0 +1,62 @@
+{
+  "checked_at": "2026-10-10T11:34:37.867828+00:00",
+  "url": "http://localhost:8502",
+  "success": true,
+  "public_deployment_tested": false,
+  "cases": [
+    {
+      "id": "unknown_date",
+      "mode": "hybrid",
+      "applicable_date": null,
+      "statuses": [
+        "UNVERIFIABLE",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "timings_seconds": {
+        "retrieval": 0.6031800929999918,
+        "evaluation": 0.0024718829999983427,
+        "analysis": 0.6056526970000959,
+        "model_initialization": 9.499081770999965,
+        "extraction": 0.6839723410002989,
+        "end_to_end": 1.2896776900001896
+      }
+    },
+    {
+      "id": "historical_pdf_current_date",
+      "mode": "hybrid",
+      "applicable_date": "2026-01-05",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "MATCH_FOUND",
+        "MATCH_FOUND"
+      ],
+      "timings_seconds": {
+        "retrieval": 0.49860253999986526,
+        "evaluation": 0.003102056999978231,
+        "analysis": 0.5017054589998224,
+        "model_initialization": 9.499081770999965,
+        "extraction": 0.6898582580001857,
+        "end_to_end": 1.1916119910001726
+      }
+    },
+    {
+      "id": "historical_date",
+      "mode": "semantic",
+      "applicable_date": "2024-09-06",
+      "statuses": [
+        "MATCH_FOUND",
+        "MATCH_FOUND",
+        "MATCH_FOUND"
+      ],
+      "timings_seconds": {
+        "retrieval": 0.48200920099998257,
+        "evaluation": 0.0010771789998216263,
+        "analysis": 0.48308677099976194,
+        "model_initialization": 9.499081770999965,
+        "extraction": 0.742283110000244,
+        "end_to_end": 1.2254179240003396
+      }
+    }
+  ]
+}

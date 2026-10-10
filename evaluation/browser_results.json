@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-10T10:45:58.129211+00:00",
+  "checked_at": "2026-10-10T10:57:34.612885+00:00",
   "url": "http://localhost:8501",
   "public_deployment_tested": false,
   "browser": "Chromium (Playwright)",
@@ -18,8 +18,8 @@
         "Latin-undetermined",
         "uz-Latn"
       ],
-      "analysis_seconds": 0.5729833000004874,
-      "browser_journey_seconds": 1.9212076000003435,
+      "analysis_seconds": 0.7322245999985171,
+      "browser_journey_seconds": 2.09930390000045,
       "evidence_verified": true
     },
     {
@@ -36,8 +36,8 @@
         "ru-Cyrl",
         "uz-Cyrl"
       ],
-      "analysis_seconds": 0.6701911999989534,
-      "browser_journey_seconds": 1.816755199999534,
+      "analysis_seconds": 0.8312666999991052,
+      "browser_journey_seconds": 1.9071891999992658,
       "evidence_verified": true
     },
     {
@@ -54,8 +54,8 @@
         "Latin-undetermined",
         "ru-Cyrl"
       ],
-      "analysis_seconds": 0.5446174999997311,
-      "browser_journey_seconds": 1.3674781999998231,
+      "analysis_seconds": 0.642573999999513,
+      "browser_journey_seconds": 1.953770500000246,
       "evidence_verified": true
     },
     {
@@ -71,8 +71,8 @@
         "Latin-undetermined",
         "ru-Cyrl"
       ],
-      "analysis_seconds": 0.4052240000000893,
-      "browser_journey_seconds": 1.3228125000005093,
+      "analysis_seconds": 0.49052759999904083,
+      "browser_journey_seconds": 1.3798963999997795,
       "evidence_verified": true
     },
     {
@@ -89,8 +89,8 @@
         "Latin-undetermined",
         "uz-Latn"
       ],
-      "analysis_seconds": 5.659811999999874,
-      "browser_journey_seconds": 6.4994679000010365,
+      "analysis_seconds": 6.272827099999631,
+      "browser_journey_seconds": 7.668784999999843,
       "evidence_verified": true
     },
     {
@@ -109,8 +109,8 @@
         "uz-Cyrl",
         "uz-Latn"
       ],
-      "analysis_seconds": 4.7243386000009195,
-      "browser_journey_seconds": 5.967740000000049,
+      "analysis_seconds": 4.83456120000119,
+      "browser_journey_seconds": 6.067153699999835,
       "evidence_verified": true
     },
     {
@@ -129,8 +129,8 @@
         "uz-Cyrl",
         "uz-Latn"
       ],
-      "analysis_seconds": 23.08792849999918,
-      "browser_journey_seconds": 24.30905519999942,
+      "analysis_seconds": 25.537621099998432,
+      "browser_journey_seconds": 26.969741099999737,
       "evidence_verified": true
     }
   ],

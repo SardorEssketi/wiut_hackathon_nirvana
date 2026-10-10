@@ -89,6 +89,8 @@ Developer dependencies and Chromium are required for browser checks.
 .venv/Scripts/python.exe evaluation/benchmark.py
 .venv/Scripts/python.exe -m playwright install chromium
 .venv/Scripts/python.exe scripts/browser_check.py
+.venv/Scripts/python.exe scripts/local_smoke.py
+.venv/Scripts/python.exe scripts/integrity_check.py
 ```
 
 Keep the actual app running in another terminal for `browser_check.py`. The PDF
@@ -125,6 +127,8 @@ The Docker build provisions the pinned model; runtime disables downloads.
 Review [deployment preparation](docs/DEPLOYMENT.md) and
 [actual local verification](docs/LOCAL_VERIFICATION.md) for build/test evidence.
 Future hosting must accommodate measured memory, startup and CPU latency.
+Native and Docker browser results include actual historical and unknown-date checks;
+the local verification record identifies the tested image and matching source commit.
 
 ## Documentation and release constraints
 

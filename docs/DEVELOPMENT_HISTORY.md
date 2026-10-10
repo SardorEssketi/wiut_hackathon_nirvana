@@ -24,6 +24,8 @@ review.
 
 - `5caf306`: first source-grounded extraction, date-versioned engine, offline
   retrieval and working Streamlit implementation.
+- `73aa5a5`: measured evaluation, Docker packaging and local reliability fixes.
+- `ff40517`: responsive content verification and preserved full-suite rerun.
 - Initial tests exposed multilingual payment recognition, Unicode rule-reference
   normalization and Windows fixture/temp-directory problems. Failure artifacts
   are retained under `evaluation/tests.initial.*`; no failing case was skipped.
@@ -40,7 +42,18 @@ review.
 - The complete local suite reached 67 passed, zero failures/errors/skips.
   A real CPU Docker image was built and six public/synthetic PDFs were processed
   under network-disabled, read-only, non-root execution. Browser and image
-  identity records are linked from `LOCAL_VERIFICATION.md` after verification.
+  identity records are linked from `LOCAL_VERIFICATION.md`.
+- Fresh-start web checks validate unknown dates and a historical audit date in
+  both AI modes. Runtime source watching is disabled after actual Transformer
+  lazy imports produced unnecessary framework watcher errors.
+- Evaluation JSON bytes are preserved in Git to keep recorded manifest hashes
+  reproducible. Source text uses LF line endings. Test-run environment dumps are
+  redacted from failure artifacts; failure counts and underlying errors remain.
+- Final local image verification matched 16 application/configuration hashes to
+  the committed source checkpoint. Native and final Compose browser journeys
+  each passed all seven inputs; both fresh-start date/mode checks passed.
+  Public deployment remains deferred; these records do not declare submission
+  readiness.
 
 The assistant wrote code, synthetic text, fixtures, engineering labels,
 documentation and evaluation scripts with user authorization. Model weights and

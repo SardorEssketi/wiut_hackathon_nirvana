@@ -16,6 +16,7 @@ def main():
     offline=read('container_results.json')
     release=read('local_release_manifest.json')
     benchmark=read('benchmark_results.json')
+    integrity=read('integrity_results.json')
     fresh=benchmark['modes']['hybrid']['summary_by_split']['fresh_evaluation']
     lines=['# Actual local verification','',
         f"Recorded: {release['recorded_at']}. Source checkpoint: `{release['source_commit']}`.",'',
@@ -50,7 +51,8 @@ def main():
         f"- Container CLI model initialization: {offline['model_initialization_seconds']:.3f} s; peak main-process RSS {offline['peak_main_process_rss_mib']:.1f} MiB.",
         f"- Full service cgroup peak: {release['service_cgroup_peak_memory_bytes']/1024**2:.1f} MiB, within configured {release['memory_limit_bytes']/1024**3:.1f} GiB. OOM kills: {release['memory_events']['oom_kill']}.",
         f"- Health: `{release['health']}`. Image: `{release['image_id']}`.",
-        f"- All {len(release['source_hash_matches_container'])} recorded application/configuration source hashes match the tested image.",'',
+        f"- All {len(release['source_hash_matches_container'])} recorded application/configuration source hashes match the tested image and committed source checkpoint.",
+        f"- Dataset/model/public-input integrity: {len(integrity['checks'])} recorded hashes and Git exclusion checks; success `{integrity['success']}`.",'',
         'The offline CLI memory measurement excludes parser children; the service cgroup',
         'peak includes the container processes. These are different runs. Single-machine',
         'measurements do not establish production throughput, free-tier suitability or an SLA.','',
