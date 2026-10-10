@@ -21,6 +21,7 @@ h1{letter-spacing:-.045em}h2,h3{letter-spacing:-.02em}
 [data-testid=stCode] pre{white-space:pre-wrap!important;overflow-wrap:anywhere!important;word-break:break-word}
 .stMarkdown p,.stCaption{overflow-wrap:anywhere}.stButton button:focus-visible,a:focus-visible{outline:3px solid #007f73;outline-offset:3px}
 [data-testid=stCaptionContainer],[data-testid=stCaptionContainer] p{color:#475569}
+[data-testid=stCaptionContainer]{opacity:1}
 @media(max-width:640px){.block-container{padding:4rem 1rem 1rem}h1{font-size:2rem}[data-testid=stMetric]{padding:10px}}
 </style>""", unsafe_allow_html=True)
 
@@ -174,7 +175,10 @@ if "report" in st.session_state and upload is not None:
                     st.caption(f"Страница PDF {ev.page} · {SECTION_LABELS.get(ev.section, ev.section)}")
                     st.code(ev.quote, language=None, wrap_lines=True)
                     st.button(f"Посмотреть доказательство · стр. {ev.page}", key=f"evidence_{f.rule_id}_{i}",
-                        on_click=select_evidence, args=(st.session_state, ev.page, ev.passage_id))
+                        on_click=select_evidence, args=(st.session_state, ev.page, ev.passage_id, f.rule_id))
+                    if st.session_state.get("evidence_selection") == ev.passage_id and st.session_state.get("evidence_rule") == f.rule_id:
+                        with st.expander("Выбранное доказательство в PDF", expanded=True):
+                            show_page(doc, data, ev.page, ev.passage_id)
                 st.write("**Следующий шаг**")
                 st.write(next_step(f))
                 for r in (r for r in report.reviews if r.rule_id == f.rule_id):
@@ -183,9 +187,6 @@ if "report" in st.session_state and upload is not None:
                 with st.expander("Технические детали · " + f.rule_id):
                     st.json(f.model_dump(mode="json"))
                     st.caption("Запрошено: " + MODE_LABELS[report.retrieval_requested] + "; выполнено: " + MODE_LABELS[report.retrieval_used])
-        if st.session_state.get("evidence_selection"):
-            with st.expander("Выбранное доказательство в PDF", expanded=True):
-                show_page(doc, data, st.session_state.evidence_page, st.session_state.evidence_selection)
         st.subheader("Сохранить отчет")
         st.caption("HTML — читаемый отчет с цитатами и аннотациями. Для PDF откройте HTML и выберите «Печать → Сохранить как PDF». JSON сохраняет исходные статусы и метаданные.")
         export1, export2 = st.columns(2)

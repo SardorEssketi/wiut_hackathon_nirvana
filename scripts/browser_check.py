@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 import argparse
 import json
+import re
 import sys
 import time
 from urllib.request import urlopen
@@ -105,6 +106,19 @@ def main():
         page.goto(args.url,wait_until='networkidle')
         expect(page.get_by_role('heading',name='Условия полиса, с доказательствами')).to_be_visible(timeout=60000)
         settled(page)
+        caption = page.get_by_text('Дата аудита — когда выполняется проверка.',exact=False)
+        color = caption.evaluate('el=>getComputedStyle(el).color')
+        background = page.get_by_test_id('stApp').evaluate('el=>getComputedStyle(el).backgroundColor')
+        opacity = float(caption.evaluate('el=>getComputedStyle(el.parentElement).opacity'))
+        rgb = [float(v) for v in re.findall(r'[0-9.]+',color)[:3]]
+        bg = [float(v) for v in re.findall(r'[0-9.]+',background)[:3]]
+        def luminance(channels):
+            linear = [(c/255/12.92 if c/255 <= .04045 else ((c/255+.055)/1.055)**2.4) for c in channels]
+            return sum(c*w for c,w in zip(linear,[.2126,.7152,.0722]))
+        effective = [c*opacity+b*(1-opacity) for c,b in zip(rgb,bg)]
+        l1,l2 = sorted([luminance(effective),luminance(bg)])
+        results['caption_contrast_ratio'] = (l2+.05)/(l1+.05)
+        assert results['caption_contrast_ratio'] >= 4.5
         page.screenshot(path=str(DEST/'initial-desktop.png'),full_page=True)
         expect(page.get_by_role('button',name='Анализировать документ',exact=True)).to_be_disabled()
         expect(page.get_by_text('Дата договора неизвестна или не указана.',exact=False)).to_be_visible()
@@ -199,6 +213,13 @@ def main():
                 expect(page.get_by_test_id('stExpander').filter(has_text='Выбранное доказательство в PDF').get_by_text(f'Страница PDF {ev.page} · Текст оферты',exact=False)).to_be_visible()
                 page.screenshot(path=str(DEST/'evidence-desktop.png'))
                 results['evidence_navigation_verified'] = True
+                page.set_viewport_size({'width':390,'height':844})
+                viewer.scroll_into_view_if_needed()
+                page.wait_for_timeout(500)
+                results['mobile_evidence_horizontal_overflow_px'] = page.evaluate('Math.max(0,document.documentElement.scrollWidth-window.innerWidth)')
+                assert results['mobile_evidence_horizontal_overflow_px'] == 0
+                page.screenshot(path=str(DEST/'evidence-mobile.png'))
+                page.set_viewport_size({'width':1365,'height':950})
                 page.get_by_role('heading',name='2. Краткий итог').scroll_into_view_if_needed()
                 page.screenshot(path=str(DEST/'results-desktop.png'))
                 # Another independent browser session cannot see this report or annotations.

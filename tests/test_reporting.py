@@ -108,8 +108,9 @@ def test_review_rerun_keeps_result_and_selects_correct_page(report):
     invalidate_result(state, identity)
     assert state['report'] is report
     ev = report.findings[0].evidence[0]
-    select_evidence(state, ev.page, ev.passage_id)
+    select_evidence(state, ev.page, ev.passage_id, report.findings[0].rule_id)
     assert state['evidence_page'] == ev.page and state['evidence_selection'] == ev.passage_id
+    assert state['evidence_rule'] == report.findings[0].rule_id
     assert 'preview' not in state
 
 

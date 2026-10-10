@@ -1,7 +1,7 @@
 """Document/configuration identity and invalidation, independent of Streamlit."""
 import hashlib
 
-RESULT_KEYS = ("report", "document", "input_fingerprint", "evidence_page", "evidence_selection", "preview", "manual_page")
+RESULT_KEYS = ("report", "document", "input_fingerprint", "evidence_page", "evidence_selection", "evidence_rule", "preview", "manual_page")
 
 
 def input_identity(data, audit_date, applicable_date, mode):
@@ -15,7 +15,8 @@ def invalidate_result(state, fingerprint):
                 state.pop(key, None)
 
 
-def select_evidence(state, page, passage_id):
+def select_evidence(state, page, passage_id, rule_id=None):
     state["evidence_page"] = page
     state["evidence_selection"] = passage_id
+    state["evidence_rule"] = rule_id
     state.pop("preview", None)
