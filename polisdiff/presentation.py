@@ -1,9 +1,10 @@
-"""Deterministic Russian explanations shared by the UI and printable report.
+"""Deterministic multilingual explanations shared by the UI and printable report.
 
 No generated legal text: findings and their recorded source version are the facts.
 """
 from collections import Counter
 from .models import Finding, Report, Status
+from .i18n import tr, recorded_text
 
 STATUS_LABELS = {
     Status.MATCH_FOUND: "Условие согласуется с проверяемым критерием",
@@ -40,75 +41,92 @@ def counts(report: Report) -> dict[Status, int]:
     return {status: observed[status] for status in Status}
 
 
-def summary(report: Report) -> str:
+def labels(mapping, language="ru"):
+    return {key: tr(value, language) for key, value in mapping.items()}
+
+
+RULE_NAMES = {"OSAGO_SUM": "Страховая сумма ОСАГО",
+              "OSAGO_PAYMENT": "Срок выплаты после решения страховщика",
+              "OSAGO_DECISION_NOTICE": "Срок уведомления о решении"}
+
+
+def rule_name(rule, language="ru"):
+    rule_id = rule.rule_id if isinstance(rule, Finding) else rule.id
+    if rule_id in RULE_NAMES:
+        return tr(RULE_NAMES[rule_id], language)
+    return getattr(rule, "rule_name", getattr(rule, "name", ""))
+
+
+def summary(report: Report, language="ru") -> str:
     c = counts(report)
-    text = (f"Проверено условий: {len(report.findings)}. Возможных несоответствий: {c[Status.POTENTIAL_CONFLICT]}; "
-            f"согласуются с критериями: {c[Status.MATCH_FOUND]}; не найдены: {c[Status.NOT_FOUND]}; "
-            f"недостаточно данных: {c[Status.UNVERIFIABLE]}.")
+    text = tr("Проверено условий: {total}. Возможных несоответствий: {conflicts}; согласуются с критериями: {matches}; не найдены: {missing}; недостаточно данных: {unverifiable}.", language,
+              total=len(report.findings), conflicts=c[Status.POTENTIAL_CONFLICT], matches=c[Status.MATCH_FOUND],
+              missing=c[Status.NOT_FOUND], unverifiable=c[Status.UNVERIFIABLE])
     if c[Status.UNVERIFIABLE] == len(report.findings):
-        return text + " Ни одно условие не удалось надежно проверить. Это не устанавливает нарушение закона."
+        return text + " " + tr("Ни одно условие не удалось надежно проверить. Это не устанавливает нарушение закона.", language)
     if c[Status.POTENTIAL_CONFLICT]:
-        return text + " Специалисту следует проверить отмеченные положения и применимую редакцию нормы."
-    return text + " Результат относится только к указанным проверкам и не подтверждает законность всего договора."
+        return text + " " + tr("Специалисту следует проверить отмеченные положения и применимую редакцию нормы.", language)
+    return text + " " + tr("Результат относится только к указанным проверкам и не подтверждает законность всего договора.", language)
 
 
-def format_value(value, unit=None) -> str:
+def format_value(value, unit=None, language="ru") -> str:
     if value is None:
-        return "Значение не установлено"
+        return tr("Значение не установлено", language)
     number = f"{value:,.10g}".replace(",", " ")
-    return f"{number} {UNITS.get(unit, unit or '')}".strip()
+    return f"{number} {labels(UNITS, language).get(unit, unit or '')}".strip()
 
 
-def observation(finding: Finding) -> str:
+def observation(finding: Finding, language="ru") -> str:
     values = list(dict.fromkeys((ev.extracted_value, ev.unit) for ev in finding.evidence
                                if ev.extracted_value is not None))
     if values:
-        text = "В тексте извлечено: " + "; ".join(format_value(*v) for v in values) + "."
+        text = tr("В тексте извлечено: ", language) + "; ".join(format_value(*v, language=language) for v in values) + "."
         if finding.status == Status.UNVERIFIABLE:
-            text += " Эти значения недостаточны для надежного сравнения; см. причину."
+            text += " " + tr("Эти значения недостаточны для надежного сравнения; см. причину.", language)
         return text
     if not finding.evidence:
-        return "Подходящее доказательство не найдено. Числовое значение не установлено."
-    return "Найден связанный текст, но сопоставимое числовое условие не установлено."
+        return tr("Подходящее доказательство не найдено. Числовое значение не установлено.", language)
+    return tr("Найден связанный текст, но сопоставимое числовое условие не установлено.", language)
 
 
-def expected(finding: Finding) -> str:
+def expected(finding: Finding, language="ru") -> str:
     if finding.expected_value is None:
-        return "Применимая версия нормы не установлена; ориентир не выбран."
+        return tr("Применимая версия нормы не установлена; ориентир не выбран.", language)
     unit = "UZS" if finding.rule_id == "OSAGO_SUM" else (
         "working_days" if finding.rule_id == "OSAGO_PAYMENT" else "days")
     operator = "Ориентир общей суммы: " if unit == "UZS" else "Предельный срок для этой проверки: "
-    return operator + format_value(finding.expected_value, unit) + "."
+    return tr(operator, language) + format_value(finding.expected_value, unit, language) + "."
 
 
-def next_step(finding: Finding) -> str:
+def next_step(finding: Finding, language="ru") -> str:
     if "applicable_date_unknown" in finding.uncertainty:
-        return "Установите дату применимости договора по первичным документам и повторите проверку."
+        return tr("Установите дату применимости договора по первичным документам и повторите проверку.", language)
     if "unsupported_applicability_date" in finding.uncertainty:
-        return "Проверьте даты и обратитесь к специалисту за редакцией нормы для этой даты."
+        return tr("Проверьте даты и обратитесь к специалисту за редакцией нормы для этой даты.", language)
     if "appendix_only" in finding.uncertainty:
-        return "Проверьте, как правила приложения включены в договор. Текст закона не подтверждает обязательство автора оферты."
+        return tr("Проверьте, как правила приложения включены в договор. Текст закона не подтверждает обязательство автора оферты.", language)
     if "incorporation_by_reference" in finding.uncertainty:
-        return "Откройте указанные в договоре правила и передайте вопрос об их применимости на правовую проверку."
-    return {
+        return tr("Откройте указанные в договоре правила и передайте вопрос об их применимости на правовую проверку.", language)
+    return tr({
         Status.MATCH_FOUND: "Сверьте цитату, дату и контекст в оригинале. Совпадение этого условия не подтверждает весь договор.",
         Status.POTENTIAL_CONFLICT: "Сверьте значение, событие и дату в PDF; передайте положение специалисту для правовой проверки.",
         Status.NOT_FOUND: "Проверьте оригинал и связанные документы вручную. Не считайте отсутствие находки нарушением.",
         Status.UNVERIFIABLE: "Проверьте оригинальный текст, единицы, событие и конкурирующие условия; при необходимости запросите читаемый PDF.",
-    }[finding.status]
+    }[finding.status], language)
 
 
-def explanation(finding: Finding) -> str:
+def explanation(finding: Finding, language="ru") -> str:
     if finding.status == Status.POTENTIAL_CONFLICT and finding.expected_value is not None:
         comparable = [ev for ev in finding.evidence if ev.extracted_value is not None]
         if comparable:
             ev = comparable[0]
-            return (f"В документе указано {format_value(ev.extracted_value, ev.unit)}, а ориентир выбранной редакции — "
-                    f"{format_value(finding.expected_value, ev.unit)}. Числовое расхождение требует проверки специалистом.")
-    return finding.reason
+            return tr("В документе указано {actual}, а ориентир выбранной редакции — {reference}. Числовое расхождение требует проверки специалистом.", language,
+                      actual=format_value(ev.extracted_value, ev.unit, language), reference=format_value(finding.expected_value, ev.unit, language))
+    return recorded_text(finding.reason, language)
 
 
-def period(finding: Finding) -> str:
+def period(finding: Finding, language="ru") -> str:
     if finding.effective_from is None:
-        return "Применимая редакция не установлена"
-    return f"С {finding.effective_from} по {finding.effective_to or 'конец подтвержденного диапазона каталога'}"
+        return tr("Применимая редакция не установлена", language)
+    return tr("С {start} по {end}", language, start=finding.effective_from,
+              end=finding.effective_to or tr("конец подтвержденного диапазона каталога", language))

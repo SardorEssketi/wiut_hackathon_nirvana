@@ -20,3 +20,16 @@ def select_evidence(state, page, passage_id, rule_id=None):
     state["evidence_selection"] = passage_id
     state["evidence_rule"] = rule_id
     state.pop("preview", None)
+
+
+def preserve_translated_choices(state):
+    """Save stable option IDs before Streamlit receives translated option labels."""
+    state["_translated_choices"] = {key: state[key] for key in list(state)
+        if key.startswith(("mode_label_", "review_rule_", "review_action_"))}
+
+
+def restore_translated_choices(state):
+    # Streamlit's string serde otherwise interprets old display text as an invalid option.
+    # Assign before rendering these widgets, so their new serializers emit the new labels.
+    for key, value in state.pop("_translated_choices", {}).items():
+        state[key] = value

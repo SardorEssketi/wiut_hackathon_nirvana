@@ -3,8 +3,9 @@ from datetime import datetime, timezone
 from html import escape
 from urllib.parse import urlsplit
 from .models import Report, ReviewAction
+from .i18n import tr, HTML_LANGUAGES, warning_text, uncertainty_text, disclaimer_text
 from .presentation import (STATUS_LABELS, STATUS_ICONS, REVIEW_LABELS, SECTION_LABELS,
-    MODE_LABELS, SCOPES, STANDARD_LIMITATIONS, summary, observation, expected, next_step, period, explanation)
+    MODE_LABELS, SCOPES, STANDARD_LIMITATIONS, summary, observation, expected, next_step, period, explanation, labels, rule_name)
 
 
 def add_review(report: Report, rule_id: str, action: str, rationale: str):
@@ -14,15 +15,15 @@ def add_review(report: Report, rule_id: str, action: str, rationale: str):
         rationale=rationale.strip(), timestamp=datetime.now(timezone.utc)))
 
 
-def source_link(url: str) -> str:
+def source_link(url: str, language="ru") -> str:
     try:
         parsed = urlsplit(url)
         permitted = parsed.scheme == "https" and parsed.hostname == "lex.uz" and not parsed.username and parsed.port in {None,443}
     except ValueError:
         permitted = False
     if permitted:
-        return f'<a href="{escape(url, quote=True)}" rel="noreferrer">Официальный источник · LexUZ</a>'
-    return "Ссылка не открывается: официальный HTTPS-источник не подтвержден."
+        return f'<a href="{escape(url, quote=True)}" rel="noreferrer">{escape(tr("Официальный источник · LexUZ", language))}</a>'
+    return escape(tr("Ссылка не открывается: официальный HTTPS-источник не подтвержден.", language))
 
 
 CSS = """
@@ -49,82 +50,97 @@ h2,h3,h4,.badge{break-after:avoid}tr,.review,.metadata{break-inside:avoid}blockq
 """
 
 
-def html_report(report: Report) -> str:
+def html_report(report: Report, language="ru") -> str:
+    # Translate trusted presentation copy before escaping. Original evidence is never translated.
     e = lambda value: escape(str(value), quote=True)
-    parts = ['<!doctype html><html lang="ru" dir="ltr"><head><meta charset="utf-8">',
+    t = lambda text, **values: tr(text, language, **values)
+    tag = lambda name, value: f'<{name}>{e(value)}</{name}>'
+    heading = lambda text: tag('h4', t(text))
+    status_labels, review_labels = labels(STATUS_LABELS, language), labels(REVIEW_LABELS, language)
+    section_labels, mode_labels = labels(SECTION_LABELS, language), labels(MODE_LABELS, language)
+    scopes = labels(SCOPES, language)
+    parts = [f'<!doctype html><html lang="{HTML_LANGUAGES[language]}" dir="ltr"><head><meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1">',
         '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'">',
-        f'<title>PolisDiff AI · Предварительная проверка</title><style>{CSS}</style></head><body><main>',
-        '<header><p class="brand">POLISDIFF AI</p><h1>Предварительная проверка страхового документа</h1>',
+        f'<title>PolisDiff AI · {e(t("Предварительная проверка"))}</title><style>{CSS}</style></head><body><main>',
+        '<header><p class="brand">POLISDIFF AI</p>', tag('h1', t('Предварительная проверка страхового документа')),
         '<p class="muted">Preliminary Insurance Document Review</p>',
-        '<p class="notice">Не юридическое заключение. Проверка отдельных условий помогает специалисту найти и оценить доказательства.</p>',
+        f'<p class="notice">{e(t("Не юридическое заключение. Проверка отдельных условий помогает специалисту найти и оценить доказательства."))}</p>',
         '<dl class="metadata">']
-    metadata = [("Создан (UTC)", report.created_at.isoformat()), ("Продукт", report.product),
-        ("Дата применимости договора", report.applicable_date or "Не подтверждена"),
-        ("Дата аудита", report.audit_date), ("Объем", f"{len(report.findings)} условия ОСАГО; {report.page_count} страниц"),
-        ("Идентификатор документа · SHA-256", report.document_sha256)]
+    product = t('OSAGO (выбрано пользователем)') if report.product == 'OSAGO (user selected)' else report.product
+    metadata = [(t('Создан (UTC)'), report.created_at.isoformat()), (t('Продукт'), product),
+        (t('Дата применимости договора'), report.applicable_date or t('Не подтверждена')),
+        (t('Дата аудита'), report.audit_date), (t('Объем'), t('{checks} условия ОСАГО; {pages} страниц', checks=len(report.findings), pages=report.page_count)),
+        (t('Идентификатор документа · SHA-256'), report.document_sha256)]
     for title, value in metadata:
         parts.append(f'<div><dt>{e(title)}</dt><dd>{e(value)}</dd></div>')
-    parts += ['</dl></header><section><h2>Краткий итог</h2>', f'<p>{e(summary(report))}</p>',
-        '<p class="muted">Все находки требуют ручной проверки контекста. Совпадение не означает одобрение договора.</p></section>',
-        '<section><h2>Обзор находок</h2><table><thead><tr><th>Проверка</th><th>Результат</th><th>Наблюдение</th><th>Страница PDF</th><th>Ручная проверка</th></tr></thead><tbody>']
+    parts += ['</dl></header><section>', tag('h2', t('Краткий итог')), tag('p', summary(report, language)),
+        f'<p class="muted">{e(t("Все находки требуют ручной проверки контекста. Совпадение не означает одобрение договора."))}</p></section>',
+        '<section>', tag('h2', t('Обзор находок')), '<table><thead><tr>']
+    parts += [tag('th', t(text)) for text in ['Проверка', 'Результат', 'Наблюдение', 'Страница PDF', 'Ручная проверка']]
+    parts.append('</tr></thead><tbody>')
     for f in report.findings:
-        pages = ", ".join(str(p) for p in sorted({ev.page for ev in f.evidence})) or "Нет доказательства"
-        parts.append(f'<tr><td>{e(f.rule_name)}</td><td>{e(STATUS_ICONS[f.status])} {e(STATUS_LABELS[f.status])}</td>'
-            f'<td>{e(observation(f))}</td><td>{e(pages)}</td><td>{"Да" if f.manual_review_required else "Не запрошена"}</td></tr>')
-    parts += ['</tbody></table></section><section><h2>Подробные результаты</h2>']
+        pages = ', '.join(str(p) for p in sorted({ev.page for ev in f.evidence})) or t('Нет доказательства')
+        parts.append('<tr>' + ''.join(tag('td', value) for value in [rule_name(f, language),
+            STATUS_ICONS[f.status] + ' ' + status_labels[f.status], observation(f, language), pages,
+            t('Да') if f.manual_review_required else t('Не запрошена')]) + '</tr>')
+    parts += ['</tbody></table></section><section>', tag('h2', t('Подробные результаты'))]
     for f in report.findings:
-        parts += [f'<article class="finding" id="{e(f.rule_id)}"><h3>{e(f.rule_name)}</h3>',
-            f'<p class="badge {f.status.value}">{e(STATUS_ICONS[f.status])} {e(STATUS_LABELS[f.status])}</p>',
-            f'<h4>Что проверяли</h4><p>{e(SCOPES.get(f.rule_id, f.check_scope or f.rule_name))}</p>',
-            f'<h4>Что найдено</h4><p>{e(observation(f))}</p>',
-            f'<h4>Ориентир для выбранной даты</h4><p>{e(expected(f))}</p>',
-            f'<h4>Почему получен результат</h4><p>{e(explanation(f))}</p><h4>Доказательства из документа</h4>']
+        parts += [f'<article class="finding" id="{e(f.rule_id)}">', tag('h3', rule_name(f, language)),
+            f'<p class="badge {f.status.value}">{e(STATUS_ICONS[f.status])} {e(status_labels[f.status])}</p>',
+            heading('Что проверяли'), tag('p', scopes.get(f.rule_id, f.check_scope or f.rule_name)),
+            heading('Что найдено'), tag('p', observation(f, language)),
+            heading('Ориентир для выбранной даты'), tag('p', expected(f, language)),
+            heading('Почему получен результат'), tag('p', explanation(f, language)), heading('Доказательства из документа')]
         if not f.evidence:
-            parts.append('<p>Подходящее доказательство не найдено. Цитата и страница отсутствуют.</p>')
+            parts.append(tag('p', t('Подходящее доказательство не найдено. Цитата и страница отсутствуют.')))
         for ev in f.evidence:
-            parts.append(f'<p><strong>Страница PDF {ev.page}</strong> · {e(SECTION_LABELS.get(ev.section, ev.section))}</p>'
+            parts.append(f'<p><strong>{e(t("Страница PDF {page}", page=ev.page))}</strong> · {e(section_labels.get(ev.section, ev.section))}</p>'
                          f'<blockquote dir="auto">{e(ev.quote)}</blockquote>')
-        parts += [f'<h4>Официальный текст и редакция</h4><p>{e(f.provision_reference)}</p>',
-                  f'<p>{source_link(f.source_url)}</p><p>{e(period(f))}</p>']
+        parts += [heading('Официальный текст и редакция'), tag('p', f.provision_reference),
+            tag('p', t('Официальные цитаты и сведения о редакции сохранены на языке источника; перевод интерфейса не является правовым толкованием.')),
+            f'<p>{source_link(f.source_url, language)}</p>', tag('p', period(f, language))]
         parts.append(f'<blockquote dir="auto">{e(f.source_quote)}</blockquote>' if f.source_quote else
-                     '<p>Цитата применимой версии не выбрана. Не используйте текущий текст как основание для неизвестной даты.</p>')
+            tag('p', t('Цитата применимой версии не выбрана. Не используйте текущий текст как основание для неизвестной даты.')))
         if f.source_version_note:
-            parts.append(f'<p>{e(f.source_version_note)}</p>')
-        parts += [f'<h4>Неопределенность</h4><p>{e("; ".join(f.uncertainty) or "Отдельные причины не зарегистрированы; правовая интерпретация все равно требует проверки.")}</p>',
-            f'<p>{e(f.reviewer_status)}</p><h4>Следующий шаг</h4><p>{e(next_step(f))}</p>']
+            parts.append(tag('p', f.source_version_note))
+        parts += [heading('Неопределенность'), tag('p', '; '.join(uncertainty_text(code, language) for code in f.uncertainty)
+                or t('Отдельные причины не зарегистрированы; правовая интерпретация все равно требует проверки.')),
+            tag('p', f.reviewer_status), heading('Следующий шаг'), tag('p', next_step(f, language))]
         for r in (r for r in report.reviews if r.rule_id == f.rule_id):
-            parts.append(f'<p class="review">Аннотация: {e(REVIEW_LABELS[r.action])} · {e(r.timestamp.isoformat())}\n{e(r.rationale)}</p>')
+            parts.append(f'<p class="review">{e(t("Аннотация: {action} · {timestamp}", action=review_labels[r.action], timestamp=r.timestamp.isoformat()))}\n{e(r.rationale)}</p>')
         parts.append('</article>')
-    parts += ['</section><section><h2>Ограничения и правовая проверка</h2><ul>']
-    parts += [f'<li>{e(text)}</li>' for text in STANDARD_LIMITATIONS]
-    parts += ['</ul><h3>Ограничения этого анализа</h3><ul>']
-    parts += [f'<li>{e(w)}</li>' for w in report.warnings]
-    parts += [f'</ul><p>{e(report.disclaimer)}</p></section>',
-        '<section><h2>Записи аналитика</h2><p>Аннотации локального аналитика не являются правовой сертификацией. Исходные результаты сохранены. Записи живут в сессии, пока не экспортированы.</p>']
+    parts += ['</section><section>', tag('h2', t('Ограничения и правовая проверка')), '<ul>']
+    parts += [tag('li', t(text)) for text in STANDARD_LIMITATIONS]
+    parts += ['</ul>', tag('h3', t('Ограничения этого анализа')), '<ul>']
+    parts += [tag('li', warning_text(w, language)) for w in report.warnings]
+    parts += ['</ul>', tag('p', disclaimer_text(report.disclaimer, language)), '</section><section>', tag('h2', t('Записи аналитика')),
+        tag('p', t('Аннотации локального аналитика не являются правовой сертификацией. Исходные результаты сохранены. Записи живут в сессии, пока не экспортированы.'))]
     if not report.reviews:
-        parts.append('<p>Аннотации отсутствуют.</p>')
+        parts.append(tag('p', t('Аннотации отсутствуют.')))
     for r in report.reviews:
-        parts.append(f'<div class="review"><strong>{e(REVIEW_LABELS[r.action])}</strong> · {e(r.rule_id)}\n'
-                     f'{e(r.timestamp.isoformat())} · {e(r.actor)}\n{e(r.rationale)}</div>')
-    parts += ['</section><section class="technical"><h2>Техническое приложение</h2>']
-    technical = [("Схема / приложение", f"{report.schema_version} / {report.application_version}"),
-        ("SHA-256 документа", report.document_sha256), ("Версия каталога", report.rules_catalogue_version),
-        ("SHA-256 каталога", report.rules_catalogue_sha256), ("Основание даты", report.date_basis),
-        ("Запрошенный поиск", MODE_LABELS.get(report.retrieval_requested, report.retrieval_requested)),
-        ("Фактический поиск", MODE_LABELS.get(report.retrieval_used, report.retrieval_used)),
-        ("Отбор фрагментов", report.candidate_selection),
-        ("Ревизия модели", report.model_revision or "Не подтверждена / модель не использовалась"),
-        ("Языки / письменности", ", ".join(report.detected_languages))]
+        parts.append(f'<div class="review"><strong>{e(review_labels[r.action])}</strong> · {e(r.rule_id)}\n'
+            f'{e(r.timestamp.isoformat())} · {e(r.actor)}\n{e(r.rationale)}</div>')
+    parts += ['</section><section class="technical">', tag('h2', t('Техническое приложение'))]
+    technical = [(t('Схема / приложение'), f'{report.schema_version} / {report.application_version}'),
+        (t('SHA-256 документа'), report.document_sha256), (t('Версия каталога'), report.rules_catalogue_version),
+        (t('SHA-256 каталога'), report.rules_catalogue_sha256), (t('Основание даты'), report.date_basis),
+        (t('Запрошенный поиск'), mode_labels.get(report.retrieval_requested, report.retrieval_requested)),
+        (t('Фактический поиск'), mode_labels.get(report.retrieval_used, report.retrieval_used)),
+        (t('Отбор фрагментов'), report.candidate_selection),
+        (t('Ревизия модели'), report.model_revision or t('Не подтверждена / модель не использовалась')),
+        (t('Языки / письменности'), ', '.join(report.detected_languages))]
     parts += [f'<p><strong>{e(name)}:</strong> {e(value)}</p>' for name, value in technical]
-    parts += ['<h3>Время обработки, секунд</h3>']
+    parts += [tag('h3', t('Время обработки, секунд'))]
     parts += [f'<p>{e(name)}: {value:.4f}</p>' for name, value in report.timings_seconds.items()]
-    parts += ['<h3>Идентификаторы доказательств</h3>']
+    parts += [tag('h3', t('Идентификаторы доказательств'))]
     for f in report.findings:
         for ev in f.evidence:
-            parts.append(f'<p>{e(f.rule_id)} · {e(ev.passage_id)} · PDF {ev.page} · смещение [{ev.start}, {ev.end}) · '
-                         f'bbox {e(ev.bbox)} · {e(ev.section)} · значение {e(ev.extracted_value)} {e(ev.unit)}</p>')
-    parts += ['<p>Координаты — объединение блоков текста, не точная геометрия цитаты. Визуальное выделение не выполнялось.</p><h3>Предупреждения</h3><ul>']
-    parts += [f'<li>{e(w)}</li>' for w in report.warnings]
-    parts += ['</ul></section><footer><p class="muted">PolisDiff AI · Печать → Сохранить как PDF. Оригинальные цитаты не переводились.</p></footer></main></body></html>']
-    return "".join(parts)
+            parts.append(f'<p>{e(f.rule_id)} · {e(ev.passage_id)} · PDF {ev.page} · {e(t("смещение"))} [{ev.start}, {ev.end}) · '
+                f'bbox {e(ev.bbox)} · {e(ev.section)} · {e(t("значение"))} {e(ev.extracted_value)} {e(ev.unit)}</p>')
+    parts += [tag('p', t('Координаты — объединение блоков текста, не точная геометрия цитаты. Визуальное выделение не выполнялось.')),
+        tag('h3', t('Предупреждения')), '<ul>']
+    parts += [tag('li', warning_text(w, language)) for w in report.warnings]
+    parts += ['</ul></section><footer>', f'<p class="muted">{e(t("PolisDiff AI · Печать → Сохранить как PDF. Оригинальные цитаты не переводились."))}</p>',
+        '</footer></main></body></html>']
+    return ''.join(parts)
