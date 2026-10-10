@@ -22,6 +22,7 @@ from polisdiff.service import audit_document
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_ROOT = ROOT / "evaluation"
+WRITE_REPORTS = False
 
 
 class MemorySampler:
@@ -111,7 +112,7 @@ def evaluate_case(case, retriever, rules):
                     expected in {"MATCH_FOUND","POTENTIAL_CONFLICT"} else None} for ev in finding.evidence]
             finding_rows.append({"rule":finding.rule_id,"actual":finding.status.value,"expected":expected,
                 "reason":finding.reason,"evidence_checks":evidence_checks})
-        if case["split"] != "real":
+        if WRITE_REPORTS and case["split"] != "real":
             export_dir = OUTPUT_ROOT / "reports" / retriever.requested / case["split"]
             export_dir.mkdir(parents=True,exist_ok=True)
             (export_dir/(case["id"]+".json")).write_text(report.model_dump_json(indent=2),encoding="utf-8")
@@ -131,11 +132,13 @@ def evaluate_case(case, retriever, rules):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--modes", nargs="+",default=["lexical","semantic","hybrid"])
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "evaluation",
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "evaluation" / "post_audit",
                         help="Separate measurement directory; preserves historical artifacts.")
-    parser.add_argument("--label", default="historical")
+    parser.add_argument("--label", default="post-audit-regression")
+    parser.add_argument("--reports", action="store_true", help="Also write individual synthetic JSON reports.")
     args = parser.parse_args()
-    global OUTPUT_ROOT
+    global OUTPUT_ROOT, WRITE_REPORTS
+    WRITE_REPORTS = args.reports
     OUTPUT_ROOT = args.output_dir.resolve()
     OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
     catalogue,rules,digest = load_catalogue()
@@ -148,7 +151,8 @@ def main():
         # Existing fixtures are immutable inputs; create only if absent.
         if not (ROOT/path).exists():
             create_pdf(ROOT/path,pages)
-        cases.append({"id":row["id"],"split":"fresh_evaluation","language":row["language"],"path":path,
+        cases.append({"id":row["id"],"split": "former_fresh_regression" if args.label.startswith("post-") else "fresh_evaluation",
+            "language":row["language"],"path":path,
             "applicable_date":"2026-02-05","expected":dict(zip(RULE_IDS,row["expected"])),
             "relevant_pages":dict(zip(RULE_IDS,[[2],[3],[4]])),"ground_truth_pages":pages})
     real = json.loads((ROOT / "evaluation/real_annotations.json").read_text(encoding="utf-8"))
@@ -156,10 +160,15 @@ def main():
         cases.append(dict(row, split="real",path=f"local_data/sources/{row['id']}.pdf"))
     result = {"created_at":datetime.now(timezone.utc).isoformat(),"python":sys.version,"platform":platform.platform(),
         "measurement_label": args.label,
+        "source_files_sha256": {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in
+            ["app.py", "polisdiff/engine.py", "polisdiff/extraction.py", "polisdiff/retrieval.py",
+             "polisdiff/service.py", "polisdiff/models.py", "polisdiff/runtime.py", "polisdiff/export.py",
+             "polisdiff/presentation.py", "polisdiff/session.py"]},
         "cpu_logical":psutil.cpu_count(),"rules_catalogue_sha256":digest,
         "dataset_files_sha256":{name:hashlib.sha256((ROOT/"evaluation"/name).read_bytes()).hexdigest()
             for name in ["dataset_manifest.json","blind_fixtures.json","real_annotations.json"]},
         "limitations":["Small AI-authored engineering-labelled dataset; not expert legal validation.",
+            "After audit fixes, former fresh cases are exposed regression data, not an untouched holdout.",
             "Regression evaluation wording was exposed during debugging; report separately from fresh evaluation.",
             "Real PDFs have page annotations only; no legal status labels or transcription ground truth.",
             "Character similarity is whitespace-normalized synthetic-text similarity; not OCR CER.",

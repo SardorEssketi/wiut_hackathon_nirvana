@@ -109,7 +109,7 @@ class ReviewAction(BaseModel):
 
 class Report(BaseModel):
     schema_version: str = "1.0"
-    application_version: str = "0.1.0"
+    application_version: str = "0.2.0"
     rules_catalogue_version: str
     rules_catalogue_sha256: str
     document_sha256: str
@@ -124,6 +124,7 @@ class Report(BaseModel):
     retrieval_requested: str
     retrieval_used: str
     model_revision: str | None = None
+    candidate_selection: str = "top_8_per_section"
     timings_seconds: dict[str, float]
     findings: list[Finding]
     reviews: list[ReviewAction] = Field(default_factory=list)

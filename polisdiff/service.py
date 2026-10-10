@@ -2,7 +2,7 @@ from datetime import date, datetime, timezone
 import threading
 import time
 from .extraction import extract_pdf
-from .engine import load_catalogue, evaluate
+from .engine import load_catalogue, evaluate, topic
 from .models import Report, Document
 from .retrieval import Retriever
 
@@ -33,6 +33,11 @@ def audit_document(doc: Document, audit_date: date, applicable_date: date | None
         retriever.prepare(section)
         for rule in rules:
             candidates[rule.id].extend(p for p, _ in retriever.search(rule.queries, k=k))
+    # Top-K ranking must not hide competing contractual terms elsewhere.
+    # Expand evidence candidates; never assume their extracted values are valid.
+    for rule in rules:
+        ids = {p.id for p in candidates[rule.id]}
+        candidates[rule.id].extend(p for p in offer if p.id not in ids and topic(rule, p.normalized))
     retrieval_seconds = time.perf_counter() - retrieval_start
     if on_progress:
         on_progress("evaluation")
@@ -44,6 +49,7 @@ def audit_document(doc: Document, audit_date: date, applicable_date: date | None
         date_basis=date_basis if applicable_date else "unknown", created_at=datetime.now(timezone.utc),
         detected_languages=doc.languages, page_count=len(doc.pages), warnings=warnings,
         retrieval_requested=retriever.requested, retrieval_used=retriever.used, model_revision=retriever.model_revision,
+        candidate_selection="top_8_per_section_plus_offer_topic_guard",
         timings_seconds={"retrieval": retrieval_seconds, "evaluation": time.perf_counter()-start-retrieval_seconds,
                          "analysis": time.perf_counter()-start, "model_initialization": retriever.initialization_seconds},
         findings=findings)
