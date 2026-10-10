@@ -1,0 +1,62 @@
+{
+  "catalogue_version": "1.0.0",
+  "verified_access_date": "2026-10-10",
+  "supported_date_range": ["2024-08-05", "2026-10-10"],
+  "rules": [
+    {
+      "id": "OSAGO_SUM",
+      "name": "Страховая сумма ОСАГО",
+      "product": "OSAGO",
+      "applicability": "Explicit total compulsory motor third-party liability insurance sum for the user-confirmed contract applicability date. This is not a requirement to reproduce the provision in an offer.",
+      "reference": "Resolution 141, operative paragraph 1, second subparagraph",
+      "official_source": "https://lex.uz/docs/1366339",
+      "legal_text_status": "PRIMARY_TEXT_VERIFIED",
+      "reviewer_status": "PENDING_LEGAL_REVIEW",
+      "interpretation": "Compare an explicit total insurance sum in UZS, excluding premiums, property/life sublimits, examples and conditional cases. An absent total is NOT_FOUND; incorporation and uncertain dates require review. Transition treatment of existing contracts is not adjudicated.",
+      "extraction_requirements": ["total insurance sum concept", "unambiguous numeric monetary amount", "UZS currency", "user-confirmed applicable date"],
+      "uncertainty_conditions": ["uncertain contract date", "conditional or illustrative amount", "competing values", "appendix-only evidence", "reference without explicit value", "out of verified date range"],
+      "logic": "sum",
+      "queries": ["общая страховая сумма обязательного страхования размер сум", "majburiy sug'urta umumiy sug'urta summasi so'm", "мажбурий суғурта суғурта суммаси суғурта пули сўм"],
+      "versions": [
+        {"effective_from": "2019-06-17", "effective_to": "2025-12-31", "expected": 40000000, "source_url": "https://lex.uz/docs/1366339?ONDATE=17.06.2019%2000", "source_quote": "40 миллион сўм", "version_note": "Historical official wording inspected; current clause's previous-version link leads to this 2019 text. Resolution 222 amendment effective 2019-06-17. App deliberately restricts applicability to 2024-08-05 and later."},
+        {"effective_from": "2026-01-01", "effective_to": null, "expected": 80000000, "source_url": "https://lex.uz/docs/1366339", "source_quote": "80 миллион сўм", "version_note": "Resolution 458 of 2025-07-23 amendment; clause-specific effective date 2026-01-01, not its publication date. Verified through access date only."}
+      ]
+    },
+    {
+      "id": "OSAGO_PAYMENT",
+      "name": "Срок выплаты после решения страховщика",
+      "product": "OSAGO",
+      "applicability": "Explicit deadline for paying insurance indemnity after adoption of an insurer's payment decision. Substantive obligation, not a verified verbatim-offer disclosure obligation.",
+      "reference": "Resolution 141, appendix 4 (insurance rules), paragraph 66",
+      "official_source": "https://lex.uz/docs/1366339",
+      "legal_text_status": "PRIMARY_TEXT_VERIFIED",
+      "reviewer_status": "PENDING_LEGAL_REVIEW",
+      "interpretation": "Screen explicit payment deadlines measured from the insurer's decision. Five working days is the statutory deadline. A shorter unambiguous working-day deadline is treated as consistent for this limited screen. Calendar-day deadlines, absent triggers and negated obligations require interpretation.",
+      "extraction_requirements": ["indemnity payment", "insurer decision trigger", "numeric or supported written deadline", "working days"],
+      "uncertainty_conditions": ["calendar versus working days", "deadline triggered by a different event", "conditional exceptions", "negation", "uncertain dates", "incorporation by reference"],
+      "logic": "payment_days",
+      "queries": ["страховое возмещение выплата пять рабочих дней со дня принятия решения страховщика", "sug'urta tovoni to'lash qaror qabul qilingan kundan besh ish kuni", "суғурта товонини тўлаш қарори қабул қилинган беш иш куни"],
+      "versions": [
+        {"effective_from": "2024-08-05", "effective_to": null, "expected": 5, "source_url": "https://lex.uz/docs/1366339", "source_quote": "беш иш куни", "version_note": "Paragraph 66 identical in inspected 2019 and current official text. effective_from is a conservative supported-version boundary, not a claim this obligation originated in 2024."}
+      ]
+    },
+    {
+      "id": "OSAGO_DECISION_NOTICE",
+      "name": "Срок уведомления о решении",
+      "product": "OSAGO",
+      "applicability": "Explicit deadline for notifying the policyholder of a payment/refusal decision after a written or electronic request for indemnity. Does not audit refusal reasons or establish a mandatory-offer disclosure requirement.",
+      "reference": "Resolution 141, appendix 4 (insurance rules), paragraph 67",
+      "official_source": "https://lex.uz/docs/1366339",
+      "legal_text_status": "PRIMARY_TEXT_VERIFIED",
+      "reviewer_status": "PENDING_LEGAL_REVIEW",
+      "interpretation": "Screen notification deadlines after a written/electronic request. The source says fifteen days, without the working-day modifier used in paragraph 66. Explicit working-day wording requires review; ordinary or calendar-day wording is compared as an engineering interpretation awaiting legal review.",
+      "extraction_requirements": ["decision notification", "policyholder recipient", "written/electronic request trigger", "deadline in days"],
+      "uncertainty_conditions": ["working days stated", "decision taking versus decision notification", "different trigger", "recipient absent", "exceptions", "uncertain dates", "incorporation by reference"],
+      "logic": "decision_days",
+      "queries": ["решение о выплате отказе сообщено страхователю пятнадцать дней письменного электронного обращения", "sug'urta tovoni qaror yozma elektron murojaat o'n besh kun xabar", "суғурта товони қарори ёзма электрон мурожаат ўн беш кун хабар суғурта қилдирувчи"],
+      "versions": [
+        {"effective_from": "2024-08-05", "effective_to": null, "expected": 15, "source_url": "https://lex.uz/docs/1366339", "source_quote": "ўн беш кундан кечиктирмай", "version_note": "2024-07-30 Resolution 458 amendment published/effective 2024-08-05, includes electronic requests. This is distinct from 2025 Resolution 458."}
+      ]
+    }
+  ]
+}

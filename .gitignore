@@ -1,0 +1,11 @@
+.venv/
+.idea/
+__pycache__/
+.pytest_cache/
+local_data/
+models/
+.env
+*.log
+*.zip
+test-results/
+.streamlit/secrets.toml

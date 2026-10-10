@@ -1,0 +1,62 @@
+from datetime import date, datetime, timezone
+import threading
+import time
+from .extraction import extract_pdf
+from .engine import load_catalogue, evaluate
+from .models import Report, Document
+from .retrieval import Retriever
+
+_ANALYSIS_GATE = threading.BoundedSemaphore(1)
+
+
+class BusyError(RuntimeError):
+    pass
+
+
+def audit_document(doc: Document, audit_date: date, applicable_date: date | None,
+                   retriever: Retriever, *, date_basis="user_confirmed", k=8) -> Report:
+    start = time.perf_counter()
+    catalogue, rules, digest = load_catalogue()
+    warnings = list(doc.warnings)
+    if retriever.warning:
+        warnings.append(retriever.warning)
+    warnings.append("All engineering interpretations are PENDING_LEGAL_REVIEW.")
+    warnings.append("Offer/appendix classification is heuristic and requires manual review.")
+    # Separate offer and appendix searches, preventing copied statute from crowding out offers.
+    offer = [p for p in doc.passages if p.section == "offer"]
+    appendix = [p for p in doc.passages if p.section != "offer"]
+    candidates = {r.id: [] for r in rules}
+    retrieval_start = time.perf_counter()
+    for section in (offer, appendix):
+        retriever.prepare(section)
+        for rule in rules:
+            candidates[rule.id].extend(p for p, _ in retriever.search(rule.queries, k=k))
+    retrieval_seconds = time.perf_counter() - retrieval_start
+    findings = [evaluate(r, doc, candidates[r.id], applicable_date, audit_date) for r in rules]
+    return Report(rules_catalogue_version=catalogue["catalogue_version"], rules_catalogue_sha256=digest,
+        document_sha256=doc.sha256, audit_date=audit_date, applicable_date=applicable_date,
+        date_basis=date_basis if applicable_date else "unknown", created_at=datetime.now(timezone.utc),
+        detected_languages=doc.languages, page_count=len(doc.pages), warnings=warnings,
+        retrieval_requested=retriever.requested, retrieval_used=retriever.used, model_revision=retriever.model_revision,
+        timings_seconds={"retrieval": retrieval_seconds, "evaluation": time.perf_counter()-start-retrieval_seconds,
+                         "analysis": time.perf_counter()-start, "model_initialization": retriever.initialization_seconds},
+        findings=findings)
+
+
+def analyze_pdf(data: bytes, audit_date: date, applicable_date: date | None, retriever: Retriever,
+                *, date_basis="user_confirmed") -> tuple[Document, Report]:
+    if not _ANALYSIS_GATE.acquire(blocking=False):
+        raise BusyError("Analysis is already running. Please retry after it finishes.")
+    try:
+        start = time.perf_counter()
+        doc = extract_pdf(data)
+        extract_time = time.perf_counter()-start
+        report = audit_document(doc, audit_date, applicable_date, retriever, date_basis=date_basis)
+        report.timings_seconds["extraction"] = extract_time
+        report.timings_seconds["end_to_end"] = time.perf_counter()-start
+        return doc, report
+    finally:
+        # Never keep uploaded passages in a process-global cached retriever.
+        retriever._passages = []
+        retriever._embeddings = None
+        _ANALYSIS_GATE.release()
