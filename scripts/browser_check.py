@@ -122,15 +122,13 @@ def main():
                 page.screenshot(path=str(DEST / "results-desktop.png"),full_page=True)
                 page.set_viewport_size({"width":390,"height":844})
                 page.evaluate("window.scrollTo(0,0)")
-                collapse = page.get_by_test_id("stSidebarCollapseButton").get_by_role("button")
-                if collapse.is_visible():
-                    collapse.click()
                 page.wait_for_function("()=>{const el=document.querySelector('[data-testid=stSidebar]'); return !el || el.getBoundingClientRect().right<=1 || getComputedStyle(el).display==='none'}")
+                page.wait_for_timeout(500)
                 page.screenshot(path=str(DEST / "results-mobile.png"),full_page=True)
                 results["mobile_horizontal_overflow_px"] = page.evaluate("Math.max(0,document.documentElement.scrollWidth-window.innerWidth)")
                 assert results["mobile_horizontal_overflow_px"] <= 20
                 page.set_viewport_size({"width":1365,"height":950})
-                page.get_by_test_id("stSidebarCollapsedControl").get_by_role("button").click()
+                page.wait_for_function("()=>document.querySelector('[data-testid=stSidebar]').getBoundingClientRect().left>=0")
                 page.get_by_role("tab",name="Доказательства документа").click()
                 page.get_by_role("button",name="Показать изображение страницы",exact=True).click()
                 expect(page.locator('[data-testid="stImage"] img')).to_be_visible(timeout=30000)

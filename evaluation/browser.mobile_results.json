@@ -1,0 +1,33 @@
+{
+  "checked_at": "2026-10-10T10:56:35.316334+00:00",
+  "url": "http://localhost:8501",
+  "public_deployment_tested": false,
+  "browser": "Chromium (Playwright)",
+  "cases": [
+    {
+      "id": "unseen_browser",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "MATCH_FOUND",
+        "MATCH_FOUND"
+      ],
+      "page_count": 1,
+      "applicable_date": "2026-01-05",
+      "languages": [
+        "Latin-undetermined",
+        "ru-Cyrl"
+      ],
+      "analysis_seconds": 0.45702909999999974,
+      "browser_journey_seconds": 2.0899580999994214,
+      "evidence_verified": true
+    }
+  ],
+  "errors": [],
+  "external_requests": [],
+  "review_export_verified": true,
+  "html_export_verified": true,
+  "mobile_horizontal_overflow_px": 0,
+  "page_preview_verified": true,
+  "session_clear_verified": true,
+  "success": true
+}
