@@ -3,7 +3,7 @@ import hashlib
 import time
 import streamlit as st
 from polisdiff.extraction import PDFError, render_page
-from polisdiff.retrieval import Retriever
+from polisdiff.runtime import web_retriever
 from polisdiff.service import analyze_pdf, BusyError
 from polisdiff.export import add_review, html_report
 from polisdiff.engine import load_catalogue
@@ -20,9 +20,10 @@ h1{letter-spacing:-.04em} [data-testid=stMetric]{background:white;border:1px sol
 
 @st.cache_resource
 def get_retriever(mode):
-    return Retriever(mode=mode)
+    return web_retriever(mode)
 
 
+upload_generation = st.session_state.get("upload_generation", 0)
 with st.sidebar:
     st.markdown("### PolisDiff AI")
     st.caption("Контроль условий страхования · Узбекистан")
@@ -37,6 +38,7 @@ with st.sidebar:
     if st.button("Очистить сессию", use_container_width=True):
         for key in list(st.session_state):
             del st.session_state[key]
+        st.session_state.upload_generation = upload_generation + 1
         st.rerun()
 
 st.markdown('<div class="hero"><div class="eyebrow">EVIDENCE • LANGUAGE • DATE</div><h1>Условия полиса, с доказательствами</h1><p class="muted">Проверка публичной оферты ОСАГО на русском и узбекском — латиница и кириллица.</p></div>', unsafe_allow_html=True)
@@ -46,19 +48,22 @@ with st.container(border=True):
     st.subheader("1. Документ и даты")
     upload_col, date_col = st.columns([1.4, 1])
     with upload_col:
-        upload = st.file_uploader("Загрузить PDF ОСАГО", type=["pdf"], help="До 10 МиБ, 80 страниц. Только PDF с текстовым слоем; OCR не включен.")
+        upload = st.file_uploader("Загрузить PDF ОСАГО", type=["pdf"], key=f"pdf_upload_{upload_generation}", help="До 10 МиБ, 80 страниц. Только PDF с текстовым слоем; OCR не включен.")
         st.caption("ОСАГО — продукт выбран пользователем. Другие страховые продукты не поддерживаются.")
     with date_col:
         audit_date = st.date_input("Дата аудита", value=date.today(), max_value=date.today())
         known_date = st.checkbox("Я подтверждаю дату применимости договора", value=False,
             help="Для исторической оферты укажите ее применимую дату. При переходе между редакциями требуется юрист.")
-        applicable_input = st.date_input("Дата применимости договора", value=date(2026, 1, 5), disabled=not known_date,
+        applicable_input = st.date_input("Дата применимости договора", value=min(date(2026, 1, 5), audit_date), disabled=not known_date,
             max_value=audit_date)
         applicable_date = applicable_input if known_date else None
     mode_label = st.radio("Поиск доказательств", ["AI + лексический поиск", "AI поиск", "Лексический поиск"], horizontal=True)
     mode = {"AI + лексический поиск": "hybrid", "AI поиск": "semantic", "Лексический поиск": "lexical"}[mode_label]
     analyze = st.button("Анализировать документ", type="primary", disabled=upload is None, use_container_width=True)
 
+if upload is None:
+    for key in ("report", "document", "input_fingerprint"):
+        st.session_state.pop(key, None)
 if upload is not None:
     data = upload.getvalue()
     fingerprint = (hashlib.sha256(data).hexdigest(), str(audit_date), str(applicable_date), mode)
@@ -115,8 +120,8 @@ if "report" in st.session_state and upload is not None:
                     st.code(finding.source_quote, language=None)
                 st.caption("PENDING_LEGAL_REVIEW · Ручная проверка обязательна")
         export1, export2 = st.columns(2)
-        export1.download_button("Скачать JSON отчет", report.model_dump_json(indent=2), "polisdiff-report.json", "application/json", use_container_width=True)
-        export2.download_button("Скачать HTML отчет", html_report(report), "polisdiff-report.html", "text/html", use_container_width=True)
+        export1.download_button("Скачать JSON отчет", report.model_dump_json(indent=2), "polisdiff-report.json", "application/json", on_click="ignore", use_container_width=True)
+        export2.download_button("Скачать HTML отчет", html_report(report), "polisdiff-report.html", "text/html", on_click="ignore", use_container_width=True)
     with evidence_tab:
         st.subheader("3. Исходный документ")
         selected_page = st.number_input("Страница документа", min_value=1, max_value=len(doc.pages), value=1, step=1)
@@ -144,7 +149,7 @@ if "report" in st.session_state and upload is not None:
                 try:
                     action = {"Передать на проверку": "further_review", "Подтвердить находку": "confirm", "Отклонить находку": "dismiss"}[action_label]
                     add_review(report, selected_rule, action, rationale)
-                    st.success("Действие записано в сессии; включено в экспорт отчета.")
+                    st.rerun()
                 except ValueError:
                     st.error("Укажите обоснование длиной не менее трех символов.")
         for action in report.reviews:

@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0",
+  "application_version": "0.1.0",
+  "rules_catalogue_version": "1.0.0",
+  "rules_catalogue_sha256": "bfe3c1b630cc73dad45e1d12dd41f2ddd2bdd2641b66b7b9d70e6b85522c53cb",
+  "document_sha256": "80b6bca0d5b7d3d28a0c5d07b5f7d2deb6c294655775bf3dde2cbde2b72d955f",
+  "audit_date": "2026-10-10",
+  "applicable_date": "2026-02-05",
+  "date_basis": "user_confirmed",
+  "product": "OSAGO (user selected)",
+  "created_at": "2026-10-10T10:20:46.639855Z",
+  "detected_languages": [
+    "Latin-undetermined",
+    "ru-Cyrl"
+  ],
+  "page_count": 4,
+  "warnings": [
+    "All engineering interpretations are PENDING_LEGAL_REVIEW.",
+    "Offer/appendix classification is heuristic and requires manual review."
+  ],
+  "retrieval_requested": "lexical",
+  "retrieval_used": "lexical",
+  "model_revision": null,
+  "timings_seconds": {
+    "retrieval": 0.000867100000505161,
+    "evaluation": 0.001976799999283685,
+    "analysis": 0.0028442000002542045,
+    "model_initialization": 8.999995770864189e-7
+  },
+  "findings": [
+    {
+      "rule_id": "OSAGO_SUM",
+      "rule_name": "Страховая сумма ОСАГО",
+      "status": "POTENTIAL_CONFLICT",
+      "reason": "Явное значение 7.91235e+07 UZS потенциально противоречит ориентиру 8e+07 для выбранной даты. Требуется правовая проверка.",
+      "evidence": [
+        {
+          "passage_id": "p2-3",
+          "page": 2,
+          "quote": "Размер страховой суммы по новому полису: 79 123 456 сум.\n",
+          "start": 0,
+          "end": 57,
+          "bbox": [
+            40.0,
+            44.242454528808594,
+            322.6299743652344,
+            54.242454528808594
+          ],
+          "section": "offer",
+          "extracted_value": 79123456.0,
+          "unit": "UZS"
+        }
+      ],
+      "source_url": "https://lex.uz/docs/1366339",
+      "provision_reference": "Resolution 141, operative paragraph 1, second subparagraph",
+      "source_quote": "80 миллион сўм",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "expected_value": 80000000.0,
+      "reviewer_status": "PENDING_LEGAL_REVIEW",
+      "manual_review_required": true,
+      "uncertainty": []
+    },
+    {
+      "rule_id": "OSAGO_PAYMENT",
+      "rule_name": "Срок выплаты после решения страховщика",
+      "status": "NOT_FOUND",
+      "reason": "В извлеченном тексте и выбранных поиском фрагментах условие не найдено. Это не доказательство нарушения.",
+      "evidence": [],
+      "source_url": "https://lex.uz/docs/1366339",
+      "provision_reference": "Resolution 141, appendix 4 (insurance rules), paragraph 66",
+      "source_quote": "беш иш куни",
+      "effective_from": "2024-08-05",
+      "effective_to": null,
+      "expected_value": 5.0,
+      "reviewer_status": "PENDING_LEGAL_REVIEW",
+      "manual_review_required": true,
+      "uncertainty": [
+        "retrieval_may_miss_evidence"
+      ]
+    },
+    {
+      "rule_id": "OSAGO_DECISION_NOTICE",
+      "rule_name": "Срок уведомления о решении",
+      "status": "MATCH_FOUND",
+      "reason": "Найдено явное условие, согласующееся с числовым ориентиром и проверяемым событием. Вывод касается только этого условия.",
+      "evidence": [
+        {
+          "passage_id": "p4-7",
+          "page": 4,
+          "quote": "Страхователю сообщается решение о страховом возмещении через 12 дней после\nписьменного заявления.\n",
+          "start": 0,
+          "end": 98,
+          "bbox": [
+            40.0,
+            44.242454528808594,
+            430.81988525390625,
+            70.2424545288086
+          ],
+          "section": "offer",
+          "extracted_value": 12.0,
+          "unit": "days"
+        }
+      ],
+      "source_url": "https://lex.uz/docs/1366339",
+      "provision_reference": "Resolution 141, appendix 4 (insurance rules), paragraph 67",
+      "source_quote": "ўн беш кундан кечиктирмай",
+      "effective_from": "2024-08-05",
+      "effective_to": null,
+      "expected_value": 15.0,
+      "reviewer_status": "PENDING_LEGAL_REVIEW",
+      "manual_review_required": true,
+      "uncertainty": []
+    }
+  ],
+  "reviews": [],
+  "disclaimer": "Evidence screening of three provisions only; no binding legal determination or whole-document compliance claim. NOT_FOUND is not proof of a violation. All engineering interpretations are PENDING_LEGAL_REVIEW."
+}

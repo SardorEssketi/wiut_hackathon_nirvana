@@ -6,7 +6,7 @@ APOSTROPHES = "‘’ʻʼ`´ʹ＇"
 
 
 def normalize(text: str) -> str:
-    text = unicodedata.normalize("NFKC", text).casefold()
+    text = unicodedata.normalize("NFKC", text.replace("№", " № ")).casefold()
     text = text.translate(str.maketrans({c: "'" for c in APOSTROPHES}))
     text = text.replace("\u00ad", "").replace("\u200b", "")
     return re.sub(r"\s+", " ", text).strip()

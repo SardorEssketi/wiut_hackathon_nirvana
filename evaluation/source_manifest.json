@@ -1,0 +1,75 @@
+[
+  {
+    "id": "gross_latin",
+    "url": "https://gross.uz/uploaded/new-site/documents/osago-doc-mPGc-Wd1fg.pdf",
+    "accessed_at": "2026-10-10T09:49:19.972833+00:00",
+    "sha256": "e6b3b1ece6e03525d118e8e691588c6c64791dae95974aeddeb5a95764eccc37",
+    "bytes": 2352328,
+    "content_type": "application/pdf",
+    "final_url": "https://gross.uz/uploaded/new-site/documents/osago-doc-mPGc-Wd1fg.pdf",
+    "http_status": 200,
+    "status": "downloaded"
+  },
+  {
+    "id": "gross_cyrillic",
+    "url": "https://gross.uz/public_offers/osago-offer-uz.pdf",
+    "accessed_at": "2026-10-10T09:49:37.177354+00:00",
+    "sha256": "b119187cfa309920498ced786f0c137f1d878ddb145ea7bbdaee2c62498df08f",
+    "bytes": 752324,
+    "content_type": "application/pdf",
+    "final_url": "https://gross.uz/public_offers/osago-offer-uz.pdf",
+    "http_status": 200,
+    "status": "downloaded"
+  },
+  {
+    "id": "inson_russian",
+    "url": "https://insuranceon.uz/media/attachments/2026/01/15/ruOsago_offer.pdf",
+    "accessed_at": "2026-10-10T09:49:45.389338+00:00",
+    "sha256": "a168546352b5b2cdadeea4c1e49ecfc4d95eace06766446c03d9b1aace80fc21",
+    "bytes": 2040476,
+    "content_type": "application/pdf",
+    "final_url": "https://insuranceon.uz/media/attachments/2026/01/15/ruOsago_offer.pdf",
+    "http_status": 200,
+    "status": "downloaded"
+  },
+  {
+    "id": "law_current_uz",
+    "url": "https://lex.uz/docs/1366339",
+    "accessed_at": "2026-10-10T09:50:18.281613+00:00",
+    "sha256": "d48b34376c9bd2151297d5b2b4c879f5eeaf7407c20af9c65de4151a03de4ec8",
+    "bytes": 916903,
+    "content_type": "text/html; charset=utf-8",
+    "final_url": "https://lex.uz/docs/1366339",
+    "http_status": 200,
+    "status": "downloaded"
+  },
+  {
+    "id": "law_2024_uz",
+    "url": "https://lex.uz/docs/1366339?ONDATE=06.09.2024%2000",
+    "accessed_at": "2026-10-10T09:50:19.894369+00:00",
+    "status": "unavailable",
+    "error": "HTTPError"
+  },
+  {
+    "id": "law_2019_uz",
+    "url": "https://lex.uz/docs/1366339?ONDATE=17.06.2019%2000",
+    "accessed_at": "2026-10-10T09:50:30.876020+00:00",
+    "sha256": "176f954c5f09587160c5d062d9e4a1bfc7bed3782b9878a55195e3c292387676",
+    "bytes": 760227,
+    "content_type": "text/html; charset=utf-8",
+    "final_url": "https://lex.uz/docs/1366339?ONDATE=17.06.2019%2000",
+    "http_status": 200,
+    "status": "downloaded"
+  },
+  {
+    "id": "model_card",
+    "url": "https://huggingface.co/intfloat/multilingual-e5-small/raw/main/README.md",
+    "accessed_at": "2026-10-10T09:50:33.319852+00:00",
+    "sha256": "0038de97aee16258cecbad7ffda4b4febd6953e747a00e0ddbc8e6ed241e9c1c",
+    "bytes": 497538,
+    "content_type": "text/plain; charset=utf-8",
+    "final_url": "https://huggingface.co/intfloat/multilingual-e5-small/raw/main/README.md",
+    "http_status": 200,
+    "status": "downloaded"
+  }
+]

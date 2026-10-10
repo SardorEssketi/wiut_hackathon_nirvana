@@ -4,6 +4,8 @@ os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
 os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
 import re
 import time
+import math
+from collections import Counter
 from pathlib import Path
 from .models import Passage
 from .text import normalize
@@ -12,12 +14,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def lexical_scores(passages: list[Passage], queries: list[str]):
-    """Simple multilingual term-prefix overlap baseline; no embeddings."""
-    terms = {token[:6] for q in queries for token in re.findall(r"[\w']+", normalize(q)) if len(token)>2}
+    """Simple BM25 baseline with six-character prefixes and multilingual queries."""
+    def tokens(text):
+        return [t[:6] for t in re.findall(r"[\w']+", text) if len(t)>2]
+    counters = [Counter(tokens(p.normalized)) for p in passages]
+    n = len(passages)
+    avg_length = sum(sum(c.values()) for c in counters)/max(1,n)
+    frequencies = Counter(term for c in counters for term in c)
+    query_terms = [set(tokens(normalize(q))) for q in queries]
     scores = []
-    for p in passages:
-        tokens = {t[:6] for t in re.findall(r"[\w']+", p.normalized) if len(t)>2}
-        scores.append(len(terms & tokens) / max(1, len(terms)))
+    for counter in counters:
+        length = sum(counter.values())
+        scores.append(max((sum(math.log(1+(n-frequencies[t]+.5)/(frequencies[t]+.5))*
+            counter[t]*2.5/(counter[t]+1.5*(.25+.75*length/max(1,avg_length)))
+            for t in terms if counter[t]) for terms in query_terms), default=0))
     return scores
 
 
@@ -52,6 +62,7 @@ class Retriever:
         self.initialization_seconds = time.perf_counter() - started
         self._passages = []
         self._embeddings = None
+        self._query_vectors = {}
 
     def prepare(self, passages: list[Passage]):
         self._passages = passages
@@ -67,8 +78,11 @@ class Retriever:
             scores = lexical
         else:
             import numpy as np
-            vectors = self.model.encode(["query: " + normalize(q) for q in queries],
-                normalize_embeddings=True, show_progress_bar=False)
+            key = tuple(queries)
+            if key not in self._query_vectors:
+                self._query_vectors[key] = self.model.encode(["query: " + normalize(q) for q in queries],
+                    normalize_embeddings=True, show_progress_bar=False)
+            vectors = self._query_vectors[key]
             semantic = np.max(self._embeddings @ vectors.T, axis=1).tolist()
             if self.used == "semantic":
                 scores = semantic

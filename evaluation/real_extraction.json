@@ -1,0 +1,125 @@
+[
+  {
+    "id": "gross_latin",
+    "sha256": "e6b3b1ece6e03525d118e8e691588c6c64791dae95974aeddeb5a95764eccc37",
+    "pages": 8,
+    "passages": 96,
+    "languages": [
+      "Cyrillic-undetermined",
+      "Latin-undetermined",
+      "uz-Latn"
+    ],
+    "characters": 27345,
+    "warnings": [
+      "Page 8: insufficient or damaged text; OCR is not enabled. Manual review required."
+    ],
+    "appendix_pages": [],
+    "results": {
+      "OSAGO_SUM": {
+        "status": "UNVERIFIABLE",
+        "reason": "Есть ссылка на правила №141; включение условий по ссылке требует правовой проверки.",
+        "pages": [
+          1
+        ]
+      },
+      "OSAGO_PAYMENT": {
+        "status": "UNVERIFIABLE",
+        "reason": "Есть ссылка на правила №141; включение условий по ссылке требует правовой проверки.",
+        "pages": [
+          1
+        ]
+      },
+      "OSAGO_DECISION_NOTICE": {
+        "status": "UNVERIFIABLE",
+        "reason": "Есть ссылка на правила №141; включение условий по ссылке требует правовой проверки.",
+        "pages": [
+          1
+        ]
+      }
+    }
+  },
+  {
+    "id": "gross_cyrillic",
+    "sha256": "b119187cfa309920498ced786f0c137f1d878ddb145ea7bbdaee2c62498df08f",
+    "pages": 6,
+    "passages": 102,
+    "languages": [
+      "Cyrillic-undetermined",
+      "Latin-undetermined",
+      "ru-Cyrl",
+      "uz-Cyrl",
+      "uz-Latn"
+    ],
+    "characters": 19441,
+    "warnings": [],
+    "appendix_pages": [],
+    "results": {
+      "OSAGO_SUM": {
+        "status": "UNVERIFIABLE",
+        "reason": "Сумма/валюта отсутствует либо содержит несколько значений.",
+        "pages": [
+          1,
+          1
+        ]
+      },
+      "OSAGO_PAYMENT": {
+        "status": "UNVERIFIABLE",
+        "reason": "Не найден единственный поддерживаемый срок в днях.",
+        "pages": [
+          4
+        ]
+      },
+      "OSAGO_DECISION_NOTICE": {
+        "status": "UNVERIFIABLE",
+        "reason": "Есть ссылка на правила №141; включение условий по ссылке требует правовой проверки.",
+        "pages": [
+          1,
+          5
+        ]
+      }
+    }
+  },
+  {
+    "id": "inson_russian",
+    "sha256": "a168546352b5b2cdadeea4c1e49ecfc4d95eace06766446c03d9b1aace80fc21",
+    "pages": 66,
+    "passages": 773,
+    "languages": [
+      "Cyrillic-undetermined",
+      "Latin-undetermined",
+      "ru-Cyrl",
+      "uz-Cyrl",
+      "uz-Latn"
+    ],
+    "characters": 150133,
+    "warnings": [],
+    "appendix_pages": [],
+    "results": {
+      "OSAGO_SUM": {
+        "status": "UNVERIFIABLE",
+        "reason": "Возможна премия или частичный лимит вместо общей суммы.",
+        "pages": [
+          28,
+          31,
+          5
+        ]
+      },
+      "OSAGO_PAYMENT": {
+        "status": "UNVERIFIABLE",
+        "reason": "Найдены конкурирующие значения или неоднозначные условия; требуется проверка контекста.",
+        "pages": [
+          23,
+          21,
+          21
+        ]
+      },
+      "OSAGO_DECISION_NOTICE": {
+        "status": "MATCH_FOUND",
+        "reason": "Найдено явное условие, согласующееся с числовым ориентиром и проверяемым событием. Вывод касается только этого условия.",
+        "pages": [
+          23
+        ]
+      }
+    }
+  }
+]

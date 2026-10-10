@@ -1,0 +1,145 @@
+{
+  "checked_at": "2026-10-10T10:45:58.129211+00:00",
+  "url": "http://localhost:8501",
+  "public_deployment_tested": false,
+  "browser": "Chromium (Playwright)",
+  "cases": [
+    {
+      "id": "synthetic_uz-Latn",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "MATCH_FOUND",
+        "MATCH_FOUND"
+      ],
+      "page_count": 4,
+      "applicable_date": "2026-01-05",
+      "languages": [
+        "Cyrillic-undetermined",
+        "Latin-undetermined",
+        "uz-Latn"
+      ],
+      "analysis_seconds": 0.5729833000004874,
+      "browser_journey_seconds": 1.9212076000003435,
+      "evidence_verified": true
+    },
+    {
+      "id": "synthetic_uz-Cyrl",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "MATCH_FOUND",
+        "MATCH_FOUND"
+      ],
+      "page_count": 4,
+      "applicable_date": "2026-01-05",
+      "languages": [
+        "Latin-undetermined",
+        "ru-Cyrl",
+        "uz-Cyrl"
+      ],
+      "analysis_seconds": 0.6701911999989534,
+      "browser_journey_seconds": 1.816755199999534,
+      "evidence_verified": true
+    },
+    {
+      "id": "synthetic_ru-Cyrl",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "MATCH_FOUND",
+        "MATCH_FOUND"
+      ],
+      "page_count": 4,
+      "applicable_date": "2026-01-05",
+      "languages": [
+        "Cyrillic-undetermined",
+        "Latin-undetermined",
+        "ru-Cyrl"
+      ],
+      "analysis_seconds": 0.5446174999997311,
+      "browser_journey_seconds": 1.3674781999998231,
+      "evidence_verified": true
+    },
+    {
+      "id": "unseen_browser",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "MATCH_FOUND",
+        "MATCH_FOUND"
+      ],
+      "page_count": 1,
+      "applicable_date": "2026-01-05",
+      "languages": [
+        "Latin-undetermined",
+        "ru-Cyrl"
+      ],
+      "analysis_seconds": 0.4052240000000893,
+      "browser_journey_seconds": 1.3228125000005093,
+      "evidence_verified": true
+    },
+    {
+      "id": "gross_latin",
+      "statuses": [
+        "UNVERIFIABLE",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "page_count": 8,
+      "applicable_date": "2026-01-05",
+      "languages": [
+        "Cyrillic-undetermined",
+        "Latin-undetermined",
+        "uz-Latn"
+      ],
+      "analysis_seconds": 5.659811999999874,
+      "browser_journey_seconds": 6.4994679000010365,
+      "evidence_verified": true
+    },
+    {
+      "id": "gross_cyrillic",
+      "statuses": [
+        "UNVERIFIABLE",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "page_count": 6,
+      "applicable_date": "2024-09-06",
+      "languages": [
+        "Cyrillic-undetermined",
+        "Latin-undetermined",
+        "ru-Cyrl",
+        "uz-Cyrl",
+        "uz-Latn"
+      ],
+      "analysis_seconds": 4.7243386000009195,
+      "browser_journey_seconds": 5.967740000000049,
+      "evidence_verified": true
+    },
+    {
+      "id": "inson_russian",
+      "statuses": [
+        "UNVERIFIABLE",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "page_count": 66,
+      "applicable_date": "2026-01-15",
+      "languages": [
+        "Cyrillic-undetermined",
+        "Latin-undetermined",
+        "ru-Cyrl",
+        "uz-Cyrl",
+        "uz-Latn"
+      ],
+      "analysis_seconds": 23.08792849999918,
+      "browser_journey_seconds": 24.30905519999942,
+      "evidence_verified": true
+    }
+  ],
+  "errors": [],
+  "external_requests": [],
+  "review_export_verified": true,
+  "html_export_verified": true,
+  "mobile_horizontal_overflow_px": 0,
+  "page_preview_verified": true,
+  "session_clear_verified": true,
+  "success": true
+}

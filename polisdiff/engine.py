@@ -22,9 +22,9 @@ def evidence(p: Passage, value=None, unit=None) -> Evidence:
         end=p.end, bbox=p.bbox, section=p.section, extracted_value=value, unit=unit)
 
 
-SUM = r"(?:страхов\w*\s+сумм\w*|sug'urta\s+(?:summasi|puli)|суғурта\s+(?:суммаси|пули))"
+SUM = r"(?:страхов\w*\s+сумм\w*|sug'urta\s+(?:summasi|puli)\b|суғурта\s+(?:суммаси|пули)\b)"
 NUMBER = r"\d+(?:[ \u00a0\u202f.,'’]\d+)*"
-MONEY = re.compile(r"(" + NUMBER + r")\s*(млн\.?|миллион\w*|million\w*)?\s*(сум\b|сўм\b|so'm\b)")
+MONEY = re.compile(r"(" + NUMBER + r")\s*(млн\.?|миллион\w*|million\w*)?\s*(?:\([^)]{1,65}\)\s*)?(сум\b|сўм(?:ни)?\b|so'm(?:ni)?\b)")
 DAYS = re.compile(r"(?P<n>\d+|пятнадцат\w*|пят[ьи]|o'n besh|ўн беш|besh|беш|десять|o'n|ўн|yetti|етти|семь)\s*(?P<u>рабоч\w*\s+|календарн\w*\s+|ish\s+|иш\s+|kalendar\s+|календар\s+)?(?:дней|дня|день|kun\w*|кун\w*)")
 
 
@@ -34,7 +34,7 @@ def topic(rule: Rule, text: str) -> bool:
     compensation = bool(re.search(r"возмещ|tovon|товон", text))
     decision = bool(re.search(r"решени|qaror|қарор", text))
     if rule.logic == "payment_days":
-        payment = bool(re.search(r"выплат|осуществ|to'la|тўла", text))
+        payment = bool(re.search(r"выпла[тч]|осуществ|to'la|тўла|amalga|амалга", text))
         # Notification clauses also mention payment decisions; preserve event distinction.
         notice_only = bool(re.search(r"сообщ|уведом|xabar|хабар", text)) and not bool(re.search(r"осуществ|производ|amalga|амалга|выплачивается", text))
         return compensation and decision and payment and not notice_only
@@ -44,7 +44,7 @@ def topic(rule: Rule, text: str) -> bool:
 def extract_value(rule: Rule, text: str):
     """Return value, unit, abstention reason. Never substitute expected values."""
     # Conditional, illustrative or negated terms need an expert to scope the rule.
-    if re.search(r"\b(?:если|agar|агар|например|masalan|масалан)\b|не обязан|не выплач|to'lanmay|тўланмай|emas\b|эмас\b", text):
+    if re.search(r"\b(?:если|agar|агар|например|masalan|масалан)\b|не обязан|не выплач|to'lanmay|тўланмай|emas\b|эмас\b|не ранее|kamida|камида", text):
         return None, None, "Условие, пример или отрицание требуют ручного толкования."
     if rule.logic == "sum":
         concept = re.search(SUM, text)
@@ -126,6 +126,12 @@ def evaluate(rule: Rule, doc: Document, candidates: list[Passage], applicable_da
             uncertain.append((evidence(p, value, unit), problem))
         else:
             extracted.append(evidence(p, value, unit))
+    if extracted:
+        # General definitions/headings without numeric constraints do not compete
+        # with a complete numeric contractual term. Keep negations and conditions.
+        uncertain = [(ev, reason) for ev, reason in uncertain if
+            re.search(r"\d|беш|besh|пят|ўн|o'n|не обязан|to'lanmay|тўланмай|не выплач|emas\b|эмас\b", ev.quote.casefold())
+            or reason == "Условие, пример или отрицание требуют ручного толкования."]
     if not extracted:
         return result(Status.UNVERIFIABLE, uncertain[0][1], [e for e, _ in uncertain[:3]], [reason for _, reason in uncertain])
     values = {e.extracted_value for e in extracted}

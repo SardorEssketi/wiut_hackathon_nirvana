@@ -1,0 +1,15 @@
+.git
+.idea
+.venv
+__pycache__
+.pytest_cache
+local_data
+models
+.env
+*.log
+*.zip
+.streamlit/secrets.toml
+tests
+evaluation/reports
+evaluation/*.xml
+evaluation/tests.*.json

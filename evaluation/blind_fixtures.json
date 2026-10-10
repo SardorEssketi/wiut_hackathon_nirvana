@@ -1,0 +1,8 @@
+{
+  "purpose": "Fresh engineering-labelled evaluation wording authored after initial fixes; do not tune on results from this set. Original AI-assisted text; no insurer text copied.",
+  "cases": [
+    {"id": "fresh_uz_latn", "language": "uz-Latn", "terms": ["Sugʻurta summasi ushbu polisda 82,25 million soʻm qilib ko‘rsatilgan.", "Sugʻurta tovoni toʻlovi qaror qabul qilingan kundan 4 ish kuni ichida amalga oshiriladi.", "Sugʻurta tovoni bo‘yicha qaror sugʻurta qildiruvchiga yozma arizasidan so‘ng 14 kun ichida xabar qilinadi."], "expected": ["POTENTIAL_CONFLICT", "MATCH_FOUND", "MATCH_FOUND"]},
+    {"id": "fresh_uz_cyrl", "language": "uz-Cyrl", "terms": ["Суғурта пули ушбу полис учун 79 123 456 сўм этиб кўрсатилган.", "Суғурта товонини тўлаш ҳақида қарор қабул қилинган кундан 7 иш куни ичида тўлов амалга оширилади.", "Суғурта товони ҳақида қарор суғурта қилдирувчига электрон аризасидан кейин 12 кун ичида хабар қилинади."], "expected": ["POTENTIAL_CONFLICT", "POTENTIAL_CONFLICT", "MATCH_FOUND"]},
+    {"id": "fresh_ru", "language": "ru-Cyrl", "terms": ["Размер страховой суммы по новому полису: 79 123 456 сум.", "Страховое возмещение перечисляется за 7 рабочих дней со дня принятия решения страховщика.", "Страхователю сообщается решение о страховом возмещении через 12 дней после письменного заявления."], "expected": ["POTENTIAL_CONFLICT", "POTENTIAL_CONFLICT", "MATCH_FOUND"]}
+  ]
+}

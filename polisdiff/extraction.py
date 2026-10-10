@@ -12,7 +12,7 @@ from .text import normalize, detect_languages, extract_dates
 MAX_BYTES = 10 * 1024 * 1024
 MAX_PAGES = 80
 MAX_CHARS = 500_000
-MAX_PASSAGES = 1000
+MAX_PASSAGES = 1800
 
 
 class PDFError(ValueError):
@@ -49,8 +49,9 @@ def _extract(data: bytes) -> Document:
             text = "".join(b[4] for b in blocks)
             norm = normalize(text)
             # Require both a rules heading and legal attribution, not a passing reference.
-            is_rules = bool(re.search(r"(?:^|\s)(?:правила обязательного страхования|қоидалар|qoidalar)(?:\s|$)", norm))
-            attribution = bool(re.search(r"(?:приложение|илова|ilova).{0,250}(?:141|2008)|(?:141|2008).{0,250}(?:приложение|илова|ilova)", norm))
+            is_rules = bool(re.search(r"(?im)^\s*(?:правила\s+обязательного\s+страхования|қоидалар|qoidalar)(?:\s|$)", text))
+            heading_search = re.sub(r"прилож\s+ение", "приложение", norm)
+            attribution = bool(re.search(r"(?:приложение|илова|ilova).{0,250}(?:141|2008)|(?:141|2008).{0,250}(?:приложение|илова|ilova)", heading_search))
             if is_rules and attribution:
                 appendix = True
             section = "regulatory_appendix" if appendix else "offer"
@@ -61,24 +62,30 @@ def _extract(data: bytes) -> Document:
             if total_chars > MAX_CHARS:
                 raise PDFError("Extracted text exceeds the resource limit.")
             pages.append(Page(number=i + 1, text=text, chars=len(text), readable=readable, section=section))
-            offset = 0
+            # Sentence/numbered-clause boundaries preserve context across PDF layout blocks.
+            block_positions, offset = [], 0
             for block in blocks:
-                original = block[4]
-                # Fixed bounded windows, split at whitespace, retaining original offsets.
-                start = 0
-                while start < len(original):
-                    end = min(start + 1200, len(original))
-                    if end < len(original):
-                        boundary = original.rfind(" ", start + 650, end)
+                block_positions.append((offset, offset + len(block[4]), block[:4]))
+                offset += len(block[4])
+            boundaries = [0] + [m.end() for m in re.finditer(
+                r"(?<=[;!?])\s+|(?<=\.)\s+(?=[A-ZА-ЯЎҚҒҲЁ])|\n(?=\s*\d+[.)]\s)", text)] + [len(text)]
+            for begin, finish in zip(boundaries, boundaries[1:]):
+                start = begin
+                while start < finish:
+                    end = min(start + 1200, finish)
+                    if end < finish:
+                        boundary = text.rfind(" ", start + 650, end)
                         if boundary > start:
                             end = boundary + 1
-                    fragment = original[start:end]
-                    if len(fragment.strip()) >= 12:
+                    fragment = text[start:end]
+                    boxes = [box for a,b,box in block_positions if a < end and b > start]
+                    if len(fragment.strip()) >= 12 and boxes:
+                        bbox = (min(b[0] for b in boxes), min(b[1] for b in boxes),
+                                max(b[2] for b in boxes), max(b[3] for b in boxes))
                         passages.append(Passage(id=f"p{i+1}-{len(passages)}", page=i+1,
-                            text=fragment, normalized=normalize(fragment), start=offset+start,
-                            end=offset+end, bbox=tuple(block[:4]), languages=detect_languages(fragment), section=section))
+                            text=fragment, normalized=normalize(fragment), start=start,
+                            end=end, bbox=bbox, languages=detect_languages(fragment), section=section))
                     start = end
-                offset += len(original)
             if len(passages) > MAX_PASSAGES:
                 raise PDFError("Too many passages; document exceeds resource limits.")
         languages = sorted({lang for p in passages for lang in p.languages})
@@ -114,6 +121,8 @@ def extract_pdf(data: bytes, *, isolated: bool = True) -> Document:
 def render_page(data: bytes, page_number: int) -> bytes:
     """Raster evidence preview; excludes active PDF content."""
     validate_pdf(data)
+    if not isinstance(page_number, int) or not 1 <= page_number <= MAX_PAGES:
+        raise PDFError("Invalid page number.")
     env = os.environ.copy()
     env["PYTHONIOENCODING"] = "utf-8"
     try:

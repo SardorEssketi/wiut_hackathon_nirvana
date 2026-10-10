@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "application_version": "0.1.0",
+  "rules_catalogue_version": "1.0.0",
+  "rules_catalogue_sha256": "bfe3c1b630cc73dad45e1d12dd41f2ddd2bdd2641b66b7b9d70e6b85522c53cb",
+  "document_sha256": "7d39719098d84ede729a94edb402b7714a39c0990e3e08e9827f541348faabb6",
+  "audit_date": "2026-10-10",
+  "applicable_date": null,
+  "date_basis": "unknown",
+  "product": "OSAGO (user selected)",
+  "created_at": "2026-10-10T10:21:35.727670Z",
+  "detected_languages": [
+    "Latin-undetermined",
+    "ru-Cyrl",
+    "uz-Cyrl"
+  ],
+  "page_count": 4,
+  "warnings": [
+    "All engineering interpretations are PENDING_LEGAL_REVIEW.",
+    "Offer/appendix classification is heuristic and requires manual review."
+  ],
+  "retrieval_requested": "semantic",
+  "retrieval_used": "semantic",
+  "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "timings_seconds": {
+    "retrieval": 0.6034761999999319,
+    "evaluation": 0.012666100000387814,
+    "analysis": 0.6161429000003409,
+    "model_initialization": 23.613319400000364
+  },
+  "findings": [
+    {
+      "rule_id": "OSAGO_SUM",
+      "rule_name": "Страховая сумма ОСАГО",
+      "status": "UNVERIFIABLE",
+      "reason": "Дата применимости договора не подтверждена. Дата аудита не заменяет дату договора.",
+      "evidence": [],
+      "source_url": "https://lex.uz/docs/1366339",
+      "provision_reference": "Resolution 141, operative paragraph 1, second subparagraph",
+      "source_quote": "",
+      "effective_from": null,
+      "effective_to": null,
+      "expected_value": null,
+      "reviewer_status": "PENDING_LEGAL_REVIEW",
+      "manual_review_required": true,
+      "uncertainty": [
+        "applicable_date_unknown"
+      ]
+    },
+    {
+      "rule_id": "OSAGO_PAYMENT",
+      "rule_name": "Срок выплаты после решения страховщика",
+      "status": "UNVERIFIABLE",
+      "reason": "Дата применимости договора не подтверждена. Дата аудита не заменяет дату договора.",
+      "evidence": [
+        {
+          "passage_id": "p3-15",
+          "page": 3,
+          "quote": "Суғурта товонини тўлаш суғурталовчининг қарори қабул қилинган кундан 5 иш куни ичида\nамалга оширилади.\n",
+          "start": 0,
+          "end": 103,
+          "bbox": [
+            40.0,
+            44.242454528808594,
+            461.0998229980469,
+            70.2424545288086
+          ],
+          "section": "offer",
+          "extracted_value": null,
+          "unit": null
+        }
+      ],
+      "source_url": "https://lex.uz/docs/1366339",
+      "provision_reference": "Resolution 141, appendix 4 (insurance rules), paragraph 66",
+      "source_quote": "",
+      "effective_from": null,
+      "effective_to": null,
+      "expected_value": null,
+      "reviewer_status": "PENDING_LEGAL_REVIEW",
+      "manual_review_required": true,
+      "uncertainty": [
+        "applicable_date_unknown"
+      ]
+    },
+    {
+      "rule_id": "OSAGO_DECISION_NOTICE",
+      "rule_name": "Срок уведомления о решении",
+      "status": "UNVERIFIABLE",
+      "reason": "Дата применимости договора не подтверждена. Дата аудита не заменяет дату договора.",
+      "evidence": [
+        {
+          "passage_id": "p4-23",
+          "page": 4,
+          "quote": "Суғурта товони ҳақида қарор суғурта қилдирувчига унинг ёзма ёки электрон\nмурожаатидан сўнг 15 кун ичида хабар қилинади.\n",
+          "start": 0,
+          "end": 120,
+          "bbox": [
+            40.0,
+            44.242454528808594,
+            395.17987060546875,
+            70.2424545288086
+          ],
+          "section": "offer",
+          "extracted_value": null,
+          "unit": null
+        }
+      ],
+      "source_url": "https://lex.uz/docs/1366339",
+      "provision_reference": "Resolution 141, appendix 4 (insurance rules), paragraph 67",
+      "source_quote": "",
+      "effective_from": null,
+      "effective_to": null,
+      "expected_value": null,
+      "reviewer_status": "PENDING_LEGAL_REVIEW",
+      "manual_review_required": true,
+      "uncertainty": [
+        "applicable_date_unknown"
+      ]
+    }
+  ],
+  "reviews": [],
+  "disclaimer": "Evidence screening of three provisions only; no binding legal determination or whole-document compliance claim. NOT_FOUND is not proof of a violation. All engineering interpretations are PENDING_LEGAL_REVIEW."
+}

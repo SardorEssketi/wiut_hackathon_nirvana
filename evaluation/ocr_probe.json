@@ -1,0 +1,12 @@
+{
+  "checked_at": "2026-10-10T10:05:10.751740+00:00",
+  "binary_available": false,
+  "required_languages": [
+    "uzb",
+    "uzb_cyrl",
+    "rus"
+  ],
+  "ocr_enabled": false,
+  "quality_metrics": null,
+  "reason": "No evaluated local OCR path; scanned pages must produce UNVERIFIABLE."
+}

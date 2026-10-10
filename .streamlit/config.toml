@@ -12,6 +12,8 @@ maxUploadSize = 10
 maxMessageSize = 15
 enableXsrfProtection = true
 enableCORS = true
+disconnectedSessionTTL = 60
+fileWatcherType = "none"
 
 [browser]
 gatherUsageStats = false

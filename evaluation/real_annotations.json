@@ -1,0 +1,8 @@
+{
+  "description": "Engineering page annotations verified against original publicly downloaded PDF pages. Retrieval/evidence labels only; no compliance ground truth. Mutable URL hashes in source_manifest.json identify the actual evaluated bytes.",
+  "cases": [
+    {"id": "gross_latin", "language": "uz-Latn", "applicable_date": "2026-01-05", "relevant_pages": {"OSAGO_SUM": [6]}, "note": "Degraded text layer; value recognition unsupported. Coverage context visually inspected on page 6."},
+    {"id": "gross_cyrillic", "language": "uz-Cyrl", "applicable_date": "2024-09-06", "relevant_pages": {"OSAGO_SUM": [5]}, "note": "Historical header; current bytes contain newer sum. Not labelled as an active 2026 contract or legal violation."},
+    {"id": "inson_russian", "language": "ru-Cyrl", "applicable_date": "2026-01-15", "relevant_pages": {"OSAGO_SUM": [5], "OSAGO_PAYMENT": [23], "OSAGO_DECISION_NOTICE": [23]}, "note": "Offer on pages 1–8; appended rules begin on page 9. Amount has letter O in the extracted digits; do not silently coerce it to zero."}
+  ]
+}

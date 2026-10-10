@@ -1,0 +1,1643 @@
+[
+  {
+    "id": "uz-Latn_match",
+    "split": "development",
+    "language": "uz-Latn",
+    "case": "match",
+    "path": "tests/fixtures/development/uz-Latn_match.pdf",
+    "sha256": "afc67f4534ed2a9fc7325371cf85eed2a7c7ce70fa5383df2f18fa9aa7fa1468",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sug'urta summasi 80 million so'm.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sug'urta tovoni qaror qabul qilingan kundan besh ish kuni ichida amalga oshiriladi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sug'urta tovoni qarori sug'urta qildiruvchiga yozma murojaatidan keyin o'n besh kun ichida xabar qilinadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Cyrl_match",
+    "split": "development",
+    "language": "uz-Cyrl",
+    "case": "match",
+    "path": "tests/fixtures/development/uz-Cyrl_match.pdf",
+    "sha256": "0b5113011382642d365da7bcc018bd77a3a60f4e8f6e8405e9812d51006d6645",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта суммаси 80 миллион сўм.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товони қарор қабул қилинган кундан беш иш куни ичида амалга оширилади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товони қарори суғурта қилдирувчига ёзма мурожаатидан кейин ўн беш кун ичида хабар қилинади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ]
+    ]
+  },
+  {
+    "id": "ru-Cyrl_match",
+    "split": "development",
+    "language": "ru-Cyrl",
+    "case": "match",
+    "path": "tests/fixtures/development/ru-Cyrl_match.pdf",
+    "sha256": "46b6bc46bf0c5e08cf24602989eca70e20552b297f899b4b012086774874e0c5",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Страховая сумма 80 миллионов сум.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Страховое возмещение выплачивается в течение пяти рабочих дней со дня принятия решения страховщика.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Решение о страховом возмещении сообщается страхователю в течение пятнадцати дней после письменного обращения.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Latn_match",
+    "split": "evaluation",
+    "language": "uz-Latn",
+    "case": "match",
+    "path": "tests/fixtures/evaluation/uz-Latn_match.pdf",
+    "sha256": "cf7b16ca00b710e87595a7a19d6fc58113fad3d0390920e315c6d5c5fd178d0d",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Majburiy sugʻurta summasi shartnoma bo‘yicha 80 000 000 so‘m etib belgilanadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sugʻurta tovoni toʻlovi sugʻurtalovchining qarori qabul qilingan kundan 5 ish kuni ichida amalga oshiriladi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sug‘urta tovoni haqida qaror sug‘urta qildiruvchiga uning yozma yoki elektron murojaatidan so‘ng 15 kun ichida xabar qilinadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Latn_sum_conflict",
+    "split": "evaluation",
+    "language": "uz-Latn",
+    "case": "sum_conflict",
+    "path": "tests/fixtures/evaluation/uz-Latn_sum_conflict.pdf",
+    "sha256": "f9a57338860c57e67a6735066a46500c343a2c3607df2d77f2f2bb70a0bcb5df",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "POTENTIAL_CONFLICT",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Majburiy sugʻurta summasi shartnoma bo‘yicha 60 000 000 so‘m etib belgilanadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sugʻurta tovoni toʻlovi sugʻurtalovchining qarori qabul qilingan kundan 5 ish kuni ichida amalga oshiriladi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sug‘urta tovoni haqida qaror sug‘urta qildiruvchiga uning yozma yoki elektron murojaatidan so‘ng 15 kun ichida xabar qilinadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Latn_payment_conflict",
+    "split": "evaluation",
+    "language": "uz-Latn",
+    "case": "payment_conflict",
+    "path": "tests/fixtures/evaluation/uz-Latn_payment_conflict.pdf",
+    "sha256": "992e0ae86ce76a224962358e5a324d6b3a7dcaee4f63445325550b90bd437360",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "POTENTIAL_CONFLICT",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Majburiy sugʻurta summasi shartnoma bo‘yicha 80 000 000 so‘m etib belgilanadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sugʻurta tovoni toʻlovi sugʻurtalovchining qarori qabul qilingan kundan 9 ish kuni ichida amalga oshiriladi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sug‘urta tovoni haqida qaror sug‘urta qildiruvchiga uning yozma yoki elektron murojaatidan so‘ng 15 kun ichida xabar qilinadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Latn_notice_conflict",
+    "split": "evaluation",
+    "language": "uz-Latn",
+    "case": "notice_conflict",
+    "path": "tests/fixtures/evaluation/uz-Latn_notice_conflict.pdf",
+    "sha256": "01c3d6695da1c81754e67f82c61014e15717bee8a5cf3f54d980e1f081744358",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "POTENTIAL_CONFLICT"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Majburiy sugʻurta summasi shartnoma bo‘yicha 80 000 000 so‘m etib belgilanadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sugʻurta tovoni toʻlovi sugʻurtalovchining qarori qabul qilingan kundan 5 ish kuni ichida amalga oshiriladi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sug‘urta tovoni haqida qaror sug‘urta qildiruvchiga uning yozma yoki elektron murojaatidan so‘ng 22 kun ichida xabar qilinadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Latn_omission",
+    "split": "evaluation",
+    "language": "uz-Latn",
+    "case": "omission",
+    "path": "tests/fixtures/evaluation/uz-Latn_omission.pdf",
+    "sha256": "22790f95061f72b49ac8174cea89fd352154a4cc453d0f9963cade2f064b9802",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "NOT_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Majburiy sugʻurta summasi shartnoma bo‘yicha 80 000 000 so‘m etib belgilanadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "No payment-deadline clause is provided in this original synthetic fixture.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sug‘urta tovoni haqida qaror sug‘urta qildiruvchiga uning yozma yoki elektron murojaatidan so‘ng 15 kun ichida xabar qilinadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Latn_historic",
+    "split": "evaluation",
+    "language": "uz-Latn",
+    "case": "historic",
+    "path": "tests/fixtures/evaluation/uz-Latn_historic.pdf",
+    "sha256": "3e88ebc73d1b4e03b03423cc44b28fc31f34e98758d976c23a61494c57ca799a",
+    "applicable_date": "2024-09-06",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "06.09.2024",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Majburiy sugʻurta summasi shartnoma bo‘yicha 40 000 000 so‘m etib belgilanadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sugʻurta tovoni toʻlovi sugʻurtalovchining qarori qabul qilingan kundan 5 ish kuni ichida amalga oshiriladi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sug‘urta tovoni haqida qaror sug‘urta qildiruvchiga uning yozma yoki elektron murojaatidan so‘ng 15 kun ichida xabar qilinadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Latn_unknown_date",
+    "split": "evaluation",
+    "language": "uz-Latn",
+    "case": "unknown_date",
+    "path": "tests/fixtures/evaluation/uz-Latn_unknown_date.pdf",
+    "sha256": "cf7b16ca00b710e87595a7a19d6fc58113fad3d0390920e315c6d5c5fd178d0d",
+    "applicable_date": null,
+    "expected": {
+      "OSAGO_SUM": "UNVERIFIABLE",
+      "OSAGO_PAYMENT": "UNVERIFIABLE",
+      "OSAGO_DECISION_NOTICE": "UNVERIFIABLE"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Majburiy sugʻurta summasi shartnoma bo‘yicha 80 000 000 so‘m etib belgilanadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sugʻurta tovoni toʻlovi sugʻurtalovchining qarori qabul qilingan kundan 5 ish kuni ichida amalga oshiriladi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sug‘urta tovoni haqida qaror sug‘urta qildiruvchiga uning yozma yoki elektron murojaatidan so‘ng 15 kun ichida xabar qilinadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Latn_reference",
+    "split": "evaluation",
+    "language": "uz-Latn",
+    "case": "reference",
+    "path": "tests/fixtures/evaluation/uz-Latn_reference.pdf",
+    "sha256": "097ff15a4ab604d72827fa53b620e0cd7148963d86bcd2dd7f6223e2283ab65b",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "UNVERIFIABLE",
+      "OSAGO_PAYMENT": "UNVERIFIABLE",
+      "OSAGO_DECISION_NOTICE": "UNVERIFIABLE"
+    },
+    "relevant_pages": {},
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Shartnoma Vazirlar Mahkamasining 141-son qarori bilan tasdiqlangan qoidalarga havola qiladi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Document reference only.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Document reference only.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Latn_ambiguous",
+    "split": "evaluation",
+    "language": "uz-Latn",
+    "case": "ambiguous",
+    "path": "tests/fixtures/evaluation/uz-Latn_ambiguous.pdf",
+    "sha256": "c35b7af314883bd3b556a489c9b788e3b0d28be7b0228753a5bb298d546227fe",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "UNVERIFIABLE",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Majburiy sugʻurta summasi shartnoma bo‘yicha 80 000 000 so‘m etib belgilanadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sugʻurta tovoni toʻlovi sugʻurtalovchining qarori qabul qilingan kundan 5 kalendar kuni ichida amalga oshiriladi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ],
+      [
+        "Sug‘urta tovoni haqida qaror sug‘urta qildiruvchiga uning yozma yoki elektron murojaatidan so‘ng 15 kun ichida xabar qilinadi.",
+        "Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.",
+        "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.",
+        "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.",
+        "Transport egasi aloqa manzilini arizada ko'rsatadi."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Cyrl_match",
+    "split": "evaluation",
+    "language": "uz-Cyrl",
+    "case": "match",
+    "path": "tests/fixtures/evaluation/uz-Cyrl_match.pdf",
+    "sha256": "7d39719098d84ede729a94edb402b7714a39c0990e3e08e9827f541348faabb6",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Мажбурий суғурта суммаси шартнома бўйича 80.000.000 сўм этиб белгиланади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товонини тўлаш суғурталовчининг қарори қабул қилинган кундан 5 иш куни ичида амалга оширилади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товони ҳақида қарор суғурта қилдирувчига унинг ёзма ёки электрон мурожаатидан сўнг 15 кун ичида хабар қилинади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Cyrl_sum_conflict",
+    "split": "evaluation",
+    "language": "uz-Cyrl",
+    "case": "sum_conflict",
+    "path": "tests/fixtures/evaluation/uz-Cyrl_sum_conflict.pdf",
+    "sha256": "80a9c3e622e3b22491c81d8d9a5f8c367b4cd73464263140120ad9fbc2a9c336",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "POTENTIAL_CONFLICT",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Мажбурий суғурта суммаси шартнома бўйича 60.000.000 сўм этиб белгиланади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товонини тўлаш суғурталовчининг қарори қабул қилинган кундан 5 иш куни ичида амалга оширилади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товони ҳақида қарор суғурта қилдирувчига унинг ёзма ёки электрон мурожаатидан сўнг 15 кун ичида хабар қилинади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Cyrl_payment_conflict",
+    "split": "evaluation",
+    "language": "uz-Cyrl",
+    "case": "payment_conflict",
+    "path": "tests/fixtures/evaluation/uz-Cyrl_payment_conflict.pdf",
+    "sha256": "59eedab98ffe6c5ab734edb73b6a973c271d0394304b524b4673e39ed524fb3b",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "POTENTIAL_CONFLICT",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Мажбурий суғурта суммаси шартнома бўйича 80.000.000 сўм этиб белгиланади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товонини тўлаш суғурталовчининг қарори қабул қилинган кундан 9 иш куни ичида амалга оширилади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товони ҳақида қарор суғурта қилдирувчига унинг ёзма ёки электрон мурожаатидан сўнг 15 кун ичида хабар қилинади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Cyrl_notice_conflict",
+    "split": "evaluation",
+    "language": "uz-Cyrl",
+    "case": "notice_conflict",
+    "path": "tests/fixtures/evaluation/uz-Cyrl_notice_conflict.pdf",
+    "sha256": "4aad3cc2f538e1679bed790a4c9d45441d9122b00a0c457da5b13e8ac9994fc9",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "POTENTIAL_CONFLICT"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Мажбурий суғурта суммаси шартнома бўйича 80.000.000 сўм этиб белгиланади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товонини тўлаш суғурталовчининг қарори қабул қилинган кундан 5 иш куни ичида амалга оширилади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товони ҳақида қарор суғурта қилдирувчига унинг ёзма ёки электрон мурожаатидан сўнг 22 кун ичида хабар қилинади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Cyrl_omission",
+    "split": "evaluation",
+    "language": "uz-Cyrl",
+    "case": "omission",
+    "path": "tests/fixtures/evaluation/uz-Cyrl_omission.pdf",
+    "sha256": "9a3e7503a2e2c8fe814820e400005d154f4a3fb241543fe7c70aec1057beb1b0",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "NOT_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Мажбурий суғурта суммаси шартнома бўйича 80.000.000 сўм этиб белгиланади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "No payment-deadline clause is provided in this original synthetic fixture.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товони ҳақида қарор суғурта қилдирувчига унинг ёзма ёки электрон мурожаатидан сўнг 15 кун ичида хабар қилинади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Cyrl_historic",
+    "split": "evaluation",
+    "language": "uz-Cyrl",
+    "case": "historic",
+    "path": "tests/fixtures/evaluation/uz-Cyrl_historic.pdf",
+    "sha256": "1c87724efc989d2d363fc357bb40b8e0e6c454153d5ef370a751b587b1c6bb2c",
+    "applicable_date": "2024-09-06",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "06.09.2024",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Мажбурий суғурта суммаси шартнома бўйича 40.000.000 сўм этиб белгиланади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товонини тўлаш суғурталовчининг қарори қабул қилинган кундан 5 иш куни ичида амалга оширилади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товони ҳақида қарор суғурта қилдирувчига унинг ёзма ёки электрон мурожаатидан сўнг 15 кун ичида хабар қилинади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Cyrl_unknown_date",
+    "split": "evaluation",
+    "language": "uz-Cyrl",
+    "case": "unknown_date",
+    "path": "tests/fixtures/evaluation/uz-Cyrl_unknown_date.pdf",
+    "sha256": "7d39719098d84ede729a94edb402b7714a39c0990e3e08e9827f541348faabb6",
+    "applicable_date": null,
+    "expected": {
+      "OSAGO_SUM": "UNVERIFIABLE",
+      "OSAGO_PAYMENT": "UNVERIFIABLE",
+      "OSAGO_DECISION_NOTICE": "UNVERIFIABLE"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Мажбурий суғурта суммаси шартнома бўйича 80.000.000 сўм этиб белгиланади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товонини тўлаш суғурталовчининг қарори қабул қилинган кундан 5 иш куни ичида амалга оширилади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товони ҳақида қарор суғурта қилдирувчига унинг ёзма ёки электрон мурожаатидан сўнг 15 кун ичида хабар қилинади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Cyrl_reference",
+    "split": "evaluation",
+    "language": "uz-Cyrl",
+    "case": "reference",
+    "path": "tests/fixtures/evaluation/uz-Cyrl_reference.pdf",
+    "sha256": "67a2fdcabc7670a12840ca3c01f53fde5e214f10a7ec52b63e69f27970322129",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "UNVERIFIABLE",
+      "OSAGO_PAYMENT": "UNVERIFIABLE",
+      "OSAGO_DECISION_NOTICE": "UNVERIFIABLE"
+    },
+    "relevant_pages": {},
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Шартнома Вазирлар Маҳкамасининг 141-сон қарори билан тасдиқланган қоидаларга ҳавола қилади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Document reference only.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Document reference only.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ]
+    ]
+  },
+  {
+    "id": "uz-Cyrl_ambiguous",
+    "split": "evaluation",
+    "language": "uz-Cyrl",
+    "case": "ambiguous",
+    "path": "tests/fixtures/evaluation/uz-Cyrl_ambiguous.pdf",
+    "sha256": "64d91a5ecce18e5a2cf5dc9f5279401876e6071c8d724ac373a32c04fd8d70bc",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "UNVERIFIABLE",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Мажбурий суғурта суммаси шартнома бўйича 80.000.000 сўм этиб белгиланади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товонини тўлаш суғурталовчининг қарори қабул қилинган кундан 5 календар куни ичида амалга оширилади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ],
+      [
+        "Суғурта товони ҳақида қарор суғурта қилдирувчига унинг ёзма ёки электрон мурожаатидан сўнг 15 кун ичида хабар қилинади.",
+        "Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.",
+        "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.",
+        "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.",
+        "Транспорт эгаси алоқа манзилини аризада кўрсатади."
+      ]
+    ]
+  },
+  {
+    "id": "ru-Cyrl_match",
+    "split": "evaluation",
+    "language": "ru-Cyrl",
+    "case": "match",
+    "path": "tests/fixtures/evaluation/ru-Cyrl_match.pdf",
+    "sha256": "28f959e5d2e7f67757664ee4cce3ea75241354b55f4eb12aed130605e5e5cbcf",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Общая страховая сумма по договору установлена в размере 80,000,000 сум.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Выплата страхового возмещения производится в течение 5 рабочих дней с момента принятия решения страховщика.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "О решении по страховому возмещению страхователю сообщают не позднее 15 дней после его письменного или электронного обращения.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ]
+    ]
+  },
+  {
+    "id": "ru-Cyrl_sum_conflict",
+    "split": "evaluation",
+    "language": "ru-Cyrl",
+    "case": "sum_conflict",
+    "path": "tests/fixtures/evaluation/ru-Cyrl_sum_conflict.pdf",
+    "sha256": "d60ff9354c1f70b02578e8e5dab94bf4e72994e81b7ee46ee0c2c2ff3fd53041",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "POTENTIAL_CONFLICT",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Общая страховая сумма по договору установлена в размере 60,000,000 сум.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Выплата страхового возмещения производится в течение 5 рабочих дней с момента принятия решения страховщика.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "О решении по страховому возмещению страхователю сообщают не позднее 15 дней после его письменного или электронного обращения.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ]
+    ]
+  },
+  {
+    "id": "ru-Cyrl_payment_conflict",
+    "split": "evaluation",
+    "language": "ru-Cyrl",
+    "case": "payment_conflict",
+    "path": "tests/fixtures/evaluation/ru-Cyrl_payment_conflict.pdf",
+    "sha256": "f43641d6aa007282b9edc574724ba4160fa1820f77078a16e6744ee0543679c7",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "POTENTIAL_CONFLICT",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Общая страховая сумма по договору установлена в размере 80,000,000 сум.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Выплата страхового возмещения производится в течение 9 рабочих дней с момента принятия решения страховщика.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "О решении по страховому возмещению страхователю сообщают не позднее 15 дней после его письменного или электронного обращения.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ]
+    ]
+  },
+  {
+    "id": "ru-Cyrl_notice_conflict",
+    "split": "evaluation",
+    "language": "ru-Cyrl",
+    "case": "notice_conflict",
+    "path": "tests/fixtures/evaluation/ru-Cyrl_notice_conflict.pdf",
+    "sha256": "cceb290184a3f76170f691f07abc42dfa9a265cdfb1c3f0dcacd42ae16fc450c",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "POTENTIAL_CONFLICT"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Общая страховая сумма по договору установлена в размере 80,000,000 сум.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Выплата страхового возмещения производится в течение 5 рабочих дней с момента принятия решения страховщика.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "О решении по страховому возмещению страхователю сообщают не позднее 22 дней после его письменного или электронного обращения.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ]
+    ]
+  },
+  {
+    "id": "ru-Cyrl_omission",
+    "split": "evaluation",
+    "language": "ru-Cyrl",
+    "case": "omission",
+    "path": "tests/fixtures/evaluation/ru-Cyrl_omission.pdf",
+    "sha256": "164d29f8168868e67be1495a3c2197c46ba1c6a16332954da37bd5bfd159425d",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "NOT_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Общая страховая сумма по договору установлена в размере 80,000,000 сум.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "No payment-deadline clause is provided in this original synthetic fixture.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "О решении по страховому возмещению страхователю сообщают не позднее 15 дней после его письменного или электронного обращения.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ]
+    ]
+  },
+  {
+    "id": "ru-Cyrl_historic",
+    "split": "evaluation",
+    "language": "ru-Cyrl",
+    "case": "historic",
+    "path": "tests/fixtures/evaluation/ru-Cyrl_historic.pdf",
+    "sha256": "fa3fc9ff6f3376f182e77e3421fcf5f4b3dbfce84fef1538337a2ab0891574fe",
+    "applicable_date": "2024-09-06",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "MATCH_FOUND",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "06.09.2024",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Общая страховая сумма по договору установлена в размере 40,000,000 сум.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Выплата страхового возмещения производится в течение 5 рабочих дней с момента принятия решения страховщика.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "О решении по страховому возмещению страхователю сообщают не позднее 15 дней после его письменного или электронного обращения.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ]
+    ]
+  },
+  {
+    "id": "ru-Cyrl_unknown_date",
+    "split": "evaluation",
+    "language": "ru-Cyrl",
+    "case": "unknown_date",
+    "path": "tests/fixtures/evaluation/ru-Cyrl_unknown_date.pdf",
+    "sha256": "28f959e5d2e7f67757664ee4cce3ea75241354b55f4eb12aed130605e5e5cbcf",
+    "applicable_date": null,
+    "expected": {
+      "OSAGO_SUM": "UNVERIFIABLE",
+      "OSAGO_PAYMENT": "UNVERIFIABLE",
+      "OSAGO_DECISION_NOTICE": "UNVERIFIABLE"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Общая страховая сумма по договору установлена в размере 80,000,000 сум.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Выплата страхового возмещения производится в течение 5 рабочих дней с момента принятия решения страховщика.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "О решении по страховому возмещению страхователю сообщают не позднее 15 дней после его письменного или электронного обращения.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ]
+    ]
+  },
+  {
+    "id": "ru-Cyrl_reference",
+    "split": "evaluation",
+    "language": "ru-Cyrl",
+    "case": "reference",
+    "path": "tests/fixtures/evaluation/ru-Cyrl_reference.pdf",
+    "sha256": "1c39808ce5ec3f12933be14752398e09e7f02085c940ccf988ee9c0eaec0d105",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "UNVERIFIABLE",
+      "OSAGO_PAYMENT": "UNVERIFIABLE",
+      "OSAGO_DECISION_NOTICE": "UNVERIFIABLE"
+    },
+    "relevant_pages": {},
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Договор ссылается на правила, утвержденные постановлением Кабинета Министров №141.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Document reference only.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Document reference only.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ]
+    ]
+  },
+  {
+    "id": "ru-Cyrl_ambiguous",
+    "split": "evaluation",
+    "language": "ru-Cyrl",
+    "case": "ambiguous",
+    "path": "tests/fixtures/evaluation/ru-Cyrl_ambiguous.pdf",
+    "sha256": "4733c436e2b40dda59f8310da32c98920df365a79979802f3e254d3fa8a4c4b4",
+    "applicable_date": "2026-01-05",
+    "expected": {
+      "OSAGO_SUM": "MATCH_FOUND",
+      "OSAGO_PAYMENT": "UNVERIFIABLE",
+      "OSAGO_DECISION_NOTICE": "MATCH_FOUND"
+    },
+    "relevant_pages": {
+      "OSAGO_SUM": [
+        2
+      ],
+      "OSAGO_PAYMENT": [
+        3
+      ],
+      "OSAGO_DECISION_NOTICE": [
+        4
+      ]
+    },
+    "ground_truth_pages": [
+      [
+        "PUBLIC TEST OFFER · ОСАГО · synthetic",
+        "05.01.2026",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Общая страховая сумма по договору установлена в размере 80,000,000 сум.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "Выплата страхового возмещения производится в течение 5 календарных дней с момента принятия решения страховщика.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ],
+      [
+        "О решении по страховому возмещению страхователю сообщают не позднее 15 дней после его письменного или электронного обращения.",
+        "Страховая премия составляет 160 000 сум; оплата производится картой.",
+        "Номер полиса 2026-141; персональные сведения не публикуются.",
+        "Информационный отдел работает с 09:00 до 18:00.",
+        "Владелец автомобиля указывает контактный адрес в анкете."
+      ]
+    ]
+  }
+]

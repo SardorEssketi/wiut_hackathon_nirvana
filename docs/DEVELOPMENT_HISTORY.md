@@ -12,8 +12,37 @@ MuPDF, Streamlit and other libraries are external components; their authorship
 and licenses must be disclosed. Synthetic test text and fixture generation code
 are original AI-assisted work. No partner endorsement or legal certification.
 
-The user authorized a new isolated deployment on an existing hosting account.
-Hosting account identification and accessible deployment credentials are pending.
+The user subsequently changed the strategy to local-first development and
+revoked deployment authorization for now. No hosting account is configured and
+no hosting credentials are requested. Public deployment and independent public
+browser verification remain required before hackathon submission readiness.
 Legal interpretations are explicitly awaiting human legal review, as directed
 by the user. Source verification by an engineering assistant is not human legal
 review.
+
+## Actual engineering checkpoints
+
+- `5caf306`: first source-grounded extraction, date-versioned engine, offline
+  retrieval and working Streamlit implementation.
+- Initial tests exposed multilingual payment recognition, Unicode rule-reference
+  normalization and Windows fixture/temp-directory problems. Failure artifacts
+  are retained under `evaluation/tests.initial.*`; no failing case was skipped.
+- The original evaluation wording was used while debugging, so its metrics are
+  identified as regression results. Fresh separately authored wording was then
+  evaluated without adjusting the engine from those outcomes. It exposed a
+  Russian payment-event recognition miss, retained in the reported results.
+- Browser checks exposed rerun/download synchronization issues and a real clear
+  session defect. The uploader now gets a new widget identity after clearing;
+  removing a file also releases the report/document references.
+- Both web AI modes now share one embedding model. Tests verify that shared
+  model caching does not share uploaded passage state. Invalid page previews
+  are rejected before spawning a parser.
+- The complete local suite reached 67 passed, zero failures/errors/skips.
+  A real CPU Docker image was built and six public/synthetic PDFs were processed
+  under network-disabled, read-only, non-root execution. Browser and image
+  identity records are linked from `LOCAL_VERIFICATION.md` after verification.
+
+The assistant wrote code, synthetic text, fixtures, engineering labels,
+documentation and evaluation scripts with user authorization. Model weights and
+Python dependencies are external work, provisioned during implementation. No
+external collaborator or qualified legal reviewer has approved this prototype.

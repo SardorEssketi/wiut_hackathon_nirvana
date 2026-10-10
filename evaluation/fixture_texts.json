@@ -1,0 +1,18 @@
+{
+  "description": "Original AI-assisted synthetic wording, authored separately from the engine; no insurer text copied. Heldout paraphrases and labels are engineering annotations, not legal opinions.",
+  "development": {
+    "uz-Latn": ["Sug'urta summasi 80 million so'm.", "Sug'urta tovoni qaror qabul qilingan kundan besh ish kuni ichida amalga oshiriladi.", "Sug'urta tovoni qarori sug'urta qildiruvchiga yozma murojaatidan keyin o'n besh kun ichida xabar qilinadi."],
+    "uz-Cyrl": ["Суғурта суммаси 80 миллион сўм.", "Суғурта товони қарор қабул қилинган кундан беш иш куни ичида амалга оширилади.", "Суғурта товони қарори суғурта қилдирувчига ёзма мурожаатидан кейин ўн беш кун ичида хабар қилинади."],
+    "ru-Cyrl": ["Страховая сумма 80 миллионов сум.", "Страховое возмещение выплачивается в течение пяти рабочих дней со дня принятия решения страховщика.", "Решение о страховом возмещении сообщается страхователю в течение пятнадцати дней после письменного обращения."]
+  },
+  "evaluation": {
+    "uz-Latn": ["Majburiy sugʻurta summasi shartnoma bo‘yicha 80 000 000 so‘m etib belgilanadi.", "Sugʻurta tovoni toʻlovi sugʻurtalovchining qarori qabul qilingan kundan 5 ish kuni ichida amalga oshiriladi.", "Sug‘urta tovoni haqida qaror sug‘urta qildiruvchiga uning yozma yoki elektron murojaatidan so‘ng 15 kun ichida xabar qilinadi."],
+    "uz-Cyrl": ["Мажбурий суғурта суммаси шартнома бўйича 80.000.000 сўм этиб белгиланади.", "Суғурта товонини тўлаш суғурталовчининг қарори қабул қилинган кундан 5 иш куни ичида амалга оширилади.", "Суғурта товони ҳақида қарор суғурта қилдирувчига унинг ёзма ёки электрон мурожаатидан сўнг 15 кун ичида хабар қилинади."],
+    "ru-Cyrl": ["Общая страховая сумма по договору установлена в размере 80,000,000 сум.", "Выплата страхового возмещения производится в течение 5 рабочих дней с момента принятия решения страховщика.", "О решении по страховому возмещению страхователю сообщают не позднее 15 дней после его письменного или электронного обращения."]
+  },
+  "distractors": {
+    "uz-Latn": ["Sug'urta mukofoti 160 000 so'm; to'lov karta orqali amalga oshiriladi.", "Polis raqami 2026-141; shaxsiy ma'lumotlar ochiq e'lon qilinmaydi.", "Axborot bo'limi ish vaqti 09:00 dan 18:00 gacha.", "Transport egasi aloqa manzilini arizada ko'rsatadi."],
+    "uz-Cyrl": ["Суғурта мукофоти 160 000 сўм; тўлов карта орқали амалга оширилади.", "Полис рақами 2026-141; шахсий маълумотлар очиқ эълон қилинмайди.", "Ахборот бўлими иш вақти 09:00 дан 18:00 гача.", "Транспорт эгаси алоқа манзилини аризада кўрсатади."],
+    "ru-Cyrl": ["Страховая премия составляет 160 000 сум; оплата производится картой.", "Номер полиса 2026-141; персональные сведения не публикуются.", "Информационный отдел работает с 09:00 до 18:00.", "Владелец автомобиля указывает контактный адрес в анкете."]
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "checked_at": "2026-10-10T10:41:12.637071+00:00",
+  "network": "none",
+  "root_filesystem": "read_only",
+  "uid": 10001,
+  "success": true,
+  "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "model_initialization_seconds": 14.564167079000015,
+  "peak_main_process_rss_mib": 1203.4609375,
+  "source_code_sha256": {
+    "app.py": "bc10b871fac5e390d81034ee7aa6e191122db6689571995cf4be0c598b3fc97e",
+    "main.py": "d4924322877bdf8818059181dc44b6445f73116c67e6626316814215d2961a5c",
+    "polisdiff/engine.py": "4d6cd47926729b2a4aa87ecd3c3f61b7d109fb622006a971069d6ef046cbb057",
+    "polisdiff/extraction.py": "887e735114e3d400570ddf9ebe8a35a2833d4c1b00c929991753f1cbe3dcf0a1",
+    "polisdiff/retrieval.py": "7ec52e27e84c30b535999ef6386ee213b2fd5c20451f74c6169b82f2b115449c",
+    "rules/catalogue.v1.json": "bfe3c1b630cc73dad45e1d12dd41f2ddd2bdd2641b66b7b9d70e6b85522c53cb"
+  },
+  "cases": [
+    {
+      "id": "uz-Latn",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "MATCH_FOUND",
+        "MATCH_FOUND"
+      ],
+      "page_count": 4,
+      "languages": [
+        "Cyrillic-undetermined",
+        "Latin-undetermined",
+        "uz-Latn"
+      ],
+      "end_to_end_seconds": 1.1259946119999995,
+      "evidence_verified": true
+    },
+    {
+      "id": "uz-Cyrl",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "MATCH_FOUND",
+        "MATCH_FOUND"
+      ],
+      "page_count": 4,
+      "languages": [
+        "Latin-undetermined",
+        "ru-Cyrl",
+        "uz-Cyrl"
+      ],
+      "end_to_end_seconds": 0.8806522330000348,
+      "evidence_verified": true
+    },
+    {
+      "id": "ru-Cyrl",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "MATCH_FOUND",
+        "MATCH_FOUND"
+      ],
+      "page_count": 4,
+      "languages": [
+        "Cyrillic-undetermined",
+        "Latin-undetermined",
+        "ru-Cyrl"
+      ],
+      "end_to_end_seconds": 0.7584083980000287,
+      "evidence_verified": true
+    },
+    {
+      "id": "gross_latin",
+      "statuses": [
+        "UNVERIFIABLE",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "page_count": 8,
+      "languages": [
+        "Cyrillic-undetermined",
+        "Latin-undetermined",
+        "uz-Latn"
+      ],
+      "end_to_end_seconds": 6.75554635200001,
+      "evidence_verified": true
+    },
+    {
+      "id": "gross_cyrillic",
+      "statuses": [
+        "UNVERIFIABLE",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "page_count": 6,
+      "languages": [
+        "Cyrillic-undetermined",
+        "Latin-undetermined",
+        "ru-Cyrl",
+        "uz-Cyrl",
+        "uz-Latn"
+      ],
+      "end_to_end_seconds": 5.135466498000028,
+      "evidence_verified": true
+    },
+    {
+      "id": "inson_russian",
+      "statuses": [
+        "UNVERIFIABLE",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "page_count": 66,
+      "languages": [
+        "Cyrillic-undetermined",
+        "Latin-undetermined",
+        "ru-Cyrl",
+        "uz-Cyrl",
+        "uz-Latn"
+      ],
+      "end_to_end_seconds": 23.271151052999983,
+      "evidence_verified": true
+    }
+  ],
+  "raster_preview_verified": true
+}

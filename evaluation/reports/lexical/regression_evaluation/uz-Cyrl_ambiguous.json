@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.0",
+  "application_version": "0.1.0",
+  "rules_catalogue_version": "1.0.0",
+  "rules_catalogue_sha256": "bfe3c1b630cc73dad45e1d12dd41f2ddd2bdd2641b66b7b9d70e6b85522c53cb",
+  "document_sha256": "64d91a5ecce18e5a2cf5dc9f5279401876e6071c8d724ac373a32c04fd8d70bc",
+  "audit_date": "2026-10-10",
+  "applicable_date": "2026-01-05",
+  "date_basis": "user_confirmed",
+  "product": "OSAGO (user selected)",
+  "created_at": "2026-10-10T10:20:40.148359Z",
+  "detected_languages": [
+    "Latin-undetermined",
+    "ru-Cyrl",
+    "uz-Cyrl"
+  ],
+  "page_count": 4,
+  "warnings": [
+    "All engineering interpretations are PENDING_LEGAL_REVIEW.",
+    "Offer/appendix classification is heuristic and requires manual review."
+  ],
+  "retrieval_requested": "lexical",
+  "retrieval_used": "lexical",
+  "model_revision": null,
+  "timings_seconds": {
+    "retrieval": 0.0017378000002281624,
+    "evaluation": 0.0019526000005498645,
+    "analysis": 0.003690600000481936,
+    "model_initialization": 8.999995770864189e-7
+  },
+  "findings": [
+    {
+      "rule_id": "OSAGO_SUM",
+      "rule_name": "Страховая сумма ОСАГО",
+      "status": "MATCH_FOUND",
+      "reason": "Найдено явное условие, согласующееся с числовым ориентиром и проверяемым событием. Вывод касается только этого условия.",
+      "evidence": [
+        {
+          "passage_id": "p2-7",
+          "page": 2,
+          "quote": "Мажбурий суғурта суммаси шартнома бўйича 80.000.000 сўм этиб белгиланади.\n",
+          "start": 0,
+          "end": 74,
+          "bbox": [
+            40.0,
+            44.242454528808594,
+            415.419921875,
+            54.242454528808594
+          ],
+          "section": "offer",
+          "extracted_value": 80000000.0,
+          "unit": "UZS"
+        }
+      ],
+      "source_url": "https://lex.uz/docs/1366339",
+      "provision_reference": "Resolution 141, operative paragraph 1, second subparagraph",
+      "source_quote": "80 миллион сўм",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "expected_value": 80000000.0,
+      "reviewer_status": "PENDING_LEGAL_REVIEW",
+      "manual_review_required": true,
+      "uncertainty": []
+    },
+    {
+      "rule_id": "OSAGO_PAYMENT",
+      "rule_name": "Срок выплаты после решения страховщика",
+      "status": "UNVERIFIABLE",
+      "reason": "Не подтверждены рабочие дни; календарные дни нельзя сравнить автоматически.",
+      "evidence": [
+        {
+          "passage_id": "p3-15",
+          "page": 3,
+          "quote": "Суғурта товонини тўлаш суғурталовчининг қарори қабул қилинган кундан 5 календар куни\nичида амалга оширилади.\n",
+          "start": 0,
+          "end": 109,
+          "bbox": [
+            40.0,
+            44.242454528808594,
+            460.7298278808594,
+            70.2424545288086
+          ],
+          "section": "offer",
+          "extracted_value": 5.0,
+          "unit": "days"
+        }
+      ],
+      "source_url": "https://lex.uz/docs/1366339",
+      "provision_reference": "Resolution 141, appendix 4 (insurance rules), paragraph 66",
+      "source_quote": "беш иш куни",
+      "effective_from": "2024-08-05",
+      "effective_to": null,
+      "expected_value": 5.0,
+      "reviewer_status": "PENDING_LEGAL_REVIEW",
+      "manual_review_required": true,
+      "uncertainty": [
+        "Не подтверждены рабочие дни; календарные дни нельзя сравнить автоматически."
+      ]
+    },
+    {
+      "rule_id": "OSAGO_DECISION_NOTICE",
+      "rule_name": "Срок уведомления о решении",
+      "status": "MATCH_FOUND",
+      "reason": "Найдено явное условие, согласующееся с числовым ориентиром и проверяемым событием. Вывод касается только этого условия.",
+      "evidence": [
+        {
+          "passage_id": "p4-23",
+          "page": 4,
+          "quote": "Суғурта товони ҳақида қарор суғурта қилдирувчига унинг ёзма ёки электрон\nмурожаатидан сўнг 15 кун ичида хабар қилинади.\n",
+          "start": 0,
+          "end": 120,
+          "bbox": [
+            40.0,
+            44.242454528808594,
+            395.17987060546875,
+            70.2424545288086
+          ],
+          "section": "offer",
+          "extracted_value": 15.0,
+          "unit": "days"
+        }
+      ],
+      "source_url": "https://lex.uz/docs/1366339",
+      "provision_reference": "Resolution 141, appendix 4 (insurance rules), paragraph 67",
+      "source_quote": "ўн беш кундан кечиктирмай",
+      "effective_from": "2024-08-05",
+      "effective_to": null,
+      "expected_value": 15.0,
+      "reviewer_status": "PENDING_LEGAL_REVIEW",
+      "manual_review_required": true,
+      "uncertainty": []
+    }
+  ],
+  "reviews": [],
+  "disclaimer": "Evidence screening of three provisions only; no binding legal determination or whole-document compliance claim. NOT_FOUND is not proof of a violation. All engineering interpretations are PENDING_LEGAL_REVIEW."
+}

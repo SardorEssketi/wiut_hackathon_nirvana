@@ -6,14 +6,15 @@ import json
 import os
 os.environ["HF_HUB_OFFLINE"] = "0"
 os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
-from huggingface_hub import HfApi, snapshot_download
+os.environ["HF_HUB_DISABLE_XET"] = "1"
+os.environ["HF_HUB_DOWNLOAD_TIMEOUT"] = "120"
+from huggingface_hub import snapshot_download
 
 ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     repo = "intfloat/multilingual-e5-small"
-    metadata = HfApi().model_info(repo)
-    revision = os.getenv("POLISDIFF_MODEL_REVISION") or metadata.sha
+    revision = os.getenv("POLISDIFF_MODEL_REVISION") or "614241f622f53c4eeff9890bdc4f31cfecc418b3"
     dest = ROOT / "models" / "multilingual-e5-small"
     snapshot_download(repo, revision=revision, local_dir=dest,
         allow_patterns=["*.json", "*.txt", "*.model", "model.safetensors", "1_Pooling/*", "README.md", "LICENSE"],

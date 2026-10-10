@@ -1,0 +1,21 @@
+services:
+  polisdiff:
+    image: polisdiff-ai:local
+    build: .
+    ports:
+      - "127.0.0.1:8502:8501"
+    environment:
+      PORT: "8501"
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    read_only: true
+    tmpfs:
+      - /tmp:size=128m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 3g
+    cpus: 2
+    pids_limit: 128
