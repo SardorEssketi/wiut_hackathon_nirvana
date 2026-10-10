@@ -19,4 +19,5 @@ def web_retriever(mode):
     retriever.used = mode if retriever.model is not None else "lexical"
     retriever._passages = []
     retriever._embeddings = None
+    retriever._query_vectors = dict(retriever._query_vectors)
     return retriever

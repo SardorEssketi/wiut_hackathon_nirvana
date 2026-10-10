@@ -95,6 +95,8 @@ class Finding(BaseModel):
     reviewer_status: str = "PENDING_LEGAL_REVIEW"
     manual_review_required: bool = True
     uncertainty: list[str] = Field(default_factory=list)
+    check_scope: str = ""
+    source_version_note: str = ""
 
 
 class ReviewAction(BaseModel):

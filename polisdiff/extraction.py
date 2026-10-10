@@ -121,7 +121,7 @@ def extract_pdf(data: bytes, *, isolated: bool = True) -> Document:
 def render_page(data: bytes, page_number: int) -> bytes:
     """Raster evidence preview; excludes active PDF content."""
     validate_pdf(data)
-    if not isinstance(page_number, int) or not 1 <= page_number <= MAX_PAGES:
+    if type(page_number) is not int or not 1 <= page_number <= MAX_PAGES:
         raise PDFError("Invalid page number.")
     env = os.environ.copy()
     env["PYTHONIOENCODING"] = "utf-8"

@@ -1,7 +1,7 @@
 import os
-os.environ.setdefault("HF_HUB_OFFLINE", "1")
-os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
-os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
+os.environ["HF_HUB_OFFLINE"] = "1"
+os.environ["TRANSFORMERS_OFFLINE"] = "1"
+os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
 import re
 import time
 import math
@@ -55,8 +55,21 @@ class Retriever:
                 import json
                 manifest = ROOT / "evaluation" / "model_manifest.json"
                 if manifest.exists():
-                    self.model_revision = json.loads(manifest.read_text(encoding="utf-8"))["revision"]
+                    # Optional provenance must describe the files actually loaded.
+                    import hashlib
+                    try:
+                        recorded = json.loads(manifest.read_text(encoding="utf-8"))
+                        names = ["config.json", "model.safetensors", "tokenizer.json", "1_Pooling\\config.json"]
+                        def digest_file(name):
+                            with (path / name.replace('\\', '/')).open('rb') as stream:
+                                return hashlib.file_digest(stream, 'sha256').hexdigest()
+                        if all(digest_file(name) == recorded["files"][name] for name in names):
+                            self.model_revision = recorded["revision"]
+                    except (OSError, KeyError, ValueError):
+                        self.model_revision = None
             except Exception as exc:
+                self.model = None
+                self.model_revision = None
                 self.used = "lexical"
                 self.warning = f"Semantic retrieval unavailable ({type(exc).__name__}); lexical fallback used."
         self.initialization_seconds = time.perf_counter() - started
@@ -66,6 +79,7 @@ class Retriever:
 
     def prepare(self, passages: list[Passage]):
         self._passages = passages
+        self._embeddings = None
         if self.model is not None and passages:
             self._embeddings = self.model.encode(["passage: " + p.normalized for p in passages],
                 batch_size=16, normalize_embeddings=True, show_progress_bar=False)

@@ -21,6 +21,7 @@ from polisdiff.retrieval import Retriever
 from polisdiff.service import audit_document
 
 ROOT = Path(__file__).resolve().parents[1]
+OUTPUT_ROOT = ROOT / "evaluation"
 
 
 class MemorySampler:
@@ -111,7 +112,7 @@ def evaluate_case(case, retriever, rules):
             finding_rows.append({"rule":finding.rule_id,"actual":finding.status.value,"expected":expected,
                 "reason":finding.reason,"evidence_checks":evidence_checks})
         if case["split"] != "real":
-            export_dir = ROOT / "evaluation" / "reports" / retriever.requested / case["split"]
+            export_dir = OUTPUT_ROOT / "reports" / retriever.requested / case["split"]
             export_dir.mkdir(parents=True,exist_ok=True)
             (export_dir/(case["id"]+".json")).write_text(report.model_dump_json(indent=2),encoding="utf-8")
         return {"id":case["id"],"split":case["split"],"language":case["language"],"sha256":doc.sha256,
@@ -130,7 +131,13 @@ def evaluate_case(case, retriever, rules):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--modes", nargs="+",default=["lexical","semantic","hybrid"])
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "evaluation",
+                        help="Separate measurement directory; preserves historical artifacts.")
+    parser.add_argument("--label", default="historical")
     args = parser.parse_args()
+    global OUTPUT_ROOT
+    OUTPUT_ROOT = args.output_dir.resolve()
+    OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
     catalogue,rules,digest = load_catalogue()
     synthetic = json.loads((ROOT / "evaluation/dataset_manifest.json").read_text(encoding="utf-8"))
     cases = [dict(row, split="regression_evaluation") for row in synthetic if row["split"] == "evaluation"]
@@ -138,7 +145,9 @@ def main():
     for row in blind["cases"]:
         pages = [["Original fresh synthetic OSAGO test. 05.02.2026.","Customer support hours 10:00–17:00."]] + [[term] for term in row["terms"]]
         path = f"tests/fixtures/blind/{row['id']}.pdf"
-        create_pdf(ROOT/path,pages)
+        # Existing fixtures are immutable inputs; create only if absent.
+        if not (ROOT/path).exists():
+            create_pdf(ROOT/path,pages)
         cases.append({"id":row["id"],"split":"fresh_evaluation","language":row["language"],"path":path,
             "applicable_date":"2026-02-05","expected":dict(zip(RULE_IDS,row["expected"])),
             "relevant_pages":dict(zip(RULE_IDS,[[2],[3],[4]])),"ground_truth_pages":pages})
@@ -146,6 +155,7 @@ def main():
     for row in real["cases"]:
         cases.append(dict(row, split="real",path=f"local_data/sources/{row['id']}.pdf"))
     result = {"created_at":datetime.now(timezone.utc).isoformat(),"python":sys.version,"platform":platform.platform(),
+        "measurement_label": args.label,
         "cpu_logical":psutil.cpu_count(),"rules_catalogue_sha256":digest,
         "dataset_files_sha256":{name:hashlib.sha256((ROOT/"evaluation"/name).read_bytes()).hexdigest()
             for name in ["dataset_manifest.json","blind_fixtures.json","real_annotations.json"]},
@@ -178,7 +188,7 @@ def main():
                 "warning":retriever.warning,"model_revision":retriever.model_revision,"summary_by_split":groups,
                 "summary_by_language_and_split":languages,"cases":rows}
     result["peak_process_tree_rss_mib"] = memory.peak/1024**2
-    (ROOT / "evaluation/benchmark_results.json").write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding="utf-8")
+    (OUTPUT_ROOT / "benchmark_results.json").write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding="utf-8")
     print("Measured peak process tree RSS:",round(result["peak_process_tree_rss_mib"],1),"MiB")
 
 if __name__ == "__main__":

@@ -14,7 +14,7 @@ class BusyError(RuntimeError):
 
 
 def audit_document(doc: Document, audit_date: date, applicable_date: date | None,
-                   retriever: Retriever, *, date_basis="user_confirmed", k=8) -> Report:
+                   retriever: Retriever, *, date_basis="user_confirmed", k=8, on_progress=None) -> Report:
     start = time.perf_counter()
     catalogue, rules, digest = load_catalogue()
     warnings = list(doc.warnings)
@@ -26,13 +26,19 @@ def audit_document(doc: Document, audit_date: date, applicable_date: date | None
     offer = [p for p in doc.passages if p.section == "offer"]
     appendix = [p for p in doc.passages if p.section != "offer"]
     candidates = {r.id: [] for r in rules}
+    if on_progress:
+        on_progress("retrieval")
     retrieval_start = time.perf_counter()
     for section in (offer, appendix):
         retriever.prepare(section)
         for rule in rules:
             candidates[rule.id].extend(p for p, _ in retriever.search(rule.queries, k=k))
     retrieval_seconds = time.perf_counter() - retrieval_start
+    if on_progress:
+        on_progress("evaluation")
     findings = [evaluate(r, doc, candidates[r.id], applicable_date, audit_date) for r in rules]
+    if on_progress:
+        on_progress("report")
     return Report(rules_catalogue_version=catalogue["catalogue_version"], rules_catalogue_sha256=digest,
         document_sha256=doc.sha256, audit_date=audit_date, applicable_date=applicable_date,
         date_basis=date_basis if applicable_date else "unknown", created_at=datetime.now(timezone.utc),
@@ -44,14 +50,16 @@ def audit_document(doc: Document, audit_date: date, applicable_date: date | None
 
 
 def analyze_pdf(data: bytes, audit_date: date, applicable_date: date | None, retriever: Retriever,
-                *, date_basis="user_confirmed") -> tuple[Document, Report]:
+                *, date_basis="user_confirmed", on_progress=None) -> tuple[Document, Report]:
     if not _ANALYSIS_GATE.acquire(blocking=False):
         raise BusyError("Analysis is already running. Please retry after it finishes.")
     try:
         start = time.perf_counter()
+        if on_progress:
+            on_progress("extraction")
         doc = extract_pdf(data)
         extract_time = time.perf_counter()-start
-        report = audit_document(doc, audit_date, applicable_date, retriever, date_basis=date_basis)
+        report = audit_document(doc, audit_date, applicable_date, retriever, date_basis=date_basis, on_progress=on_progress)
         report.timings_seconds["extraction"] = extract_time
         report.timings_seconds["end_to_end"] = time.perf_counter()-start
         return doc, report

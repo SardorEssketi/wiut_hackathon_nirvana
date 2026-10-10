@@ -34,9 +34,11 @@ def topic(rule: Rule, text: str) -> bool:
     compensation = bool(re.search(r"возмещ|tovon|товон", text))
     decision = bool(re.search(r"решени|qaror|қарор", text))
     if rule.logic == "payment_days":
-        payment = bool(re.search(r"выпла[тч]|осуществ|to'la|тўла|amalga|амалга", text))
+        # Finite transfer verbs only; a notice 'о перечислении' is not payment.
+        transfer = r"перечисляется|перечисляются|перечислит|перечислят"
+        payment = bool(re.search(r"выпла[тч]|осуществ|to'la|тўла|amalga|амалга|" + transfer, text))
         # Notification clauses also mention payment decisions; preserve event distinction.
-        notice_only = bool(re.search(r"сообщ|уведом|xabar|хабар", text)) and not bool(re.search(r"осуществ|производ|amalga|амалга|выплачивается", text))
+        notice_only = bool(re.search(r"сообщ|уведом|xabar|хабар", text)) and not bool(re.search(r"осуществ|производ|amalga|амалга|выплачивается|" + transfer, text))
         return compensation and decision and payment and not notice_only
     return compensation and decision and bool(re.search(r"сообщ|уведом|xabar|хабар|bildir|билдир", text))
 
@@ -44,7 +46,7 @@ def topic(rule: Rule, text: str) -> bool:
 def extract_value(rule: Rule, text: str):
     """Return value, unit, abstention reason. Never substitute expected values."""
     # Conditional, illustrative or negated terms need an expert to scope the rule.
-    if re.search(r"\b(?:если|agar|агар|например|masalan|масалан)\b|не обязан|не выплач|to'lanmay|тўланмай|emas\b|эмас\b|не ранее|kamida|камида", text):
+    if re.search(r"\b(?:если|agar|агар|например|masalan|масалан)\b|не обязан|не выплач|не перечисл|to'lanmay|тўланмай|emas\b|эмас\b|не ранее|kamida|камида", text):
         return None, None, "Условие, пример или отрицание требуют ручного толкования."
     if rule.logic == "sum":
         concept = re.search(SUM, text)
@@ -73,13 +75,20 @@ def extract_value(rule: Rule, text: str):
         5 if n in {"пять", "пяти", "besh", "беш"} else 7 if n in {"yetti", "етти", "семь"} else 10)
     unit = "working_days" if m["u"] and re.search(r"рабоч|ish|иш", m["u"]) else "days"
     if rule.logic == "payment_days":
-        trigger = bool(re.search(r"со дня принят|с момента принят|после принят|qabul qilingan|қабул қилинган", text))
+        # Adoption must belong to the insurer's decision, not an application or court.
+        trigger = bool(re.search(
+            r"(?:со дня|с момента|после) принятия решения страховщик\w*|"
+            r"(?:qaror\w* qabul qilingan|қарор\w* қабул қилинган)", text))
         if not trigger:
             return value, unit, "Не подтвержден отсчет от принятия решения страховщиком."
         if unit != "working_days":
             return value, unit, "Не подтверждены рабочие дни; календарные дни нельзя сравнить автоматически."
     else:
-        request = bool(re.search(r"письмен|электрон|yozma|ёзма", text)) and bool(re.search(r"обращени|заявлен|murojaat|мурожаат|ariza|ариза", text))
+        request = bool(re.search(
+            r"(?:после|со дня|с момента) (?:получения |поступления )?(?:его |ее |её )?"
+            r"(?:письмен\w*|электрон\w*)(?: или (?:письмен\w*|электрон\w*))? (?:обращени\w*|заявлен\w*)|"
+            r"(?:yozma|elektron) (?:ariza\w*|murojaat\w*)\s*(?:so'ng|keyin)|"
+            r"(?:ёзма|электрон) (?:ариза\w*|мурожаат\w*)\s*(?:сўнг|кейин)", text))
         recipient = bool(re.search(r"страховател|sug'urta qildiruvchi|суғурта қилдирувчи", text))
         if not (request and recipient):
             return value, unit, "Не подтверждены обращение и адресат уведомления."
@@ -97,7 +106,8 @@ def evaluate(rule: Rule, doc: Document, candidates: list[Passage], applicable_da
     base = dict(rule_id=rule.id, rule_name=rule.name, source_url=version.source_url if version else rule.official_source,
         provision_reference=rule.reference, source_quote=version.source_quote if version else "",
         effective_from=version.effective_from if version else None, effective_to=version.effective_to if version else None,
-        expected_value=version.expected if version else None)
+        expected_value=version.expected if version else None,
+        check_scope=rule.applicability, source_version_note=version.version_note if version else "")
     relevant = [p for p in candidates if topic(rule, p.normalized)]
     def result(status, reason, ev=None, uncertainty=None):
         return Finding(**base, status=status, reason=reason, evidence=ev or [], uncertainty=uncertainty or [])
@@ -105,6 +115,8 @@ def evaluate(rule: Rule, doc: Document, candidates: list[Passage], applicable_da
         return result(Status.UNVERIFIABLE, "Дата применимости договора не подтверждена. Дата аудита не заменяет дату договора.",
                       [evidence(p) for p in relevant[:3]], ["applicable_date_unknown"])
     if applicable_date > audit_date or applicable_date > verified_until or applicable_date < supported_from or version is None:
+        base.update(expected_value=None, effective_from=None, effective_to=None,
+                    source_quote="", source_version_note="", source_url=rule.official_source)
         return result(Status.UNVERIFIABLE, "Дата вне подтвержденного диапазона версий либо позже даты аудита.",
                       [evidence(p) for p in relevant[:3]], ["unsupported_applicability_date"])
     offer = [p for p in relevant if p.section == "offer"]
