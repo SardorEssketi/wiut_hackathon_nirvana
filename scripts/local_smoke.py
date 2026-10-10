@@ -5,6 +5,7 @@ import json
 import time
 from datetime import datetime, timezone
 from playwright.sync_api import sync_playwright, expect
+from browser_check import set_date, set_mode
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -12,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--url",default="http://localhost:8501")
-    parser.add_argument("--output",default="smoke.native_results.json")
+    parser.add_argument("--output",default="audit_smoke_results.json")
     args = parser.parse_args()
     rows = []
     dest = ROOT / "local_data" / "browser"
@@ -44,6 +45,7 @@ def main():
 
         analyze('unknown_date',['UNVERIFIABLE']*3,'hybrid',None)
         page.get_by_text("Я подтверждаю дату применимости договора",exact=True).click()
+        set_date(page, 'Дата применимости договора', '2026-01-05')
         expect(page.get_by_role('button',name='Скачать JSON отчет',exact=True)).to_have_count(0,timeout=30000)
         analyze('historical_pdf_current_date',['POTENTIAL_CONFLICT','MATCH_FOUND','MATCH_FOUND'],'hybrid','2026-01-05')
         for field,value in zip(('year','month','day'),('2024','09','06')):
@@ -58,7 +60,7 @@ def main():
             control.press('Tab')
             page.wait_for_timeout(750)
             expect(page.get_by_test_id('stApp')).to_have_attribute('data-test-script-state','notRunning',timeout=30000)
-        page.get_by_text('AI поиск',exact=True).click()
+        set_mode(page, 'AI поиск')
         expect(page.get_by_role('button',name='Скачать JSON отчет',exact=True)).to_have_count(0,timeout=30000)
         analyze('historical_date',['MATCH_FOUND']*3,'semantic','2024-09-06')
         browser.close()

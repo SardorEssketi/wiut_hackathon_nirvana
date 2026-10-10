@@ -31,8 +31,9 @@ def test_russian_transfer_payment_independent(tmp_path, days, status):
     "Страховое возмещение не перечисляется в течение 4 рабочих дней после принятия решения страховщика.",
     "Если подтверждены расходы, страховое возмещение перечисляется в течение 4 рабочих дней после принятия решения страховщика.",
 ])
-def test_transfer_wrong_trigger_or_negation_abstains(text):
-    value, unit, problem = extract_value(RULES["OSAGO_PAYMENT"], normalize(text))
+@pytest.mark.parametrize('verb', ['перечисляется', 'выплачивается'])
+def test_transfer_wrong_trigger_or_negation_abstains(text, verb):
+    value, unit, problem = extract_value(RULES["OSAGO_PAYMENT"], normalize(text.replace('перечисляется',verb)))
     assert problem
 
 
@@ -154,6 +155,13 @@ def test_unknown_unsupported_dates_have_no_selected_legal_target(tmp_path, appli
     doc, report = analyze_pdf(path.read_bytes(),audit,applicable,Retriever('lexical'))
     assert all(f.status.value == 'UNVERIFIABLE' for f in report.findings)
     assert all(f.expected_value is None and not f.source_quote and f.effective_from is None for f in report.findings)
+
+
+def test_court_decision_payment_does_not_produce_false_match(tmp_path):
+    path = tmp_path/'court.pdf'
+    create_pdf(path, [["ОСАГО. Страховое возмещение выплачивается в срок 4 рабочих дней после принятия решения суда."]])
+    _, report = analyze_pdf(path.read_bytes(),date(2026,10,10),date(2026,1,5),Retriever('lexical'))
+    assert report.findings[1].status.value == 'UNVERIFIABLE'
 
 
 def test_actual_inson_boundary_when_provisioned():
