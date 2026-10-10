@@ -23,6 +23,14 @@ DEST = ROOT / 'local_data/audit_browser'
 def settled(page):
     expect(page.get_by_test_id('stApp')).to_have_attribute('data-test-script-state','notRunning',timeout=180000)
     expect(page.get_by_test_id('stException')).to_have_count(0)
+    # Python completion can precede removal of the previous frontend widget tree.
+    expect(page.locator('[data-stale="true"]')).to_have_count(0,timeout=30000)
+
+
+def click_tab(page, name):
+    tab = page.get_by_role('tab',name=name,exact=True)
+    expect(tab).to_have_count(1,timeout=30000)
+    tab.click()
 
 
 def set_date(page, label, value):
@@ -166,14 +174,14 @@ def main():
                 results['cases'][-1]['mobile_horizontal_overflow_px'] = overflow
                 page.set_viewport_size({'width':1365,'height':950})
             if key == 'independent_browser':
-                page.get_by_role('tab',name='Решение аналитика').click()
+                click_tab(page,'Решение аналитика')
                 for rationale in ['Original audit review <script>attack</script> Суғурта sugʻurta.', 'Second annotation; original statuses retained.']:
                     page.get_by_role('textbox',name='Обоснование').fill(rationale)
                     page.get_by_role('button',name='Записать решение',exact=True).click()
                     settled(page)
-                    page.get_by_role('tab',name='Решение аналитика').click()
+                    click_tab(page,'Решение аналитика')
                     expect(page.get_by_text(rationale,exact=True).last).to_be_visible()
-                page.get_by_role('tab',name='Результаты',exact=True).click()
+                click_tab(page,'Результаты')
                 reviewed = download_report(page,'reviewed')
                 assert len(reviewed.reviews) == 2
                 assert reviewed.findings == report.findings
@@ -239,9 +247,9 @@ def main():
                 no_result(page)
                 rerun = analyze(page,'changed_config',statuses,actual_mode='lexical')
                 assert not rerun.reviews and str(rerun.audit_date) == '2026-10-09'
-                page.get_by_role('tab',name='Решение аналитика').click()
+                click_tab(page,'Решение аналитика')
                 expect(page.get_by_role('textbox',name='Обоснование')).to_have_value('')
-                page.get_by_role('tab',name='Результаты',exact=True).click()
+                click_tab(page,'Результаты')
                 page.get_by_text('Я подтверждаю дату применимости договора',exact=True).click()
                 expect(page.get_by_role('checkbox',name='Я подтверждаю дату применимости договора')).not_to_be_checked()
                 no_result(page)
@@ -272,7 +280,7 @@ def main():
         page.locator('input[type=file]').set_input_files(str(unseen))
         again = analyze(page,'after_clear',['UNVERIFIABLE']*3)
         assert not again.reviews
-        page.get_by_role('tab',name='Решение аналитика').click()
+        click_tab(page,'Решение аналитика')
         expect(page.get_by_role('textbox',name='Обоснование')).to_have_value('')
         page.get_by_role('button',name='Очистить сессию',exact=True).click()
         no_result(page)

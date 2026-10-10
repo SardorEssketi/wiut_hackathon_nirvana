@@ -56,8 +56,12 @@ each analysis gets a separate retriever. `app.py` does not cache mutable
 retrievers. Document state and analyst actions stay per session.
 Report exports contain original exact quotations, pages and source-version metadata.
 
-`presentation.py` supplies deterministic Russian summaries, status labels,
+`presentation.py` supplies deterministic multilingual summaries, status labels,
 observations, reference values and next steps to both Streamlit and HTML.
+`i18n.py` centralizes Russian, Uzbek Latin, Uzbek Cyrillic and English interface
+copy. Presentation language does not select document rules or enter the analysis
+fingerprint. Official/PDF quotations and JSON remain original. A language callback
+preserves option IDs before Streamlit deserializes newly translated labels.
 `session.py` fingerprints PDF bytes, both dates and requested mode; a change
 invalidates findings, reviews and previews. Upload/configuration widgets gain
 fresh identities after clearing, and review forms are keyed to the report's

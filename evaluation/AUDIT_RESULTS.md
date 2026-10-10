@@ -2,7 +2,8 @@
 
 Run date: 10 October 2026. Original measurements are preserved in
 [RESULTS.md](RESULTS.md) and `benchmark_results.json`. These results refer to the
-updated local application; they do not validate the previous Docker image or a
+completed redesign source snapshot; subsequent interface translations have their
+own [verification record](../docs/I18N_VERIFICATION.md). They do not validate the previous Docker image or a
 public deployment. Full issue details: [AUDIT_REPORT.md](../docs/AUDIT_REPORT.md).
 
 ## Baseline and automated tests

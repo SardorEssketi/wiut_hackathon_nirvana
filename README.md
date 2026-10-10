@@ -2,8 +2,9 @@
 
 Offline multilingual evidence screening for public Uzbek OSAGO insurance offers.
 Python + Streamlit + PyMuPDF + locally provisioned multilingual E5 + deterministic,
-date-versioned rules. Initial interface: Russian. Document variants: Uzbek Latin,
-Uzbek Cyrillic, Russian, and mixed passages.
+date-versioned rules. Interface and HTML reports: Russian (default), Uzbek Latin,
+Uzbek Cyrillic and English. Document variants remain Uzbek Latin, Uzbek Cyrillic,
+Russian and mixed passages; an English interface does not add English PDF analysis.
 
 **Local prototype; not submission-ready.** Public deployment is deferred by the
 user and must later pass an independent browser test. All engineering legal
@@ -60,13 +61,21 @@ process lifetime. Model/download metadata is in `evaluation/model_manifest.json`
 
 ## Use
 
-Version 0.2 presents a Russian preliminary review dashboard: a count-based
+Version 0.2 presents a multilingual preliminary review dashboard: a count-based
 summary, plain-language finding cards, original quotations, source versions,
 neutral next steps and page navigation. There is no compliance percentage or
 whole-contract approval. The contract date starts **empty**; confirming the
 checkbox alone does not invent a date. The audit date records when you check,
 while the contract date selects the reference version. Unknown/unsupported dates
 abstain before any numeric conclusion.
+
+Choose **Language / Til / Тил / Язык** in the sidebar: **O‘zbekcha**, **Ўзбекча
+(кирилл)** or **English**, alongside **Русский**. Controls, status explanations,
+summaries, next steps and HTML reports follow the selection. Language switching
+preserves the current document, dates, search mode, results and recorded reviews.
+Clearing the session preserves the language preference; another browser session
+starts in Russian. Original PDF quotations, official legal text and catalogue
+version notes remain untranslated. JSON preserves the original analysis fields.
 
 Use “Посмотреть доказательство” on a finding to open the exact PDF page and
 original text directly beneath that finding. Bounding boxes are coarse unions of extraction blocks, so no
@@ -78,7 +87,8 @@ date or search mode invalidates the previous report and review form. Clearing th
 session resets the upload and configuration. Export before clearing: records are
 not a durable legal audit database.
 
-“Скачать HTML отчет” produces a self-contained Russian report with executive
+“Скачать HTML отчет” (or its translated label) produces a self-contained report
+in the selected interface language, with executive
 summary, overview, findings, legal limitations, reviews and technical appendix.
 Open it locally and use **Print → Save as PDF** for A4 output. JSON schema 1.0
 remains readable; optional `check_scope`, `source_version_note` and
@@ -118,6 +128,7 @@ Developer dependencies and Chromium are required for browser checks.
 .venv/Scripts/python.exe evaluation/benchmark.py --output-dir local_data/audit_post --label post-audit-regression
 .venv/Scripts/python.exe -m playwright install chromium
 .venv/Scripts/python.exe scripts/browser_check.py
+.venv/Scripts/python.exe scripts/browser_i18n_check.py
 .venv/Scripts/python.exe scripts/local_smoke.py
 .venv/Scripts/python.exe scripts/browser_fallback_check.py
 .venv/Scripts/python.exe scripts/audit_public_samples.py
@@ -166,6 +177,12 @@ Native and Docker browser results include actual historical and unknown-date che
 the local verification record identifies the tested image and matching source commit.
 
 ## Redesign and engineering audit
+
+The subsequent language addition is documented separately in
+[multilingual verification](docs/I18N_VERIFICATION.md), with fresh
+[test counts](evaluation/i18n_tests.json) and
+[desktop/mobile language journeys](evaluation/i18n_browser_results.json).
+Earlier audit artifacts remain measurements of their recorded source snapshots.
 
 Read [the audit report](docs/AUDIT_REPORT.md) and
 [post-audit measurements](evaluation/AUDIT_RESULTS.md) for fresh commands,
