@@ -133,3 +133,36 @@ def render_page(data: bytes, page_number: int) -> bytes:
     if proc.returncode:
         raise PDFError("Page could not be rendered safely.")
     return proc.stdout
+
+
+def render_evidence(data, doc, finding, ev):
+    """One selected page, one bounded worker, one session-local preview.
+
+    Geometry is ephemeral and is never trusted from an imported JSON report.
+    """
+    import base64
+    validate_pdf(data)
+    if hashlib.sha256(data).hexdigest() != doc.sha256 or not 1 <= ev.page <= len(doc.pages):
+        raise PDFError("Stale evidence selection.")
+    passage = next((p for p in doc.passages if p.id == ev.passage_id), None)
+    if passage is None or (passage.page, passage.start, passage.end, passage.text) != (ev.page, ev.start, ev.end, ev.quote):
+        raise PDFError("Evidence does not match the original document.")
+    request = json.dumps({"pdf": base64.b64encode(data).decode("ascii"), "sha256": doc.sha256,
+                          "finding": finding.model_dump(mode="json"), "evidence": ev.model_dump(mode="json")}).encode()
+    env = os.environ.copy()
+    env["PYTHONIOENCODING"] = "utf-8"
+    try:
+        proc = subprocess.run([sys.executable, "-m", "polisdiff.extract_worker", "--evidence"],
+            input=request, capture_output=True, timeout=15, env=env, cwd=Path(__file__).resolve().parents[1])
+    except subprocess.TimeoutExpired as exc:
+        raise PDFError("Evidence rendering timed out.") from exc
+    if proc.returncode:
+        raise PDFError("Evidence could not be rendered safely.")
+    try:
+        result = json.loads(proc.stdout)
+        result["png"] = base64.b64decode(result["png"], validate=True)
+        if result["location"]["state"] not in {"precise", "precise_unavailable"}:
+            raise ValueError("Mismatched evidence")
+        return result
+    except (KeyError, ValueError, TypeError) as exc:
+        raise PDFError("Invalid evidence preview.") from exc

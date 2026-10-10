@@ -1,0 +1,15 @@
+{
+  "tests": 406,
+  "failures": 1,
+  "errors": 0,
+  "skipped": 0,
+  "passed": 405,
+  "error_testcases": 0,
+  "details": [
+    {
+      "test": "test_multiline_value_uses_separate_line_boxes",
+      "type": "failure",
+      "detail": "tmp_path = WindowsPath('D:/Data science/hakathon/wiut_hackathon_final/local_data/finding_affected_tmp/test_multiline_value_uses_sepa0')\n\n    def test_multiline_value_uses_separate_line_boxes(tmp_path):\n        data, doc, report = analyzed(tmp_path, ['Общая страховая сумма составляет 60 000\\n000 сум.'])\n        f = report.findings[0]\n        with pymupdf.open(stream=data, filetype='pdf') as pdf:\n            loc = locate_on_page(pdf[0], f, f.evidence[0])\n>           assert loc.state == 'precise' and len(loc.rectangles) == 2\nE           AssertionError: assert ('precise' == 'precise'\nE             \nE               precise and 1 == 2)\nE            +  where 1 = len([(213.1099853515625, 44.242454528808594, 282.8099670410156, 54.242454528808594)])\nE            +    where [(213.1099853515625, 44.242454528808594, 282.8099670410156, 54.242454528808594)] = Localization(state='precise', quote='Общая страховая сумма составляет 60 000 000 сум.\\n', start=33, end=47, rectangles=[(213.1099853515625, 44.242454528808594, 282.8099670410156, 54.242454528808594)]).rectangles\n\ntests\\test_finding_workflow.py:92: AssertionError"
+    }
+  ]
+}

@@ -99,6 +99,8 @@ def expected(finding: Finding, language="ru") -> str:
 
 
 def next_step(finding: Finding, language="ru") -> str:
+    if "unreadable_pages" in finding.uncertainty:
+        return tr("Получите читаемый текстовый PDF или проверьте оригинал вручную. OCR не поддерживается; ошибка извлечения не является основанием менять договор.", language)
     if "applicable_date_unknown" in finding.uncertainty:
         return tr("Установите дату применимости договора по первичным документам и повторите проверку.", language)
     if "unsupported_applicability_date" in finding.uncertainty:
@@ -130,3 +132,68 @@ def period(finding: Finding, language="ru") -> str:
         return tr("Применимая редакция не установлена", language)
     return tr("С {start} по {end}", language, start=finding.effective_from,
               end=finding.effective_to or tr("конец подтвержденного диапазона каталога", language))
+
+
+def finding_details(report: Report, finding: Finding, language="ru") -> dict:
+    """Single deterministic explanation/remediation source for UI and HTML.
+
+    Does not mutate reports or infer missing values, dates, clauses or locations.
+    Even a user-confirmed date is not documentary/legal validation for drafting.
+    """
+    from .i18n import uncertainty_text
+    scope = tr(SCOPES[finding.rule_id], language) if finding.rule_id in SCOPES else finding.check_scope
+    checks = {
+        "OSAGO_SUM": "Установите, что это общая страховая сумма в сумах, а не премия, частичный лимит или пример.",
+        "OSAGO_PAYMENT": "Сверьте рабочие дни и отсчет именно от принятия решения страховщиком о выплате возмещения.",
+        "OSAGO_DECISION_NOTICE": "Сверьте уведомление страхователя о решении, дни и отсчет от письменного или электронного обращения за возмещением.",
+    }
+    correction = {
+        "OSAGO_SUM": "Если дата, применимость, редакция и толкование подтверждены, передайте общую страховую сумму специалисту для рассмотрения исправления.",
+        "OSAGO_PAYMENT": "Если дата, событие, единицы, область и редакция подтверждены, передайте срок выплаты специалисту для рассмотрения исправления.",
+        "OSAGO_DECISION_NOTICE": "Если дата, адресат, событие, единицы и редакция подтверждены, передайте срок уведомления о решении специалисту для рассмотрения исправления.",
+    }
+    why_conflict = {
+        "OSAGO_SUM": "Общая сумма отличается от выбранного ориентира. Сравнение требует подтверждения даты и характера суммы.",
+        "OSAGO_PAYMENT": "Срок выплаты превышает выбранный предел рабочих дней после решения страховщика.",
+        "OSAGO_DECISION_NOTICE": "Срок уведомления превышает выбранный предел дней после письменного или электронного обращения.",
+    }
+    technical = "unreadable_pages" in finding.uncertainty
+    checklist = [tr("Подтвердите дату по первичным документам; проверьте редакцию нормы, область условия и полный контекст оригинала.", language)]
+    if finding.rule_id in checks:
+        checklist.append(tr(checks[finding.rule_id], language))
+    blockers = [uncertainty_text(code, language) for code in finding.uncertainty]
+    comparable = (finding.status in {Status.MATCH_FOUND, Status.POTENTIAL_CONFLICT}
+        and report.applicable_date is not None and finding.expected_value is not None
+        and finding.effective_from is not None and finding.effective_from <= report.applicable_date
+        and (finding.effective_to is None or report.applicable_date <= finding.effective_to)
+        and report.applicable_date <= report.audit_date
+        and bool(finding.source_quote) and not finding.uncertainty
+        and bool(finding.evidence) and all(ev.section == "offer" and ev.extracted_value is not None
+            and ev.unit == ("UZS" if finding.rule_id == "OSAGO_SUM" else "working_days" if finding.rule_id == "OSAGO_PAYMENT" else "days")
+            for ev in finding.evidence))
+    reason = explanation(finding, language) if comparable else recorded_text(finding.reason, language)
+    remediation = tr("Сначала устраните недостаток доказательств. Изменение договора на основании этого результата не рекомендуется.", language)
+    if finding.status == Status.POTENTIAL_CONFLICT and comparable and finding.rule_id in correction:
+        # Show the actual numbers and the operator/event that produced the finding.
+        reason += " " + tr(why_conflict[finding.rule_id], language)
+        remediation = tr(correction[finding.rule_id], language)
+    elif finding.status == Status.MATCH_FOUND:
+        remediation = tr("Изменение по этому критерию не рекомендуется. Вывод относится только к проверенному условию, не ко всему договору.", language)
+    elif finding.status == Status.NOT_FOUND:
+        remediation = tr("Проверьте остальные страницы, приложения и документы, включенные по ссылке. Отсутствие найденного текста не устанавливает обязанность добавить пункт.", language)
+    if finding.status == Status.UNVERIFIABLE:
+        checklist.insert(0, next_step(finding, language))
+        # All recorded blockers are retained, not just the first uncertainty.
+        checklist.extend(blockers)
+    return dict(checked=scope, found=observation(finding, language), reference=expected(finding, language),
+        reason=reason, issue=reason, evidence=finding.evidence, source_url=finding.source_url,
+        source_quote=finding.source_quote, provision_reference=finding.provision_reference,
+        period=period(finding, language), comparable=comparable,
+        verification=list(dict.fromkeys(checklist)), remediation=remediation,
+        verification_state=labels(STATUS_LABELS, language)[finding.status], blockers=blockers,
+        remediation_kind=tr("Техническая проверка документа" if technical else
+            "Проверка договорного условия" if comparable else "Проверка доказательств и применимости", language),
+        human_legal_review=True, draft=None,
+        draft_note=tr("Нет достаточного контекста для безопасного проекта поправки; используйте список проверки.", language),
+        date_note=tr("Дата подтверждена пользователем; первичные документы нужно проверить отдельно.", language)
+            if report.applicable_date is not None and report.date_basis == "user_confirmed" else report.date_basis)

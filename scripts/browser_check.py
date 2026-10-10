@@ -86,7 +86,11 @@ def main():
     parser.add_argument('--url',default='http://localhost:8501')
     parser.add_argument('--output',default='audit_browser_results.json')
     parser.add_argument('--only',nargs='+')
+    parser.add_argument('--artifact-dir',default=None)
     args = parser.parse_args()
+    global DEST
+    if args.artifact_dir:
+        DEST = ROOT / args.artifact_dir
     for attempt in range(30):
         try:
             with urlopen(args.url + '/_stcore/health', timeout=1) as response:
@@ -213,12 +217,13 @@ def main():
                 export_page.close()
                 results['review_export_and_a4_print_verified'] = True
                 ev = reviewed.findings[0].evidence[0]
-                page.get_by_role('button',name=f'Посмотреть доказательство · стр. {ev.page}',exact=True).first.click()
+                page.get_by_role('button',name=f'Открыть в PDF · стр. {ev.page}',exact=True).first.click()
                 settled(page)
                 viewer = page.get_by_text('Выбранное доказательство в PDF',exact=True)
                 viewer.scroll_into_view_if_needed()
                 expect(page.locator('[data-testid=stImage] img').first).to_be_visible(timeout=30000)
-                expect(page.get_by_test_id('stExpander').filter(has_text='Выбранное доказательство в PDF').get_by_text(f'Страница PDF {ev.page} · Текст оферты',exact=False)).to_be_visible()
+                evidence_viewer = page.get_by_test_id('stExpander').filter(has=page.locator(':scope > details > summary').get_by_text('Выбранное доказательство в PDF',exact=True))
+                expect(evidence_viewer.get_by_text(f'Страница PDF {ev.page} · Текст оферты',exact=False)).to_be_visible()
                 page.screenshot(path=str(DEST/'evidence-desktop.png'))
                 results['evidence_navigation_verified'] = True
                 page.set_viewport_size({'width':390,'height':844})

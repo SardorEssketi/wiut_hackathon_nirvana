@@ -1,0 +1,67 @@
+{
+  "checked_at": "2026-10-10T18:50:57.598144+00:00",
+  "cases": [
+    {
+      "id": "OSAGO_SUM",
+      "status": "POTENTIAL_CONFLICT",
+      "page": 2,
+      "localization": "precise"
+    },
+    {
+      "id": "OSAGO_PAYMENT",
+      "status": "POTENTIAL_CONFLICT",
+      "page": 3,
+      "localization": "precise"
+    },
+    {
+      "id": "OSAGO_DECISION_NOTICE",
+      "status": "POTENTIAL_CONFLICT",
+      "page": 4,
+      "localization": "precise"
+    },
+    {
+      "id": "gross_latin",
+      "statuses": [
+        "UNVERIFIABLE",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "localization": "precise_unavailable",
+      "date_context": "Degraded text layer; value recognition unsupported. Coverage context visually inspected on page 6.",
+      "legal_violation_established": false
+    },
+    {
+      "id": "gross_cyrillic",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "localization": "precise",
+      "date_context": "Historical header; current bytes contain newer sum. Not labelled as an active 2026 contract or legal violation.",
+      "legal_violation_established": false
+    },
+    {
+      "id": "inson_russian",
+      "statuses": [
+        "UNVERIFIABLE",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "localization": "precise_unavailable",
+      "date_context": "Offer on pages 1–8; appended rules begin on page 9. Amount has letter O in the extracted digits; do not silently coerce it to zero.",
+      "legal_violation_established": false
+    }
+  ],
+  "errors": [],
+  "external_requests": [],
+  "success": true,
+  "missing_evidence_has_no_pdf_action": true,
+  "stale_selection_discarded": true,
+  "original_annotations_preserved": true,
+  "unknown_date_abstention": true,
+  "wrong_event_abstention": true,
+  "session_isolation": true,
+  "a4_print": true,
+  "precise_browser_png_matches_worker": true
+}

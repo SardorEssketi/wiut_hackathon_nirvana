@@ -217,6 +217,9 @@ ROWS = [
     ("OSAGO (выбрано пользователем)", "OSAGO (user selected)", "OSAGO (foydalanuvchi tanlagan)", "ОСАГО (фойдаланувчи танлаган)"),
 ]
 
+from .finding_copy import ROWS as FINDING_ROWS
+ROWS += FINDING_ROWS
+
 TRANSLATIONS = {code: {} for code in LANGUAGES}
 for row in ROWS:
     for code, value in zip(("ru", "en", "uz-Latn", "uz-Cyrl"), row):

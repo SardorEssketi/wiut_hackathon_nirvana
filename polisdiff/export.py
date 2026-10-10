@@ -51,6 +51,7 @@ h2,h3,h4,.badge{break-after:avoid}tr,.review,.metadata{break-inside:avoid}blockq
 
 
 def html_report(report: Report, language="ru") -> str:
+    from .presentation import finding_details
     # Translate trusted presentation copy before escaping. Original evidence is never translated.
     e = lambda value: escape(str(value), quote=True)
     t = lambda text, **values: tr(text, language, **values)
@@ -80,18 +81,20 @@ def html_report(report: Report, language="ru") -> str:
     parts += [tag('th', t(text)) for text in ['Проверка', 'Результат', 'Наблюдение', 'Страница PDF', 'Ручная проверка']]
     parts.append('</tr></thead><tbody>')
     for f in report.findings:
+        details = finding_details(report, f, language)
         pages = ', '.join(str(p) for p in sorted({ev.page for ev in f.evidence})) or t('Нет доказательства')
         parts.append('<tr>' + ''.join(tag('td', value) for value in [rule_name(f, language),
-            STATUS_ICONS[f.status] + ' ' + status_labels[f.status], observation(f, language), pages,
+            STATUS_ICONS[f.status] + ' ' + status_labels[f.status], details['found'], pages,
             t('Да') if f.manual_review_required else t('Не запрошена')]) + '</tr>')
     parts += ['</tbody></table></section><section>', tag('h2', t('Подробные результаты'))]
     for f in report.findings:
+        details = finding_details(report, f, language)
         parts += [f'<article class="finding" id="{e(f.rule_id)}">', tag('h3', rule_name(f, language)),
             f'<p class="badge {f.status.value}">{e(STATUS_ICONS[f.status])} {e(status_labels[f.status])}</p>',
-            heading('Что проверяли'), tag('p', scopes.get(f.rule_id, f.check_scope or f.rule_name)),
-            heading('Что найдено'), tag('p', observation(f, language)),
-            heading('Ориентир для выбранной даты'), tag('p', expected(f, language)),
-            heading('Почему получен результат'), tag('p', explanation(f, language)), heading('Доказательства из документа')]
+            heading('Что проверяли'), tag('p', details['checked']),
+            heading('Что найдено'), tag('p', details['found']),
+            heading('Ориентир для выбранной даты'), tag('p', details['reference']),
+            heading('Почему получен результат'), tag('p', details['reason']), heading('Доказательства из документа')]
         if not f.evidence:
             parts.append(tag('p', t('Подходящее доказательство не найдено. Цитата и страница отсутствуют.')))
         for ev in f.evidence:
@@ -99,14 +102,19 @@ def html_report(report: Report, language="ru") -> str:
                          f'<blockquote dir="auto">{e(ev.quote)}</blockquote>')
         parts += [heading('Официальный текст и редакция'), tag('p', f.provision_reference),
             tag('p', t('Официальные цитаты и сведения о редакции сохранены на языке источника; перевод интерфейса не является правовым толкованием.')),
-            f'<p>{source_link(f.source_url, language)}</p>', tag('p', period(f, language))]
+            f'<p>{source_link(f.source_url, language)}</p>', tag('p', details['period']), tag('p', details['date_note'])]
         parts.append(f'<blockquote dir="auto">{e(f.source_quote)}</blockquote>' if f.source_quote else
             tag('p', t('Цитата применимой версии не выбрана. Не используйте текущий текст как основание для неизвестной даты.')))
         if f.source_version_note:
             parts.append(tag('p', f.source_version_note))
         parts += [heading('Неопределенность'), tag('p', '; '.join(uncertainty_text(code, language) for code in f.uncertainty)
                 or t('Отдельные причины не зарегистрированы; правовая интерпретация все равно требует проверки.')),
-            tag('p', f.reviewer_status), heading('Следующий шаг'), tag('p', next_step(f, language))]
+            tag('p', f.reviewer_status), heading('Следующий шаг'), tag('p', next_step(f, language)),
+            heading('Проверка перед исправлением'), tag('p', details['remediation_kind']), '<ol>']
+        parts += [tag('li', check) for check in details['verification']]
+        parts += ['</ol>', heading('Условное действие'), tag('p', details['remediation']),
+            heading('Состояние проверки'), tag('p', details['verification_state']),
+            tag('p', t('Юридическая проверка необходима · PENDING_LEGAL_REVIEW'))]
         for r in (r for r in report.reviews if r.rule_id == f.rule_id):
             parts.append(f'<p class="review">{e(t("Аннотация: {action} · {timestamp}", action=review_labels[r.action], timestamp=r.timestamp.isoformat()))}\n{e(r.rationale)}</p>')
         parts.append('</article>')

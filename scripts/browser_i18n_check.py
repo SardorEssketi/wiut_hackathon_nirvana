@@ -70,7 +70,12 @@ def overflow(page):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--url',default='http://localhost:8501')
+    parser.add_argument('--output',default='i18n_browser_results.json')
+    parser.add_argument('--artifact-dir',default=None)
     args = parser.parse_args()
+    global DEST
+    if args.artifact_dir:
+        DEST = ROOT / args.artifact_dir
     for _ in range(30):
         try:
             with urlopen(args.url+'/_stcore/health',timeout=1) as response:
@@ -121,10 +126,10 @@ def main():
                 assert overflow(page) == 0
                 page.screenshot(path=str(DEST/f'{key}-mobile.png'),full_page=True)
                 ev=report.findings[0].evidence[0]
-                page.get_by_role('button',name=tr('Посмотреть доказательство · стр. {page}',language,page=ev.page),exact=True).first.click()
+                page.get_by_role('button',name=tr('Открыть в PDF · стр. {page}',language,page=ev.page),exact=True).first.click()
                 settled(page)
                 active_results=page.get_by_role('tabpanel',name=tr('Результаты',language),exact=True)
-                viewer=active_results.get_by_test_id('stExpander').filter(has_text=tr('Выбранное доказательство в PDF',language))
+                viewer=active_results.locator('[data-testid="stExpander"]').filter(has=page.locator(':scope > details > summary').get_by_text(tr('Выбранное доказательство в PDF',language),exact=True))
                 expect(viewer).to_have_count(1)
                 expect(viewer.get_by_text(tr('Цитата выбранной находки',language),exact=True)).to_be_visible()
                 expect(viewer.get_by_test_id('stImage')).to_have_count(1)
@@ -214,7 +219,7 @@ def main():
             session_local_language=True,print_a4_all_languages=True)
         context.close()
         browser.close()
-    (ROOT/'evaluation/i18n_browser_results.json').write_text(json.dumps(results,ensure_ascii=False,indent=2),encoding='utf-8')
+    (ROOT/'evaluation'/args.output).write_text(json.dumps(results,ensure_ascii=False,indent=2),encoding='utf-8')
     print('All three new interface languages, document scripts, desktop/mobile, state and A4 exports verified.')
 
 

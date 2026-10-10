@@ -1,7 +1,9 @@
 from datetime import date
 import time
 import streamlit as st
-from polisdiff.extraction import PDFError, render_page
+from polisdiff.extraction import PDFError, render_page, render_evidence
+from polisdiff.localization import quote_html
+from html import escape
 from polisdiff.runtime import web_retriever
 from polisdiff.service import analyze_pdf, BusyError
 from polisdiff.export import add_review, html_report
@@ -12,7 +14,7 @@ from polisdiff.presentation import STATUS_LABELS, STATUS_ICONS, REVIEW_LABELS, S
 from polisdiff.models import Status
 from functools import partial
 from polisdiff.i18n import LANGUAGES, tr
-from polisdiff.presentation import labels, rule_name
+from polisdiff.presentation import labels, rule_name, finding_details
 st.set_page_config(page_title='PolisDiff AI', page_icon='🔎', layout='wide')
 with st.sidebar:
     language = st.selectbox('Language / Til / Тил / Язык', list(LANGUAGES), format_func=LANGUAGES.get,
@@ -99,28 +101,30 @@ if analyze and data is not None:
         except Exception:
             st.error(t('Обработка не завершена; отчет не создан. Попробуйте поиск по словам или другой текстовый PDF. Это не означает нарушение в договоре.'))
 
-def show_page(doc, pdf_data, page_number, selected_id=None):
+def show_page(doc, pdf_data, page_number, selected_id=None, finding=None, ev=None):
     page = doc.pages[page_number - 1]
     st.caption(t('Страница PDF {page} · {section} · {readability}', page=page_number, section=SECTION_LABELS.get(page.section, page.section), readability=t('текст читается' if page.readable else 'текст поврежден или отсутствует')))
     selected = next((p for p in doc.passages if p.id == selected_id and p.page == page_number), None)
     if selected:
         st.write('**' + t('Цитата выбранной находки') + '**')
-        st.code(selected.text, language=None, wrap_lines=True)
-    left, right = st.columns([1, 1])
-    with left:
-        try:
-            key = (doc.sha256, page_number)
-            cached = st.session_state.get('preview')
-            if not cached or cached[0] != key:
-                cached = (key, render_page(pdf_data, page_number))
-                st.session_state.preview = cached
-            st.image(cached[1], width='stretch')
-        except PDFError:
-            st.error(t('Изображение страницы недоступно. Проверьте оригинальный PDF.'))
-    with right:
+        text = quote_html(ev, finding) if ev is not None and finding is not None else escape(selected.text)
+        st.markdown('<blockquote style="white-space:pre-wrap;overflow-wrap:anywhere">' + text + '</blockquote>', unsafe_allow_html=True)
+    try:
+        key = (doc.sha256, page_number, finding.model_dump_json() if finding else None,
+               ev.model_dump_json() if ev else None)
+        cached = st.session_state.get('preview')
+        if not cached or cached[0] != key:
+            result = render_evidence(pdf_data, doc, finding, ev) if ev is not None and finding is not None else dict(png=render_page(pdf_data, page_number), location={"state": "precise_unavailable"})
+            cached = (key, result)
+            st.session_state.preview = cached
+        st.image(cached[1]['png'], width='stretch', output_format='PNG')
+        state = cached[1]['location']['state']
+        st.caption(t('Точная подсветка проверенного значения или срока.' if state == 'precise' else 'Точная подсветка PDF недоступна. Используйте исходную цитату и страницу; координаты блоков не применяются.'))
+    except PDFError:
+        st.error(t('Изображение страницы недоступно. Проверьте оригинальный PDF.'))
+    with st.expander(t('Исходный текст страницы')):
         st.write('**' + t('Исходный текст страницы') + '**')
         st.code(page.text or t('Текстовый слой отсутствует'), language=None, wrap_lines=True)
-    st.caption(t('Цитаты сохранены без перевода. Координаты объединяют блоки текста и недостаточно точны для выделения цитаты; показана правильная страница без ложной подсветки.'))
 if 'report' in st.session_state and upload is not None:
     report, doc = (st.session_state.report, st.session_state.document)
     review_context = f'{report.document_sha256}_{report.created_at.isoformat()}'
@@ -129,8 +133,9 @@ if 'report' in st.session_state and upload is not None:
     st.text(t('Документ: {name} · страниц: {pages} · {languages}', name=upload.name, pages=report.page_count, languages=', '.join(report.detected_languages)))
     st.caption(t('Дата договора: {applicable} · дата аудита: {audit} · проверок: {checks}', applicable=report.applicable_date or t('не подтверждена'), audit=report.audit_date, checks=len(report.findings)))
     c = counts(report)
-    cols = st.columns(4)
-    for col, status, label in zip(cols, Status, [t('Согласуются с критерием'), t('Возможные несоответствия'), t('Не найдены'), t('Недостаточно данных')]):
+    cols = st.columns(5)
+    cols[0].metric(t('Проверено условий'), len(report.findings))
+    for col, status, label in zip(cols[1:], Status, [t('Согласуются с критерием'), t('Возможные несоответствия'), t('Не найдены'), t('Недостаточно данных')]):
         col.metric(label, c[status])
     if report.retrieval_requested != report.retrieval_used:
         st.warning(t('AI-модель недоступна. Анализ выполнен поиском по словам, без AI. Фактический режим указан в отчете.'))
@@ -143,37 +148,61 @@ if 'report' in st.session_state and upload is not None:
     st.caption(t('Только три условия; полнота поиска не гарантируется. Все интерпретации: PENDING_LEGAL_REVIEW.'))
     result_tab, evidence_tab, review_tab, source_tab = st.tabs([t('Результаты'), t('Доказательства документа'), t('Решение аналитика'), t('Источники и ограничения')])
     with result_tab:
-        for f in report.findings:
+        ordered = sorted(report.findings, key=lambda f: f.status != Status.POTENTIAL_CONFLICT)
+        for f in ordered:
+            details = finding_details(report, f, language)
+            active = st.session_state.get('evidence_rule') == f.rule_id
             with st.container(border=True):
                 st.subheader(rule_name(f, language))
                 st.write(f'**{STATUS_ICONS[f.status]} {STATUS_LABELS[f.status]}**')
-                st.write('**' + t('Что проверяли') + '**')
-                st.write(SCOPES.get(f.rule_id, f.check_scope))
-                st.write('**' + t('Что найдено') + '**')
-                st.write(observation(f, language))
-                st.write('**' + t('Почему получен результат') + '**')
-                st.write(explanation(f, language))
-                st.write('**' + t('Ориентир для выбранной даты') + '**')
-                st.write(expected(f, language))
-                if f.source_quote:
-                    st.code(f.source_quote, language=None, wrap_lines=True)
-                st.caption(f'{f.provision_reference} · {period(f, language)}')
-                st.link_button(t('Официальный источник · LexUZ'), f.source_url)
-                st.write('**' + t('Доказательства') + '**')
+                st.write(details['found'])
+                st.caption(details['reference'])
+                st.write(details['reason'])
                 if not f.evidence:
                     st.write(t('Подходящее доказательство не найдено. Цитата и страница отсутствуют.'))
                 for i, ev in enumerate(f.evidence):
-                    st.caption(t('Страница PDF {page}', page=ev.page) + ' · ' + SECTION_LABELS.get(ev.section, ev.section))
-                    st.code(ev.quote, language=None, wrap_lines=True)
-                    st.button(t('Посмотреть доказательство · стр. {page}', page=ev.page), key=f'evidence_{f.rule_id}_{i}', on_click=select_evidence, args=(st.session_state, ev.page, ev.passage_id, f.rule_id))
-                    if st.session_state.get('evidence_selection') == ev.passage_id and st.session_state.get('evidence_rule') == f.rule_id:
-                        with st.expander(t('Выбранное доказательство в PDF'), expanded=True):
-                            show_page(doc, data, ev.page, ev.passage_id)
-                st.write('**' + t('Следующий шаг') + '**')
-                st.write(next_step(f, language))
-                for r in (r for r in report.reviews if r.rule_id == f.rule_id):
-                    st.caption(t('Аннотация аналитика: {action} · {timestamp}', action=REVIEW_LABELS[r.action], timestamp=r.timestamp.isoformat()))
-                    st.text(r.rationale)
+                    st.button(t('Открыть в PDF · стр. {page}', page=ev.page), key=f'evidence_{f.rule_id}_{i}', type='primary' if i == 0 else 'secondary', on_click=select_evidence, args=(st.session_state, ev.page, ev.passage_id, f.rule_id))
+                with st.expander(t('Доказательства и решение'), expanded=active):
+                    st.write('**' + t('Что проверяли') + '**')
+                    st.write(details['checked'])
+                    evidence_col, resolution_col = st.columns([1, 1])
+                    with evidence_col:
+                        st.write('**' + t('Доказательства из документа') + '**')
+                        if not f.evidence:
+                            st.write(t('Подходящее доказательство не найдено. Цитата и страница отсутствуют.'))
+                        for ev in f.evidence:
+                            st.caption(t('Страница PDF {page}', page=ev.page) + ' · ' + SECTION_LABELS.get(ev.section, ev.section))
+                            if active and st.session_state.get('evidence_selection') == ev.passage_id:
+                                with st.expander(t('Выбранное доказательство в PDF'), expanded=True):
+                                    show_page(doc, data, ev.page, ev.passage_id, f, ev)
+                            else:
+                                st.markdown('<blockquote style="white-space:pre-wrap;overflow-wrap:anywhere">' + quote_html(ev, f) + '</blockquote>', unsafe_allow_html=True)
+                    with resolution_col:
+                        st.write('**' + t('Официальный текст и редакция') + '**')
+                        st.write(details['reference'])
+                        if f.source_quote:
+                            st.code(f.source_quote, language=None, wrap_lines=True)
+                        else:
+                            st.write(t('Цитата применимой версии не выбрана. Не используйте текущий текст как основание для неизвестной даты.'))
+                        st.caption(f"{details['provision_reference']} · {details['period']}")
+                        st.link_button(t('Официальный источник · LexUZ'), f.source_url)
+                        st.caption(details['date_note'])
+                        if f.source_version_note:
+                            st.text(f.source_version_note)
+                        st.write('**' + t('Почему получен результат') + '**')
+                        st.write(details['reason'])
+                        st.write('**' + t('Проверка перед исправлением') + '**')
+                        st.caption(details['remediation_kind'])
+                        for check in details['verification']:
+                            st.write('• ' + check)
+                        st.write('**' + t('Условное действие') + '**')
+                        st.write(details['remediation'])
+                        st.write('**' + t('Состояние проверки') + '**')
+                        st.write(details['verification_state'])
+                        st.caption(t('Юридическая проверка необходима · PENDING_LEGAL_REVIEW'))
+                        for r in (r for r in report.reviews if r.rule_id == f.rule_id):
+                            st.caption(t('Аннотация аналитика: {action} · {timestamp}', action=REVIEW_LABELS[r.action], timestamp=r.timestamp.isoformat()))
+                            st.text(r.rationale)
                 with st.expander(t('Технические детали · ') + f.rule_id):
                     st.json(f.model_dump(mode='json'))
                     st.caption(t('Запрошено: {requested}; выполнено: {used}', requested=MODE_LABELS[report.retrieval_requested], used=MODE_LABELS[report.retrieval_used]))
@@ -189,7 +218,9 @@ if 'report' in st.session_state and upload is not None:
             select_evidence(st.session_state, selected_page or 1, 'manual')
             st.rerun()
         if st.session_state.get('evidence_selection'):
-            show_page(doc, data, st.session_state.evidence_page, st.session_state.evidence_selection)
+            selected_f = next((f for f in report.findings if f.rule_id == st.session_state.get('evidence_rule')), None)
+            selected_ev = next((ev for ev in selected_f.evidence if ev.passage_id == st.session_state.evidence_selection), None) if selected_f else None
+            show_page(doc, data, st.session_state.evidence_page, st.session_state.evidence_selection, selected_f, selected_ev)
     with review_tab:
         st.subheader(t('Аннотация аналитика'))
         st.write(t('Запись не меняет результат алгоритма и не является юридической сертификацией. Она хранится в этой сессии; экспортируйте ее перед очисткой.'))
