@@ -293,6 +293,18 @@ was used.
 
 ## Systematic checks and remaining constraints
 
+### Late remote addition — Dev Container configuration not validated
+
+After native verification, the requested push detected remote commit `987d3b7`,
+which adds `.devcontainer/devcontainer.json`. It was inspected and merged without
+changing the audited application files. Its `postAttachCommand` disables Streamlit
+CORS and XSRF protection; this is a **Medium configuration concern** if that
+environment is used. It also installs dependencies during initialization. No
+Dev Container or Codespaces session was started, and its environment, networking
+and model provisioning were not validated. The unrelated remote configuration
+was preserved; enabling default protections and validating that environment remain
+outstanding. Native localhost browser/test results do not certify this configuration.
+
 PDF parsing: header/size/page limits precede inference; malformed/encrypted/scan
 cases, unsupported page indices, isolated-worker timeouts and gate cleanup are
 tested. Original offsets are checked against the page text on every benchmark

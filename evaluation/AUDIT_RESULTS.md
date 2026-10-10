@@ -118,3 +118,8 @@ licensing, qualified legal review, a broader unexposed evaluation, full accessib
 testing, hard Windows memory limits, durable authenticated reviews and rebuilding
 the older Docker image remain future work. These limitations are not replaced by
 the green local regression suite.
+
+The late remote Dev Container addition (`987d3b7`) was preserved in a merge after
+verification. It changes no benchmarked application source files and was not run.
+Its disabled CORS/XSRF startup flags are recorded as an outstanding configuration
+concern in the audit report; these results cover native localhost only.
