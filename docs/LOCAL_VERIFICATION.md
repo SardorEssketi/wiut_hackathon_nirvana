@@ -1,5 +1,11 @@
 # Actual local verification
 
+**Historical verification of the pre-redesign source/image.** Current native
+localhost checks are documented in [AUDIT_REPORT.md](AUDIT_REPORT.md) and
+[AUDIT_RESULTS.md](../evaluation/AUDIT_RESULTS.md). The existing Docker image was
+not rebuilt during this audit, so the measurements below do not validate the
+redesigned application inside that image.
+
 Recorded: 2026-10-10T11:40:29.321750+00:00. Source checkpoint: `ff40517a44be70ad2001effb6d9d83c1b1a8e7f6`.
 
 **Local prototype only; not hackathon submission-ready.** No public hosting

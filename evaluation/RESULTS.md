@@ -1,5 +1,10 @@
 # Actual evaluation results
 
+**Historical pre-audit measurement, preserved unchanged below.** The wording
+formerly called fresh was exposed during the redesign audit and must now be
+treated as regression data. See [post-audit measurements](AUDIT_RESULTS.md) and
+[audit details](../docs/AUDIT_REPORT.md); they do not replace these results.
+
 Measurement timestamp: 2026-10-10T10:20:31.978328+00:00. Platform: Windows-11-10.0.26200-SP0.
 
 See [raw measurements](benchmark_results.json), [dataset manifest](dataset_manifest.json),

@@ -15,13 +15,17 @@
 6. Section detection is a rules-heading/attribution heuristic. Verified INSON
    boundary is page 9, but unseen appendix layouts can be missed. Preview/review
    is necessary; appendix text never proves the author's contractual terms match.
-7. Limited deterministic wording extraction: the fresh Russian verb
-   `перечисляется` was retrieved correctly but not recognized as a payment event.
-   This caused one missed potential conflict in fresh evaluation. Preserve this
-   failure in measurements; broaden extraction with new independent cases later.
-8. Semantic-only retrieval underperforms lexical/hybrid status accuracy on the
-   exposed regression fixtures. The current small evaluation does not establish
-   an AI accuracy benefit. Real samples show extensive abstention.
+7. Deterministic wording extraction remains limited. The historical failure on
+   `перечисляется` is preserved in the original measurements and fixed by narrow
+   finite-verb recognition with wrong-event, negation and conditional regression
+   cases. Those formerly fresh fixtures are now exposed regression data; they
+   cannot support an independent generalization claim. Strict trigger parsing may
+   abstain on legitimate but unrecognized paraphrases.
+8. Historical semantic-only retrieval underperformed lexical/hybrid status
+   accuracy. A conservative offer-topic scan now protects all modes against top-K
+   omissions, including competing values. It only covers recognized topics, not
+   every possible paraphrase. The evaluation does not establish an AI advantage.
+   Real samples still show extensive abstention (8 of 9 rule results in this audit).
 9. Synthetic labels are original AI-assisted engineering annotations, not legal
    expert ground truth. Three fresh documents are too few for generalization.
    Real samples have page labels, no complete transcription/legal-status labels.
@@ -43,3 +47,11 @@
     establish performance on any future public host.
 15. Application distribution-license decision and PyMuPDF AGPL/commercial obligations
     must be resolved before public release. No insurer PDF redistribution rights.
+16. AI embeddings are limited to 512 tokens per passage. Long passages can be
+    truncated for ranking; original evidence text is retained, and the scope
+    guard examines the complete extracted passage. Windows extraction has a wall
+    timeout but no verified hard process memory cap. Decompression/native-parser
+    failures remain a reason to use an isolated approved environment.
+17. This audit verifies the updated native localhost application. Previously
+    recorded Docker/image verification applies to the older source checkpoint;
+    the image must be rebuilt and retested before use with the redesign.

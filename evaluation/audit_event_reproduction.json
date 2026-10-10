@@ -1,0 +1,35 @@
+{
+  "checked_at": "2026-10-10T12:47:04.658673+00:00",
+  "baseline_commit": "41dcafd",
+  "success": true,
+  "cases": [
+    {
+      "id": "court",
+      "rule_id": "OSAGO_PAYMENT",
+      "original_synthetic_term": "Страховое возмещение выплачивается в срок 4 рабочих дней после принятия решения суда.",
+      "baseline_status": "MATCH_FOUND",
+      "current_status": "UNVERIFIABLE",
+      "baseline_reason": "Найдено явное условие, согласующееся с числовым ориентиром и проверяемым событием. Вывод касается только этого условия.",
+      "current_reason": "Не подтвержден отсчет от принятия решения страховщиком."
+    },
+    {
+      "id": "accident",
+      "rule_id": "OSAGO_DECISION_NOTICE",
+      "original_synthetic_term": "Страхователю сообщается решение о страховом возмещении в течение 12 дней после ДТП, письменное заявление хранится в деле.",
+      "baseline_status": "MATCH_FOUND",
+      "current_status": "UNVERIFIABLE",
+      "baseline_reason": "Найдено явное условие, согласующееся с числовым ориентиром и проверяемым событием. Вывод касается только этого условия.",
+      "current_reason": "Не подтверждены обращение и адресат уведомления."
+    },
+    {
+      "id": "transfer",
+      "rule_id": "OSAGO_PAYMENT",
+      "original_synthetic_term": "Страховое возмещение перечисляется получателю в срок 9 рабочих дней после принятия решения страховщиком.",
+      "baseline_status": "NOT_FOUND",
+      "current_status": "POTENTIAL_CONFLICT",
+      "baseline_reason": "В извлеченном тексте и выбранных поиском фрагментах условие не найдено. Это не доказательство нарушения.",
+      "current_reason": "Явное значение 9 working_days потенциально противоречит ориентиру 5 для выбранной даты. Требуется правовая проверка."
+    }
+  ],
+  "ground_truth": "Engineering regression assertions, not legal labels."
+}

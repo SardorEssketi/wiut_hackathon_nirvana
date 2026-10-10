@@ -35,8 +35,13 @@ Thousands separators and decimal conventions are parsed deterministically.
 512-token model limit. Queries are authored in all three language variants.
 BM25 uses six-character term prefixes, not a learned model. Hybrid mode uses
 reciprocal-rank fusion. Offer and appendix each receive a bounded top-8 search
-per rule so copied statutes cannot crowd the offer out. The cached model/query
-vectors contain no uploaded text. Passage vectors are cleared after analysis.
+per rule so copied statutes cannot crowd the offer out. A deterministic topic
+scan additionally admits scoped offer passages, preventing ranking from hiding
+competing or lower-ranked numeric clauses. It does not validate those clauses;
+the engine still checks event, date, currency, ambiguity and section.
+The model is cached; each analysis receives fresh mutable passage/query state.
+Query vectors are cached per retriever and contain only catalogue queries, not
+uploaded text. Passage vectors are cleared after analysis.
 
 `engine.py`: scope/event/unit-aware extraction with a deliberately limited
 vocabulary. Select a source version using a user-confirmed applicable date;
@@ -46,10 +51,19 @@ References and statutory appendices remain evidence of their own context.
 
 `service.py`: one process-wide active analysis with immediate busy feedback;
 real extraction/retrieval/evaluation timings. `runtime.py` shares one cached model
-between semantic and hybrid web search modes; each retriever has separate passage
-state. `app.py` caches these retrievers for
-the container/process lifetime; document state and analyst actions stay per session.
+between semantic and hybrid web search modes, with serialized initialization;
+each analysis gets a separate retriever. `app.py` does not cache mutable
+retrievers. Document state and analyst actions stay per session.
 Report exports contain original exact quotations, pages and source-version metadata.
+
+`presentation.py` supplies deterministic Russian summaries, status labels,
+observations, reference values and next steps to both Streamlit and HTML.
+`session.py` fingerprints PDF bytes, both dates and requested mode; a change
+invalidates findings, reviews and previews. Upload/configuration widgets gain
+fresh identities after clearing, and review forms are keyed to the report's
+document hash and creation time. No browser state can resurrect a prior review
+form on a new report. Report schema 1.0 has additive optional provenance fields;
+historical JSON remains readable.
 
 No generative LLM supplies legal interpretations or compliance decisions. Network
 access is used only to provision dependencies/model and separately research

@@ -31,6 +31,12 @@ $env:POLISDIFF_MODEL_REVISION = '614241f622f53c4eeff9890bdc4f31cfecc418b3'
 ```
 
 The existing workspace `.venv` and `models/` are ready after this session's setup.
+For a loopback-only local launch, use:
+
+```powershell
+.venv/Scripts/python.exe -m streamlit run app.py --server.address=127.0.0.1 --server.port=8501
+```
+
 The app honors `PORT` (default 8501) and binds `0.0.0.0`; firewall exposure is an
 operator decision. `.env.example` is a reference; no dotenv autoloading or
 credentials are needed. Runtime explicitly disables Hugging Face downloads.
@@ -53,6 +59,30 @@ no uploaded PDF/text to external AI APIs. The local model is cached for the serv
 process lifetime. Model/download metadata is in `evaluation/model_manifest.json`.
 
 ## Use
+
+Version 0.2 presents a Russian preliminary review dashboard: a count-based
+summary, plain-language finding cards, original quotations, source versions,
+neutral next steps and page navigation. There is no compliance percentage or
+whole-contract approval. The contract date starts **empty**; confirming the
+checkbox alone does not invent a date. The audit date records when you check,
+while the contract date selects the reference version. Unknown/unsupported dates
+abstain before any numeric conclusion.
+
+Use “Посмотреть доказательство” on a finding to open the exact PDF page and
+original text directly beneath that finding. Bounding boxes are coarse unions of extraction blocks, so no
+misleading visual highlight is drawn. Advanced search and technical metadata
+remain collapsible; the actual mode and any lexical fallback are visible.
+
+Analyst annotations preserve the original algorithm status. A changed document,
+date or search mode invalidates the previous report and review form. Clearing the
+session resets the upload and configuration. Export before clearing: records are
+not a durable legal audit database.
+
+“Скачать HTML отчет” produces a self-contained Russian report with executive
+summary, overview, findings, legal limitations, reviews and technical appendix.
+Open it locally and use **Print → Save as PDF** for A4 output. JSON schema 1.0
+remains readable; optional `check_scope`, `source_version_note` and
+`candidate_selection` fields add provenance without renaming existing fields.
 
 1. Upload an authorized OSAGO PDF, up to 10 MiB and 80 pages.
 2. Choose the audit date and explicitly confirm the contract applicability date.
@@ -82,14 +112,16 @@ Developer dependencies and Chromium are required for browser checks.
 
 ```powershell
 .venv/Scripts/python.exe -m pip install -r requirements-dev.txt
-.venv/Scripts/python.exe evaluation/generate_fixtures.py
-.venv/Scripts/python.exe -m pytest -q --basetemp=local_data/pytest_temp --junitxml=evaluation/tests.final.xml
-.venv/Scripts/python.exe scripts/test_summary.py evaluation/tests.final.xml
+.venv/Scripts/python.exe -m pytest -q --basetemp=local_data/pytest_temp --junitxml=evaluation/audit_tests.xml
+.venv/Scripts/python.exe scripts/test_summary.py evaluation/audit_tests.xml
 .venv/Scripts/python.exe scripts/research_sources.py
-.venv/Scripts/python.exe evaluation/benchmark.py
+.venv/Scripts/python.exe evaluation/benchmark.py --output-dir local_data/audit_post --label post-audit-regression
 .venv/Scripts/python.exe -m playwright install chromium
 .venv/Scripts/python.exe scripts/browser_check.py
 .venv/Scripts/python.exe scripts/local_smoke.py
+.venv/Scripts/python.exe scripts/browser_fallback_check.py
+.venv/Scripts/python.exe scripts/audit_public_samples.py
+.venv/Scripts/python.exe scripts/audit_event_regression.py
 .venv/Scripts/python.exe scripts/integrity_check.py
 ```
 
@@ -100,9 +132,12 @@ scanned-page abstention, dates, Unicode, original evidence and fresh synthetic t
 `--basetemp` is inside this project to avoid the observed Windows temp ACL failure.
 Pytest resets that dedicated temporary directory on subsequent runs.
 
-Results: [evaluation report](evaluation/RESULTS.md),
-[raw benchmark](evaluation/benchmark_results.json),
-[local browser record](evaluation/browser_results.json).
+Current results: [audit measurements](evaluation/AUDIT_RESULTS.md),
+[raw benchmark](evaluation/audit_benchmark_results.json),
+[local browser record](evaluation/audit_browser_results.json).
+Historical results remain in [the original evaluation report](evaluation/RESULTS.md)
+and `evaluation/benchmark_results.json`. Use the checked-in fixture PDFs for
+reproduction; regenerating them can change hashes and is a separate authoring step.
 Small synthetic labels are not expert legal validation; the original evaluation
 split was exposed while debugging and is identified as regression evaluation.
 Fresh wording is reported separately. There is no independently verified public URL.
@@ -129,6 +164,29 @@ Review [deployment preparation](docs/DEPLOYMENT.md) and
 Future hosting must accommodate measured memory, startup and CPU latency.
 Native and Docker browser results include actual historical and unknown-date checks;
 the local verification record identifies the tested image and matching source commit.
+
+## Redesign and engineering audit
+
+Read [the audit report](docs/AUDIT_REPORT.md) and
+[post-audit measurements](evaluation/AUDIT_RESULTS.md) for fresh commands,
+confirmed defects, tests and remaining limits. The original 67-test record and
+88.9% fresh accuracy / 80% conflict recall remain historical measurements.
+The former fresh fixtures influenced this audit and are now explicitly regression
+data, not an independent holdout. No AI accuracy advantage has been established.
+
+The audit also rechecked the original public PDFs. INSON pages 9–66 are correctly
+classified as appendices in the active extractor; the older
+`real_extraction.json` is preserved as a stale historical inspection. A top-K
+retrieval omission of GROSS Cyrillic page 5 was fixed by a conservative offer-topic
+scan. That document's 2024 header and newer amount still need specialist date
+review. Original insurer PDFs and full reports remain ignored in `local_data/`.
+
+Browser checks now write `evaluation/audit_browser_results.json`; smoke/fallback
+checks write separately named audit artifacts. Benchmark reruns default to
+`evaluation/post_audit/`; use `--reports` to also write synthetic per-case reports.
+They do not overwrite the original measurement files. No production deployment
+is part of this audit. The existing Docker image predates these changes and has
+not been rebuilt or revalidated by this audit.
 
 ## Documentation and release constraints
 

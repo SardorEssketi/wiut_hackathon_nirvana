@@ -1,0 +1,162 @@
+{
+  "checked_at": "2026-10-10T12:59:32.425119+00:00",
+  "url": "http://localhost:8501",
+  "public_deployment_tested": false,
+  "cases": [
+    {
+      "id": "synthetic_uz-Latn",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "MATCH_FOUND",
+        "MATCH_FOUND"
+      ],
+      "page_count": 4,
+      "retrieval_used": "hybrid",
+      "applicable_date": "2026-01-05",
+      "evidence_verified": true,
+      "timings_seconds": {
+        "retrieval": 0.4089739999981248,
+        "evaluation": 0.007273900002473965,
+        "analysis": 0.41624850000152946,
+        "model_initialization": 11.649197800001275,
+        "extraction": 0.4210414999979548,
+        "end_to_end": 0.8373613999974623
+      },
+      "mobile_horizontal_overflow_px": 0
+    },
+    {
+      "id": "synthetic_uz-Cyrl",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "MATCH_FOUND",
+        "MATCH_FOUND"
+      ],
+      "page_count": 4,
+      "retrieval_used": "hybrid",
+      "applicable_date": "2026-01-05",
+      "evidence_verified": true,
+      "timings_seconds": {
+        "retrieval": 0.8940336000014213,
+        "evaluation": 0.005343899996660184,
+        "analysis": 0.8993782999968971,
+        "model_initialization": 11.649197800001275,
+        "extraction": 0.5294283999974141,
+        "end_to_end": 1.4288803999988886
+      },
+      "mobile_horizontal_overflow_px": 0
+    },
+    {
+      "id": "synthetic_ru-Cyrl",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "MATCH_FOUND",
+        "MATCH_FOUND"
+      ],
+      "page_count": 4,
+      "retrieval_used": "hybrid",
+      "applicable_date": "2026-01-05",
+      "evidence_verified": true,
+      "timings_seconds": {
+        "retrieval": 0.3774956999986898,
+        "evaluation": 0.003651200000604149,
+        "analysis": 0.38114710000081686,
+        "model_initialization": 11.649197800001275,
+        "extraction": 0.47964509999656,
+        "end_to_end": 0.8608401999990747
+      },
+      "mobile_horizontal_overflow_px": 0
+    },
+    {
+      "id": "independent_browser",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "POTENTIAL_CONFLICT",
+        "MATCH_FOUND"
+      ],
+      "page_count": 4,
+      "retrieval_used": "hybrid",
+      "applicable_date": "2026-03-19",
+      "evidence_verified": true,
+      "timings_seconds": {
+        "retrieval": 0.2487033999968844,
+        "evaluation": 0.0037748000031569973,
+        "analysis": 0.25247870000021067,
+        "model_initialization": 11.649197800001275,
+        "extraction": 0.4321388999996998,
+        "end_to_end": 0.6846630000000005
+      },
+      "mobile_horizontal_overflow_px": 0
+    },
+    {
+      "id": "gross_latin",
+      "statuses": [
+        "UNVERIFIABLE",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "page_count": 8,
+      "retrieval_used": "hybrid",
+      "applicable_date": "2026-01-05",
+      "evidence_verified": true,
+      "timings_seconds": {
+        "retrieval": 8.619943699999567,
+        "evaluation": 0.004122000002098503,
+        "analysis": 8.624066199998197,
+        "model_initialization": 11.649197800001275,
+        "extraction": 0.5052159000006213,
+        "end_to_end": 9.129368699999759
+      }
+    },
+    {
+      "id": "gross_cyrillic",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "page_count": 6,
+      "retrieval_used": "hybrid",
+      "applicable_date": "2024-09-06",
+      "evidence_verified": true,
+      "timings_seconds": {
+        "retrieval": 8.027137500001118,
+        "evaluation": 0.006742000001395354,
+        "analysis": 8.03387980000116,
+        "model_initialization": 11.649197800001275,
+        "extraction": 0.5445104999998875,
+        "end_to_end": 8.578465300000971
+      }
+    },
+    {
+      "id": "inson_russian",
+      "statuses": [
+        "UNVERIFIABLE",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "page_count": 66,
+      "retrieval_used": "hybrid",
+      "applicable_date": "2026-01-15",
+      "evidence_verified": true,
+      "timings_seconds": {
+        "retrieval": 40.06882820000101,
+        "evaluation": 0.0061167999956524,
+        "analysis": 40.074945799999114,
+        "model_initialization": 11.649197800001275,
+        "extraction": 0.6913410000015574,
+        "end_to_end": 40.76639340000111
+      }
+    }
+  ],
+  "errors": [],
+  "external_requests": [],
+  "caption_contrast_ratio": 7.06066040446198,
+  "review_export_and_a4_print_verified": true,
+  "evidence_navigation_verified": true,
+  "mobile_evidence_horizontal_overflow_px": 0,
+  "browser_session_isolation_verified": true,
+  "configuration_invalidation_and_unknown_date_verified": true,
+  "historical_and_semantic_verified": true,
+  "session_clear_and_reupload_verified": true,
+  "success": true
+}

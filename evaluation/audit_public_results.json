@@ -1,0 +1,523 @@
+{
+  "checked_at": "2026-10-10T12:33:10.946297+00:00",
+  "legal_status_labels": false,
+  "cases": [
+    {
+      "id": "gross_latin",
+      "sha256": "e6b3b1ece6e03525d118e8e691588c6c64791dae95974aeddeb5a95764eccc37",
+      "applicable_date": "2026-01-05",
+      "pages": 8,
+      "appendix_pages": [],
+      "warnings": [
+        "Page 8: insufficient or damaged text; OCR is not enabled. Manual review required."
+      ],
+      "retrieval_requested": "hybrid",
+      "retrieval_used": "hybrid",
+      "findings": [
+        {
+          "rule_id": "OSAGO_SUM",
+          "status": "UNVERIFIABLE",
+          "reason": "Есть ссылка на правила №141; включение условий по ссылке требует правовой проверки.",
+          "uncertainty": [
+            "incorporation_by_reference"
+          ],
+          "evidence_pages": [
+            1
+          ],
+          "topical_passage_probes": []
+        },
+        {
+          "rule_id": "OSAGO_PAYMENT",
+          "status": "UNVERIFIABLE",
+          "reason": "Есть ссылка на правила №141; включение условий по ссылке требует правовой проверки.",
+          "uncertainty": [
+            "incorporation_by_reference"
+          ],
+          "evidence_pages": [
+            1
+          ],
+          "topical_passage_probes": []
+        },
+        {
+          "rule_id": "OSAGO_DECISION_NOTICE",
+          "status": "UNVERIFIABLE",
+          "reason": "Есть ссылка на правила №141; включение условий по ссылке требует правовой проверки.",
+          "uncertainty": [
+            "incorporation_by_reference"
+          ],
+          "evidence_pages": [
+            1
+          ],
+          "topical_passage_probes": []
+        }
+      ]
+    },
+    {
+      "id": "gross_cyrillic",
+      "sha256": "b119187cfa309920498ced786f0c137f1d878ddb145ea7bbdaee2c62498df08f",
+      "applicable_date": "2024-09-06",
+      "pages": 6,
+      "appendix_pages": [],
+      "warnings": [],
+      "retrieval_requested": "hybrid",
+      "retrieval_used": "hybrid",
+      "findings": [
+        {
+          "rule_id": "OSAGO_SUM",
+          "status": "POTENTIAL_CONFLICT",
+          "reason": "Явное значение 8e+07 UZS потенциально противоречит ориентиру 4e+07 для выбранной даты. Требуется правовая проверка.",
+          "uncertainty": [],
+          "evidence_pages": [
+            5
+          ],
+          "topical_passage_probes": [
+            {
+              "page": 1,
+              "section": "offer",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 1,
+              "section": "offer",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 5,
+              "section": "offer",
+              "value": null,
+              "unit": null,
+              "problem": "Возможна премия или частичный лимит вместо общей суммы."
+            },
+            {
+              "page": 5,
+              "section": "offer",
+              "value": 80000000.0,
+              "unit": "UZS",
+              "problem": null
+            }
+          ]
+        },
+        {
+          "rule_id": "OSAGO_PAYMENT",
+          "status": "UNVERIFIABLE",
+          "reason": "Не найден единственный поддерживаемый срок в днях.",
+          "uncertainty": [
+            "Не найден единственный поддерживаемый срок в днях."
+          ],
+          "evidence_pages": [
+            4
+          ],
+          "topical_passage_probes": [
+            {
+              "page": 4,
+              "section": "offer",
+              "value": null,
+              "unit": null,
+              "problem": "Не найден единственный поддерживаемый срок в днях."
+            }
+          ]
+        },
+        {
+          "rule_id": "OSAGO_DECISION_NOTICE",
+          "status": "UNVERIFIABLE",
+          "reason": "Есть ссылка на правила №141; включение условий по ссылке требует правовой проверки.",
+          "uncertainty": [
+            "incorporation_by_reference"
+          ],
+          "evidence_pages": [
+            1,
+            5
+          ],
+          "topical_passage_probes": []
+        }
+      ]
+    },
+    {
+      "id": "inson_russian",
+      "sha256": "a168546352b5b2cdadeea4c1e49ecfc4d95eace06766446c03d9b1aace80fc21",
+      "applicable_date": "2026-01-15",
+      "pages": 66,
+      "appendix_pages": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66
+      ],
+      "warnings": [],
+      "retrieval_requested": "hybrid",
+      "retrieval_used": "hybrid",
+      "findings": [
+        {
+          "rule_id": "OSAGO_SUM",
+          "status": "UNVERIFIABLE",
+          "reason": "Возможна премия или частичный лимит вместо общей суммы.",
+          "uncertainty": [
+            "Возможна премия или частичный лимит вместо общей суммы.",
+            "Сумма/валюта отсутствует либо содержит несколько значений.",
+            "Сумма/валюта отсутствует либо содержит несколько значений.",
+            "Возможна премия или частичный лимит вместо общей суммы.",
+            "Сумма/валюта отсутствует либо содержит несколько значений.",
+            "Сумма/валюта отсутствует либо содержит несколько значений."
+          ],
+          "evidence_pages": [
+            5,
+            1,
+            5
+          ],
+          "topical_passage_probes": [
+            {
+              "page": 1,
+              "section": "offer",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 1,
+              "section": "offer",
+              "value": null,
+              "unit": null,
+              "problem": "Возможна премия или частичный лимит вместо общей суммы."
+            },
+            {
+              "page": 5,
+              "section": "offer",
+              "value": null,
+              "unit": null,
+              "problem": "Возможна премия или частичный лимит вместо общей суммы."
+            },
+            {
+              "page": 5,
+              "section": "offer",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 5,
+              "section": "offer",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 5,
+              "section": "offer",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 9,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 10,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 10,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 14,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Возможна премия или частичный лимит вместо общей суммы."
+            },
+            {
+              "page": 14,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 17,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 18,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 21,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 21,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 22,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 23,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Условие, пример или отрицание требуют ручного толкования."
+            },
+            {
+              "page": 28,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Возможна премия или частичный лимит вместо общей суммы."
+            },
+            {
+              "page": 28,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Возможна премия или частичный лимит вместо общей суммы."
+            },
+            {
+              "page": 31,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Возможна премия или частичный лимит вместо общей суммы."
+            },
+            {
+              "page": 31,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Возможна премия или частичный лимит вместо общей суммы."
+            },
+            {
+              "page": 35,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 37,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 38,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            },
+            {
+              "page": 60,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Сумма/валюта отсутствует либо содержит несколько значений."
+            }
+          ]
+        },
+        {
+          "rule_id": "OSAGO_PAYMENT",
+          "status": "UNVERIFIABLE",
+          "reason": "Не найден единственный поддерживаемый срок в днях.",
+          "uncertainty": [
+            "Не найден единственный поддерживаемый срок в днях."
+          ],
+          "evidence_pages": [
+            4
+          ],
+          "topical_passage_probes": [
+            {
+              "page": 4,
+              "section": "offer",
+              "value": null,
+              "unit": null,
+              "problem": "Не найден единственный поддерживаемый срок в днях."
+            },
+            {
+              "page": 21,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Не найден единственный поддерживаемый срок в днях."
+            },
+            {
+              "page": 21,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Не найден единственный поддерживаемый срок в днях."
+            },
+            {
+              "page": 21,
+              "section": "regulatory_appendix",
+              "value": 15,
+              "unit": "days",
+              "problem": "Не подтвержден отсчет от принятия решения страховщиком."
+            },
+            {
+              "page": 23,
+              "section": "regulatory_appendix",
+              "value": 5,
+              "unit": "working_days",
+              "problem": "Не подтвержден отсчет от принятия решения страховщиком."
+            },
+            {
+              "page": 24,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Условие, пример или отрицание требуют ручного толкования."
+            },
+            {
+              "page": 26,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Не найден единственный поддерживаемый срок в днях."
+            },
+            {
+              "page": 54,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Условие, пример или отрицание требуют ручного толкования."
+            },
+            {
+              "page": 57,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Условие, пример или отрицание требуют ручного толкования."
+            },
+            {
+              "page": 65,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Не найден единственный поддерживаемый срок в днях."
+            },
+            {
+              "page": 65,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Не найден единственный поддерживаемый срок в днях."
+            }
+          ]
+        },
+        {
+          "rule_id": "OSAGO_DECISION_NOTICE",
+          "status": "UNVERIFIABLE",
+          "reason": "Текст найден только в предполагаемом нормативном приложении; условие автора оферты не подтверждено.",
+          "uncertainty": [
+            "appendix_only"
+          ],
+          "evidence_pages": [
+            23
+          ],
+          "topical_passage_probes": [
+            {
+              "page": 23,
+              "section": "regulatory_appendix",
+              "value": 15,
+              "unit": "days",
+              "problem": null
+            },
+            {
+              "page": 65,
+              "section": "regulatory_appendix",
+              "value": null,
+              "unit": null,
+              "problem": "Не найден единственный поддерживаемый срок в днях."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
