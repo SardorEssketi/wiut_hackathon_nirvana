@@ -144,3 +144,30 @@ localization limitation and does not change the finding's legal/evidence status.
 The public samples remain engineering evidence scenarios, not legal ground truth.
 No public deployment, Docker rebuild, expert legal validation, full accessibility
 audit or first-time-user study is claimed.
+
+## Restart after a hosted source update
+
+Streamlit can rerun the updated entry point while Python still holds imported
+modules from the preceding release. An import error naming `render_evidence`
+despite that function being present in the pushed `extraction.py` is reproducible
+with the preceding extraction module retained in `sys.modules`. Retaining the
+older presentation module likewise prevents importing `finding_details`.
+
+Startup checks for these APIs before importing them and shows a restart message
+instead of a traceback when they are missing. This check does not reload shared
+modules or allow an analysis using mismatched versions. The app owner must use
+**Manage app → Reboot app** on Streamlit Community Cloud, or restart a local
+Streamlit server. A browser refresh alone does not restart Python. Active
+session uploads and unexported annotations are held in memory and are lost on
+server restart; export them before a planned update. Fresh-process startup and
+both stale-module cases are covered by `tests/test_app_startup.py`.
+
+On 2026-10-11 the regression reproduced three startup failures before the guard
+(extraction, presentation, both), with fresh startup passing. After the change,
+all four startup tests passed and the full suite passed **509 tests in 54.77s**.
+Actual Chromium desktop/mobile startup passed with zero page errors; screenshots
+and results are in ignored `local_data/startup_browser/`. These checks used local
+Python 3.12.6; the hosted Python 3.14 process and its reboot were not accessible
+or verified. The first browser probe incorrectly rejected expected informational
+alerts; it was corrected to check exceptions, error alerts and the restart
+message specifically, then passed.

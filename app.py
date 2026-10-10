@@ -1,6 +1,20 @@
 from datetime import date
 import time
 import streamlit as st
+st.set_page_config(page_title='PolisDiff AI', page_icon='🔎', layout='wide')
+
+# A hosted source update can rerun app.py while Python retains modules from the
+# previous release. Do not reload shared modules under other active sessions.
+import polisdiff.extraction as pdf_extraction
+import polisdiff.presentation as report_presentation
+if not (callable(getattr(pdf_extraction, 'render_evidence', None)) and
+        callable(getattr(report_presentation, 'finding_details', None))):
+    st.error('The running app has retained modules from an earlier release. '
+             'The app owner must select Manage app → Reboot app to finish the update. '
+             'For a local installation, restart the Streamlit server. '
+             'Reloading this browser page will not restart the server.')
+    st.stop()
+
 from polisdiff.extraction import PDFError, render_page, render_evidence
 from polisdiff.localization import quote_html
 from html import escape
@@ -15,7 +29,6 @@ from polisdiff.models import Status
 from functools import partial
 from polisdiff.i18n import LANGUAGES, tr
 from polisdiff.presentation import labels, rule_name, finding_details
-st.set_page_config(page_title='PolisDiff AI', page_icon='🔎', layout='wide')
 with st.sidebar:
     language = st.selectbox('Language / Til / Тил / Язык', list(LANGUAGES), format_func=LANGUAGES.get,
         key='ui_language', on_change=preserve_translated_choices, args=(st.session_state,))
