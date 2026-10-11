@@ -1,4 +1,5 @@
 from datetime import date
+import json
 import time
 import streamlit as st
 st.set_page_config(page_title='PolisDiff AI', page_icon='🔎', layout='wide')
@@ -8,7 +9,8 @@ st.set_page_config(page_title='PolisDiff AI', page_icon='🔎', layout='wide')
 import polisdiff.extraction as pdf_extraction
 import polisdiff.presentation as report_presentation
 if not (callable(getattr(pdf_extraction, 'render_evidence', None)) and
-        callable(getattr(report_presentation, 'finding_details', None))):
+        callable(getattr(report_presentation, 'finding_details', None)) and
+        callable(getattr(report_presentation, 'compact_finding', None))):
     st.error('The running app has retained modules from an earlier release. '
              'The app owner must select Manage app → Reboot app to finish the update. '
              'For a local installation, restart the Streamlit server. '
@@ -19,6 +21,8 @@ from polisdiff.extraction import PDFError, render_page, render_evidence
 from polisdiff.localization import quote_html
 from html import escape
 from polisdiff.runtime import web_retriever
+from polisdiff.deployment import model_files_status, deployment_diagnostics
+from polisdiff.provisioning import enabled as provisioning_enabled
 from polisdiff.service import analyze_pdf, BusyError
 from polisdiff.export import add_review, html_report
 from polisdiff.engine import load_catalogue
@@ -28,7 +32,7 @@ from polisdiff.presentation import STATUS_LABELS, STATUS_ICONS, REVIEW_LABELS, S
 from polisdiff.models import Status
 from functools import partial
 from polisdiff.i18n import LANGUAGES, tr
-from polisdiff.presentation import labels, rule_name, finding_details
+from polisdiff.presentation import labels, rule_name, finding_details, compact_finding, readiness_message
 with st.sidebar:
     language = st.selectbox('Language / Til / Тил / Язык', list(LANGUAGES), format_func=LANGUAGES.get,
         key='ui_language', on_change=preserve_translated_choices, args=(st.session_state,))
@@ -60,7 +64,7 @@ with st.sidebar:
 st.caption(t('POLISDIFF AI / ПРЕДВАРИТЕЛЬНАЯ ПРОВЕРКА'))
 st.title(t('Условия полиса, с доказательствами'))
 st.write(t('Найдите три ключевых условия ОСАГО, сравните их с критериями для выбранной даты и проверьте цитаты в оригинале.'))
-st.info(t('Результат относится к отдельным условиям, а не ко всему договору. «Не найдено» не означает нарушение.'))
+st.caption(t('Доступны только выбранные три проверки ОСАГО. Результаты требуют правовой проверки.'))
 with st.container(border=True):
     st.subheader(t('1. Документ и даты'))
     upload_col, date_col = st.columns([1.2, 1])
@@ -69,6 +73,7 @@ with st.container(border=True):
         st.caption(t('Текстовый PDF · до 10 МиБ · от 1 до 80 страниц. Русский, узбекская латиница и кириллица. Сканы без текстового слоя не поддерживаются: OCR отсутствует.'))
         st.caption(t('Продукт ОСАГО выбран пользователем. Другие виды страхования не проверяются.'))
     with date_col:
+        st.markdown('<span id="contract-date"></span>', unsafe_allow_html=True)
         st.write('**' + t('Когда применялся договор?') + '**')
         st.caption(t('Дата применимости — дата, для которой проверяются условия договора и редакция нормы. Установите ее по договору или оферте; дата загрузки и дата, найденная на странице, ее не заменяют.'))
         known_date = st.checkbox(t('Я подтверждаю дату применимости договора'), value=False, key=f'known_date_{upload_generation}')
@@ -76,18 +81,39 @@ with st.container(border=True):
         applicable_date = applicable_input if known_date else None
         audit_date = st.date_input(t('Дата аудита'), value=date.today(), max_value=date.today(), key=f'audit_date_{upload_generation}')
         st.caption(t('Дата аудита — когда выполняется проверка. Она не определяет, какая редакция нормы применима к договору.'))
-    if applicable_date is None:
-        st.warning(t('Дата договора неизвестна или не указана. Можно найти связанный текст, но все три числовые проверки останутся без вывода о соответствии.'))
-    elif applicable_date > audit_date or not date.fromisoformat(catalogue['supported_date_range'][0]) <= applicable_date <= date.fromisoformat(catalogue['supported_date_range'][1]):
-        st.warning(t('Дата вне подтвержденного диапазона каталога или позже даты аудита. Система воздержится от сравнения; проверьте даты и редакцию нормы.'))
+with st.container(border=True):
+    st.subheader(t('2. Готовность анализа'))
     with st.expander(t('Дополнительные настройки поиска')):
         mode_labels = {'hybrid': t('AI + лексический поиск'), 'semantic': t('AI поиск'), 'lexical': t('Лексический поиск')}
         mode = st.radio(t('Поиск доказательств'), list(mode_labels), format_func=mode_labels.get, key=f'mode_label_{upload_generation}')
         st.caption(t('По умолчанию — локальная модель вместе с поиском по словам. Малый тестовый набор не устанавливает преимущество AI в точности. При отсутствии модели используется явно обозначенный поиск по словам.'))
+    data = upload.getvalue() if upload is not None else None
+    fingerprint = input_identity(data, audit_date, applicable_date, mode) if data is not None else None
+    invalidate_result(st.session_state, fingerprint)
+    if applicable_date is None:
+        st.warning(readiness_message(language))
+        st.markdown('<a href="#contract-date" target="_self">' + escape(t('Подтвердить дату и повторить анализ')) + '</a>', unsafe_allow_html=True)
+    elif applicable_date > audit_date or not date.fromisoformat(catalogue['supported_date_range'][0]) <= applicable_date <= date.fromisoformat(catalogue['supported_date_range'][1]):
+        st.warning(t('Дата вне подтвержденного диапазона каталога или позже даты аудита. Система воздержится от сравнения; проверьте даты и редакцию нормы.'))
+    previous = st.session_state.get('report')
+    if previous:
+        st.caption(t('Фактический поиск: {mode}', mode=MODE_LABELS[previous.retrieval_used]))
+        if previous.retrieval_requested != previous.retrieval_used:
+            st.warning(t('AI-модель недоступна. Анализ выполнен поиском по словам, без AI. Фактический режим указан в отчете.'))
+    elif mode == 'lexical':
+        st.caption(t('Выбран поиск по словам, без AI.'))
+    elif model_files_status()['state'] == 'not_provisioned' and provisioning_enabled():
+        st.warning(t('Администратор разрешил однократную загрузку модели. Перед первым AI-анализом сервер проверит лимит памяти и подготовит локальные файлы (до трех минут). При невозможности подготовки останется поиск по словам, без AI.'))
+    elif model_files_status()['state'] == 'not_provisioned':
+        st.warning(t('Модель AI не установлена на этом сервере. Будет использован поиск по словам, без AI. Документ не отправляется внешним AI-сервисам.'))
+    else:
+        st.caption(t('Файлы локальной модели найдены. Работоспособность AI будет проверена при запуске анализа; наличие файлов не гарантирует загрузку модели.'))
     analyze = st.button(t('Анализировать документ'), type='primary', disabled=upload is None, width='stretch')
-data = upload.getvalue() if upload is not None else None
-fingerprint = input_identity(data, audit_date, applicable_date, mode) if data is not None else None
-invalidate_result(st.session_state, fingerprint)
+    with st.expander(t('Диагностика развертывания')):
+        diagnostics = deployment_diagnostics()
+        st.json(diagnostics)
+        st.download_button(t('Скачать диагностику'), json.dumps(diagnostics, indent=2),
+                           'polisdiff-deployment.json', 'application/json', on_click='ignore')
 if analyze and data is not None:
     if time.monotonic() - st.session_state.get('last_analysis', -1000) < 5:
         st.warning(t('Подождите пять секунд между анализами.'))
@@ -107,6 +133,7 @@ if analyze and data is not None:
                 st.session_state.report = report
                 st.session_state.input_fingerprint = fingerprint
                 progress.update(label=t('Проверка завершена'), state='complete', expanded=False)
+            st.rerun()
         except PDFError:
             st.error(t('PDF не удалось прочитать безопасно: проверьте формат, шифрование, размер и число страниц. Это проблема обработки файла, а не вывод об условиях договора.'))
         except BusyError:
@@ -141,8 +168,10 @@ def show_page(doc, pdf_data, page_number, selected_id=None, finding=None, ev=Non
 if 'report' in st.session_state and upload is not None:
     report, doc = (st.session_state.report, st.session_state.document)
     review_context = f'{report.document_sha256}_{report.created_at.isoformat()}'
-    st.subheader(t('2. Краткий итог'))
+    st.subheader(t('3. Краткий итог'))
     st.write(summary(report, language))
+    if report.applicable_date is None:
+        st.caption(t('Поиск положений выполнен. Три числовые проверки ожидают подтверждения даты; вывод о соответствии не сформирован.'))
     st.text(t('Документ: {name} · страниц: {pages} · {languages}', name=upload.name, pages=report.page_count, languages=', '.join(report.detected_languages)))
     st.caption(t('Дата договора: {applicable} · дата аудита: {audit} · проверок: {checks}', applicable=report.applicable_date or t('не подтверждена'), audit=report.audit_date, checks=len(report.findings)))
     c = counts(report)
@@ -150,9 +179,6 @@ if 'report' in st.session_state and upload is not None:
     cols[0].metric(t('Проверено условий'), len(report.findings))
     for col, status, label in zip(cols[1:], Status, [t('Согласуются с критерием'), t('Возможные несоответствия'), t('Не найдены'), t('Недостаточно данных')]):
         col.metric(label, c[status])
-    if report.retrieval_requested != report.retrieval_used:
-        st.warning(t('AI-модель недоступна. Анализ выполнен поиском по словам, без AI. Фактический режим указан в отчете.'))
-    st.caption(t('Фактический поиск: {mode}', mode=MODE_LABELS[report.retrieval_used]))
     unreadable = [str(p.number) for p in doc.pages if not p.readable]
     if unreadable:
         st.warning(t('Проблема обработки: текст не читается надежно на страницах {pages}. Это ограничение PDF, а не страхового условия.', pages=', '.join(unreadable)))
@@ -161,21 +187,26 @@ if 'report' in st.session_state and upload is not None:
     st.caption(t('Только три условия; полнота поиска не гарантируется. Все интерпретации: PENDING_LEGAL_REVIEW.'))
     result_tab, evidence_tab, review_tab, source_tab = st.tabs([t('Результаты'), t('Доказательства документа'), t('Решение аналитика'), t('Источники и ограничения')])
     with result_tab:
+        st.subheader(t('4. Проверки условий'))
         ordered = sorted(report.findings, key=lambda f: f.status != Status.POTENTIAL_CONFLICT)
         for f in ordered:
             details = finding_details(report, f, language)
+            compact = compact_finding(report, f, language)
             active = st.session_state.get('evidence_rule') == f.rule_id
-            with st.container(border=True):
-                st.subheader(rule_name(f, language))
-                st.write(f'**{STATUS_ICONS[f.status]} {STATUS_LABELS[f.status]}**')
-                st.write(details['found'])
-                st.caption(details['reference'])
-                st.write(details['reason'])
-                if not f.evidence:
-                    st.write(t('Подходящее доказательство не найдено. Цитата и страница отсутствуют.'))
-                for i, ev in enumerate(f.evidence):
-                    st.button(t('Открыть в PDF · стр. {page}', page=ev.page), key=f'evidence_{f.rule_id}_{i}', type='primary' if i == 0 else 'secondary', on_click=select_evidence, args=(st.session_state, ev.page, ev.passage_id, f.rule_id))
+            with st.container(border=not compact['pending']):
+                title_col, status_col, action_col = st.columns([3, 2, 2])
+                title_col.write('**' + rule_name(f, language) + '**')
+                status_col.write(f'**{STATUS_ICONS[f.status]} {STATUS_LABELS[f.status]}**')
+                title_col.caption(compact['observation'])
+                if compact['pending']:
+                    status_col.caption(t('Ожидает подтверждения даты'))
+                else:
+                    title_col.caption(details['reference'])
+                if f.evidence:
+                    ev = f.evidence[0]
+                    action_col.button(t('Открыть в PDF · стр. {page}', page=ev.page), key=f'evidence_{f.rule_id}_0', type='primary' if f.status == Status.POTENTIAL_CONFLICT else 'secondary', on_click=select_evidence, args=(st.session_state, ev.page, ev.passage_id, f.rule_id))
                 with st.expander(t('Доказательства и решение'), expanded=active):
+                    st.write(details['found'])
                     st.write('**' + t('Что проверяли') + '**')
                     st.write(details['checked'])
                     evidence_col, resolution_col = st.columns([1, 1])
@@ -183,7 +214,9 @@ if 'report' in st.session_state and upload is not None:
                         st.write('**' + t('Доказательства из документа') + '**')
                         if not f.evidence:
                             st.write(t('Подходящее доказательство не найдено. Цитата и страница отсутствуют.'))
-                        for ev in f.evidence:
+                        for i, ev in enumerate(f.evidence):
+                            if i:
+                                st.button(t('Открыть в PDF · стр. {page}', page=ev.page), key=f'evidence_{f.rule_id}_{i}', on_click=select_evidence, args=(st.session_state, ev.page, ev.passage_id, f.rule_id))
                             st.caption(t('Страница PDF {page}', page=ev.page) + ' · ' + SECTION_LABELS.get(ev.section, ev.section))
                             if active and st.session_state.get('evidence_selection') == ev.passage_id:
                                 with st.expander(t('Выбранное доказательство в PDF'), expanded=True):
@@ -219,11 +252,12 @@ if 'report' in st.session_state and upload is not None:
                 with st.expander(t('Технические детали · ') + f.rule_id):
                     st.json(f.model_dump(mode='json'))
                     st.caption(t('Запрошено: {requested}; выполнено: {used}', requested=MODE_LABELS[report.retrieval_requested], used=MODE_LABELS[report.retrieval_used]))
-        st.subheader(t('Сохранить отчет'))
+        st.subheader(t('5. Отчет и ограничения'))
         st.caption(t('HTML — читаемый отчет с цитатами и аннотациями. Для PDF откройте HTML и выберите «Печать → Сохранить как PDF». JSON сохраняет исходные статусы и метаданные.'))
         export1, export2 = st.columns(2)
-        export1.download_button(t('Скачать JSON отчет'), report.model_dump_json(indent=2), 'polisdiff-report.json', 'application/json', on_click='ignore', width='stretch')
-        export2.download_button(t('Скачать HTML отчет'), html_report(report, language), 'polisdiff-report.html', 'text/html', on_click='ignore', width='stretch')
+        export_key = f'{review_context}_{len(report.reviews)}_{language}'
+        export1.download_button(t('Скачать JSON отчет'), report.model_dump_json(indent=2), 'polisdiff-report.json', 'application/json', key=f'export_json_{export_key}', on_click='ignore', width='stretch')
+        export2.download_button(t('Скачать HTML отчет'), html_report(report, language), 'polisdiff-report.html', 'text/html', key=f'export_html_{export_key}', on_click='ignore', width='stretch')
     with evidence_tab:
         st.subheader(t('Исходный документ'))
         selected_page = st.number_input(t('Страница документа'), min_value=1, max_value=len(doc.pages), value=None, placeholder=t('Номер страницы'), step=1, key=f'manual_page_{review_context}')

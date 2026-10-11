@@ -59,11 +59,12 @@ class Retriever:
                     import hashlib
                     try:
                         recorded = json.loads(manifest.read_text(encoding="utf-8"))
-                        names = ["config.json", "model.safetensors", "tokenizer.json", "1_Pooling\\config.json"]
+                        names = ["config.json", "model.safetensors", "tokenizer.json", "1_Pooling/config.json"]
                         def digest_file(name):
                             with (path / name.replace('\\', '/')).open('rb') as stream:
                                 return hashlib.file_digest(stream, 'sha256').hexdigest()
-                        if all(digest_file(name) == recorded["files"][name] for name in names):
+                        if all(digest_file(name) == recorded["files"].get(name,
+                                recorded["files"].get(name.replace('/', '\\'))) for name in names):
                             self.model_revision = recorded["revision"]
                     except (OSError, KeyError, ValueError):
                         self.model_revision = None

@@ -41,6 +41,26 @@ def counts(report: Report) -> dict[Status, int]:
     return {status: observed[status] for status in Status}
 
 
+def pending_date(report: Report, finding: Finding) -> bool:
+    return (report.applicable_date is None and finding.status == Status.UNVERIFIABLE
+            and 'applicable_date_unknown' in finding.uncertainty and finding.expected_value is None)
+
+
+def readiness_message(language='ru'):
+    return tr('Дата не подтверждена: доступен только поиск положений. Числовое сравнение с нормами не выполнено. Установите дату по договору или оферте, подтвердите ее и повторите анализ.', language)
+
+
+def compact_finding(report: Report, finding: Finding, language='ru') -> dict:
+    """Presentation only: preserve the engine status and every evidence item."""
+    pages = ', '.join(str(page) for page in sorted({ev.page for ev in finding.evidence}))
+    pending = pending_date(report, finding)
+    return dict(pending=pending, label=tr('Ожидает подтверждения даты', language) if pending
+                else labels(STATUS_LABELS, language)[finding.status],
+                observation=tr('Найденных фрагментов: {count} · страницы: {pages}', language,
+                    count=len(finding.evidence), pages=pages or '—') if pending else observation(finding, language),
+                pages=pages)
+
+
 def labels(mapping, language="ru"):
     return {key: tr(value, language) for key, value in mapping.items()}
 

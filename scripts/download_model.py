@@ -15,17 +15,24 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     repo = "intfloat/multilingual-e5-small"
     revision = os.getenv("POLISDIFF_MODEL_REVISION") or "614241f622f53c4eeff9890bdc4f31cfecc418b3"
-    dest = ROOT / "models" / "multilingual-e5-small"
+    dest = Path(os.getenv("POLISDIFF_MODEL_PATH", str(ROOT / "models" / "multilingual-e5-small")))
     snapshot_download(repo, revision=revision, local_dir=dest,
-        allow_patterns=["*.json", "*.txt", "*.model", "model.safetensors", "1_Pooling/*", "README.md", "LICENSE"],
+        allow_patterns=["config.json", "modules.json", "sentence_bert_config.json", "special_tokens_map.json",
+                        "tokenizer.json", "tokenizer_config.json", "sentencepiece.bpe.model",
+                        "model.safetensors", "1_Pooling/config.json", "README.md", "LICENSE"],
         max_workers=2)
     manifest = {"repository": repo, "revision": revision, "license": "MIT (model card)",
         "accessed_at": datetime.now(timezone.utc).isoformat(),
-        "files": {str(p.relative_to(dest)): hashlib.sha256(p.read_bytes()).hexdigest()
+        "files": {str(p.relative_to(dest)): file_digest(p)
                   for p in dest.rglob("*") if p.is_file() and ".cache" not in p.parts}}
     (ROOT / "evaluation").mkdir(exist_ok=True)
     (ROOT / "evaluation" / "model_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     print("Provisioned", repo, revision, len(manifest["files"]), "files")
+
+
+def file_digest(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 if __name__ == "__main__":
     main()

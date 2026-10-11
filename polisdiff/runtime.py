@@ -3,12 +3,14 @@ from copy import copy
 from functools import lru_cache
 from threading import Lock
 from .retrieval import Retriever
+from .provisioning import provision_model
 
 _MODEL_INIT_LOCK = Lock()
 
 
 @lru_cache(maxsize=1)
 def _ai_base():
+    provision_model()
     return Retriever("hybrid")
 
 

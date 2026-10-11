@@ -219,6 +219,8 @@ ROWS = [
 
 from .finding_copy import ROWS as FINDING_ROWS
 ROWS += FINDING_ROWS
+from .readiness_copy import ROWS as READINESS_ROWS
+ROWS += READINESS_ROWS
 
 TRANSLATIONS = {code: {} for code in LANGUAGES}
 for row in ROWS:

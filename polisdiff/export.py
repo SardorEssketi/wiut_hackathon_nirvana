@@ -42,16 +42,18 @@ p{margin:8px 0}.brand{color:#00685e;font-weight:700;letter-spacing:.1em}.muted{c
 blockquote{margin:10px 0;padding:14px 18px;border-left:3px solid #a9bac8;background:#f7f9fb;white-space:pre-wrap;overflow-wrap:anywhere}
 table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}th,td{padding:10px 8px;border-bottom:1px solid #dbe5eb;text-align:left;vertical-align:top}
 th{background:#f3f6f8}thead{display:table-header-group}a{color:#006b60}li{margin:6px 0}.technical{font-size:12px}
+details.pending{border-bottom:1px solid #dbe5eb;padding:12px 0}details.pending>summary{cursor:pointer;font-weight:600}
 .review{border:1px solid #dbe5eb;padding:14px;margin:12px 0;white-space:pre-wrap}
 @media(max-width:640px){main{margin:0;padding:20px}.metadata{grid-template-columns:1fr}h1{font-size:28px}table{font-size:11px}th,td{padding:6px 4px}}
 @media print{body{background:white;font-size:10.5pt}main{max-width:none;margin:0;padding:0}
 h2,h3,h4,.badge{break-after:avoid}tr,.review,.metadata{break-inside:avoid}blockquote{orphans:3;widows:3}
 .technical{break-before:page}a{color:inherit}.notice,blockquote,.badge{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+@media print{details.pending::details-content{content-visibility:visible;display:block}details.pending>article{display:block!important}}
 """
 
 
 def html_report(report: Report, language="ru") -> str:
-    from .presentation import finding_details
+    from .presentation import finding_details, compact_finding, pending_date, readiness_message
     # Translate trusted presentation copy before escaping. Original evidence is never translated.
     e = lambda value: escape(str(value), quote=True)
     t = lambda text, **values: tr(text, language, **values)
@@ -76,19 +78,26 @@ def html_report(report: Report, language="ru") -> str:
     for title, value in metadata:
         parts.append(f'<div><dt>{e(title)}</dt><dd>{e(value)}</dd></div>')
     parts += ['</dl></header><section>', tag('h2', t('Краткий итог')), tag('p', summary(report, language)),
-        f'<p class="muted">{e(t("Все находки требуют ручной проверки контекста. Совпадение не означает одобрение договора."))}</p></section>',
-        '<section>', tag('h2', t('Обзор находок')), '<table><thead><tr>']
+        f'<p class="muted">{e(t("Все находки требуют ручной проверки контекста. Совпадение не означает одобрение договора."))}</p>']
+    if report.applicable_date is None:
+        # One shared blocker above a compact index. Original explanations remain
+        # available on demand below and are expanded for printing.
+        parts.append(f'<p class="notice">{e(readiness_message(language))}</p>')
+    parts += ['</section><section>', tag('h2', t('Обзор находок')), '<table><thead><tr>']
     parts += [tag('th', t(text)) for text in ['Проверка', 'Результат', 'Наблюдение', 'Страница PDF', 'Ручная проверка']]
     parts.append('</tr></thead><tbody>')
     for f in report.findings:
         details = finding_details(report, f, language)
+        compact = compact_finding(report, f, language)
         pages = ', '.join(str(p) for p in sorted({ev.page for ev in f.evidence})) or t('Нет доказательства')
         parts.append('<tr>' + ''.join(tag('td', value) for value in [rule_name(f, language),
-            STATUS_ICONS[f.status] + ' ' + status_labels[f.status], details['found'], pages,
+            STATUS_ICONS[f.status] + ' ' + status_labels[f.status], compact['observation'], pages,
             t('Да') if f.manual_review_required else t('Не запрошена')]) + '</tr>')
     parts += ['</tbody></table></section><section>', tag('h2', t('Подробные результаты'))]
     for f in report.findings:
         details = finding_details(report, f, language)
+        if pending_date(report, f):
+            parts.append('<details class="pending"><summary>' + e(rule_name(f, language)) + ' · ' + e(t('Ожидает подтверждения даты')) + '</summary>')
         parts += [f'<article class="finding" id="{e(f.rule_id)}">', tag('h3', rule_name(f, language)),
             f'<p class="badge {f.status.value}">{e(STATUS_ICONS[f.status])} {e(status_labels[f.status])}</p>',
             heading('Что проверяли'), tag('p', details['checked']),
@@ -118,6 +127,8 @@ def html_report(report: Report, language="ru") -> str:
         for r in (r for r in report.reviews if r.rule_id == f.rule_id):
             parts.append(f'<p class="review">{e(t("Аннотация: {action} · {timestamp}", action=review_labels[r.action], timestamp=r.timestamp.isoformat()))}\n{e(r.rationale)}</p>')
         parts.append('</article>')
+        if pending_date(report, f):
+            parts.append('</details>')
     parts += ['</section><section>', tag('h2', t('Ограничения и правовая проверка')), '<ul>']
     parts += [tag('li', t(text)) for text in STANDARD_LIMITATIONS]
     parts += ['</ul>', tag('h3', t('Ограничения этого анализа')), '<ul>']

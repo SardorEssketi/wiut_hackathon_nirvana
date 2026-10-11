@@ -11,7 +11,7 @@ import polisdiff.presentation as presentation
 APP = Path(__file__).resolve().parents[1] / "app.py"
 
 
-@pytest.mark.parametrize("stale_modules", ["extraction", "presentation", "both"])
+@pytest.mark.parametrize("stale_modules", ["extraction", "presentation", "both", "readiness"])
 def test_stale_module_requires_reboot_without_import_traceback(monkeypatch, stale_modules):
     # Python keeps imported modules in sys.modules after files change on disk.
     # Model the previous release's API while running the new app entry point.
@@ -19,6 +19,8 @@ def test_stale_module_requires_reboot_without_import_traceback(monkeypatch, stal
         monkeypatch.delattr(extraction, "render_evidence")
     if stale_modules in {"presentation", "both"}:
         monkeypatch.delattr(presentation, "finding_details")
+    if stale_modules == 'readiness':
+        monkeypatch.delattr(presentation, 'compact_finding')
     app = AppTest.from_file(str(APP)).run(timeout=30)
     assert not app.exception
     assert len(app.error) == 1
