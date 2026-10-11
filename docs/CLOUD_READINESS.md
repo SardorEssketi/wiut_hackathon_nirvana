@@ -76,6 +76,19 @@ value is introduced. An owner may alternatively provision the same trusted files
 at build time (the existing Docker path) or via an explicitly maintained Git LFS
 artifact; large model files are not committed by this change.
 
+On 2026-10-11 the actual public host ran commit
+`39da0d50764273a08ca0c86e9eb936df1741376d` with Python 3.14.8 and the pinned
+CPU dependencies. The corrected owner secret was confirmed enabled, but the
+measured 3 GiB cgroup had only about 1020 MiB headroom, so preparation returned
+`insufficient_or_unknown_memory_headroom`. No download was started; actual
+Cloud reports used explicit lexical fallback. This is a measured refusal under
+the current conservative budget, not proof that the model itself crashed or
+cannot ever fit: cgroup usage may include cache and other processes. Cloud model
+provisioning and inference remain unverified. Do not reduce the gate merely to
+make a demonstration use AI. A changed resource situation needs a fresh process
+and a new measured verification; a browser refresh does not clear the cached
+attempt. See `evaluation/CLOUD_RESULTS.md` for the actual diagnostics and journeys.
+
 ## Deployment identity and diagnostics
 
 The technical expander offers a JSON download containing the actual Git HEAD,
@@ -85,6 +98,9 @@ No uploads, quotations, annotations, credentials or unrelated environment values
 are included. HEAD alone can differ from a dirty/mixed checkout; compare both HEAD
 and source-content hash. An absent Git directory is reported as unknown rather
 than invented. Presence of files is labelled separately from successful AI use.
+The fingerprint hashes raw checkout bytes, so Windows CRLF and Linux LF can
+differ for the same commit. To verify Linux Cloud against a Windows clone,
+hash the committed Git blobs using the same ordered filenames and separators.
 
 After source or secrets changes, reboot the Cloud process when required. Python
 can retain previous modules despite reloading the entry point; startup checks the

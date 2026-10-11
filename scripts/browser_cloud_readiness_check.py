@@ -91,7 +91,7 @@ def main():
             settled(app)
             app.wait_for_timeout(5100)
             app.get_by_role('button',name='Analyze document',exact=True).click()
-            expect(app.get_by_role('button',name='Download JSON report',exact=True)).to_be_visible(timeout=180000)
+            expect(app.get_by_role('button',name='Download JSON report',exact=True)).to_be_visible(timeout=240000)
             settled(app)
             app.wait_for_timeout(300)
             report = Report.model_validate_json(download('JSON',name).read_bytes())
@@ -127,7 +127,18 @@ def main():
             if args.expected_revision:
                 assert diagnostics['source_revision'] == args.expected_revision, diagnostics
             app.get_by_text('Deployment diagnostics',exact=True).click()
+        def diagnostics_snapshot(name):
+            app.get_by_text('Deployment diagnostics',exact=True).click()
+            with app.expect_download(timeout=60000) as event:
+                app.get_by_role('button',name='Download diagnostics',exact=True).click()
+            path = dest/f'{name}.json'
+            event.value.save_as(str(path))
+            app.get_by_text('Deployment diagnostics',exact=True).click()
+            return json.loads(path.read_bytes())
+
         unknown = analyze(fixture, 'unknown-date')
+        if not args.legacy:
+            result['deployment_after_analysis'] = diagnostics_snapshot('deployment-after-analysis')
         assert all(f.status.value == 'UNVERIFIABLE' and f.expected_value is None and not f.source_quote
                    for f in unknown.findings)
         assert unknown.applicable_date is None
@@ -151,6 +162,9 @@ def main():
             expect(app.locator('[data-testid=stExpander] details[open]')).to_have_count(0)
         app.get_by_text(summary(unknown,'en'),exact=True).scroll_into_view_if_needed()
         app.screenshot(path=str(dest/'unknown-desktop.png'),full_page=True)
+        if not args.legacy:
+            app.get_by_text('Pending date confirmation',exact=True).last.scroll_into_view_if_needed()
+            app.screenshot(path=str(dest/'pending-checks-desktop.png'),full_page=True)
         app.set_viewport_size({'width':390,'height':844})
         app.wait_for_timeout(700)
         app.get_by_text(summary(unknown,'en'),exact=True).scroll_into_view_if_needed()
@@ -191,7 +205,10 @@ def main():
         note = 'Pending specialist review <script>literal</script> & Ўзбекча'
         app.get_by_role('textbox',name='Rationale',exact=True).fill(note)
         app.get_by_role('button',name='Record review',exact=True).click()
-        expect(app.get_by_text(note,exact=True).first).to_be_visible(timeout=30000)
+        # The textarea also contains this literal. Wait for the saved record,
+        # rather than mistaking the editor for a completed server rerun.
+        saved_review = app.get_by_role('tabpanel',name='Analyst review',exact=True).get_by_test_id('stText')
+        expect(saved_review.get_by_text(note,exact=True)).to_be_visible(timeout=30000)
         settled(app)
         click_tab(app,'Findings')
         reviewed = Report.model_validate_json(download('JSON','reviewed').read_bytes())

@@ -171,3 +171,17 @@ Python 3.12.6; the hosted Python 3.14 process and its reboot were not accessible
 or verified. The first browser probe incorrectly rejected expected informational
 alerts; it was corrected to check exceptions, error alerts and the restart
 message specifically, then passed.
+
+## Subsequent Cloud verification
+
+The hosted restart and evidence workflow were subsequently verified on
+2026-10-11 against actual deployed commit
+`39da0d50764273a08ca0c86e9eb936df1741376d`, Python 3.14.8. All three synthetic
+highlight rasters matched the validated worker and were visually inspected;
+unknown-date checks remained abstentions, and GROSS Latin retained its damaged
+page limitation. Cloud executed explicit lexical fallback after the enabled
+provisioning gate refused insufficient measured memory headroom. This does not
+establish successful Cloud AI inference. The readiness presentation uses the
+same deterministic explanations and preserves the rule catalogue and JSON
+schema. See [Cloud verification](../evaluation/CLOUD_RESULTS.md) and
+[deployment guidance](CLOUD_READINESS.md) for exact outcomes and limitations.

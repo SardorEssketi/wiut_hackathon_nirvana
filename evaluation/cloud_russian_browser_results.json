@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "ui_language": "ru",
+  "statuses": [
+    "UNVERIFIABLE",
+    "UNVERIFIABLE",
+    "UNVERIFIABLE"
+  ],
+  "retrieval_used": "lexical",
+  "original_quotes_preserved": true,
+  "pending_checks": 3,
+  "shared_date_warning": 1,
+  "mobile_overflow_px": 0
+}

@@ -1,0 +1,181 @@
+{
+  "checked_at": "2026-10-11T04:48:42.336892+00:00",
+  "url": "https://polis-diff-ai.streamlit.app/",
+  "cases": [
+    {
+      "id": "unknown-date",
+      "statuses": [
+        "UNVERIFIABLE",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "retrieval_requested": "hybrid",
+      "retrieval_used": "lexical",
+      "model_revision": null,
+      "warnings": [
+        "Semantic retrieval unavailable (FileNotFoundError); lexical fallback used.",
+        "All engineering interpretations are PENDING_LEGAL_REVIEW.",
+        "Offer/appendix classification is heuristic and requires manual review."
+      ],
+      "applicable_date": null
+    },
+    {
+      "id": "supported-conflict",
+      "statuses": [
+        "POTENTIAL_CONFLICT",
+        "POTENTIAL_CONFLICT",
+        "POTENTIAL_CONFLICT"
+      ],
+      "retrieval_requested": "hybrid",
+      "retrieval_used": "lexical",
+      "model_revision": null,
+      "warnings": [
+        "Semantic retrieval unavailable (FileNotFoundError); lexical fallback used.",
+        "All engineering interpretations are PENDING_LEGAL_REVIEW.",
+        "Offer/appendix classification is heuristic and requires manual review."
+      ],
+      "applicable_date": "2026-03-19"
+    },
+    {
+      "id": "gross-latin-supported",
+      "statuses": [
+        "UNVERIFIABLE",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "retrieval_requested": "hybrid",
+      "retrieval_used": "lexical",
+      "model_revision": null,
+      "warnings": [
+        "Page 8: insufficient or damaged text; OCR is not enabled. Manual review required.",
+        "Semantic retrieval unavailable (FileNotFoundError); lexical fallback used.",
+        "All engineering interpretations are PENDING_LEGAL_REVIEW.",
+        "Offer/appendix classification is heuristic and requires manual review."
+      ],
+      "applicable_date": "2026-03-19"
+    },
+    {
+      "id": "gross-latin-unknown",
+      "statuses": [
+        "UNVERIFIABLE",
+        "UNVERIFIABLE",
+        "UNVERIFIABLE"
+      ],
+      "retrieval_requested": "hybrid",
+      "retrieval_used": "lexical",
+      "model_revision": null,
+      "warnings": [
+        "Page 8: insufficient or damaged text; OCR is not enabled. Manual review required.",
+        "Semantic retrieval unavailable (FileNotFoundError); lexical fallback used.",
+        "All engineering interpretations are PENDING_LEGAL_REVIEW.",
+        "Offer/appendix classification is heuristic and requires manual review."
+      ],
+      "applicable_date": null
+    }
+  ],
+  "page_errors": [],
+  "cloud_owner_logs_available": false,
+  "deployed_revision": "39da0d50764273a08ca0c86e9eb936df1741376d",
+  "success": true,
+  "deployment": {
+    "source_revision": "39da0d50764273a08ca0c86e9eb936df1741376d",
+    "source_content_sha256": "152a15b87225e695654d92afff2f0bf1157755006fd10514156e4f1cc49242c0",
+    "python": "3.14.8",
+    "dependencies": {
+      "streamlit": "1.65.0",
+      "pymupdf": "1.28.2",
+      "pydantic": "2.14.0",
+      "sentence-transformers": "6.1.0",
+      "torch": "2.14.1+cpu",
+      "transformers": "5.19.0",
+      "numpy": "2.5.4"
+    },
+    "model": {
+      "state": "not_provisioned",
+      "missing": [
+        "config.json",
+        "model.safetensors",
+        "tokenizer.json",
+        "modules.json",
+        "1_Pooling/config.json"
+      ],
+      "path": "/mount/src/wiut_hackathon_nirvana/models/multilingual-e5-small",
+      "bytes": 0
+    },
+    "offline": {
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1"
+    },
+    "torch_threads": "2",
+    "resources": {
+      "memory.max": "3221225472",
+      "memory.current": "2149916672",
+      "memory.peak": "2836746240",
+      "cpu.max": "max 100000"
+    },
+    "provisioning": {
+      "operator_enabled": true,
+      "minimum_memory_bytes": 2147483648,
+      "minimum_headroom_bytes": 1610612736,
+      "measured_limit_bytes": 3221225472,
+      "measured_current_bytes": 2149916672,
+      "result": "not_attempted"
+    }
+  },
+  "deployment_after_analysis": {
+    "source_revision": "39da0d50764273a08ca0c86e9eb936df1741376d",
+    "source_content_sha256": "152a15b87225e695654d92afff2f0bf1157755006fd10514156e4f1cc49242c0",
+    "python": "3.14.8",
+    "dependencies": {
+      "streamlit": "1.65.0",
+      "pymupdf": "1.28.2",
+      "pydantic": "2.14.0",
+      "sentence-transformers": "6.1.0",
+      "torch": "2.14.1+cpu",
+      "transformers": "5.19.0",
+      "numpy": "2.5.4"
+    },
+    "model": {
+      "state": "not_provisioned",
+      "missing": [
+        "config.json",
+        "model.safetensors",
+        "tokenizer.json",
+        "modules.json",
+        "1_Pooling/config.json"
+      ],
+      "path": "/mount/src/wiut_hackathon_nirvana/models/multilingual-e5-small",
+      "bytes": 0
+    },
+    "offline": {
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1"
+    },
+    "torch_threads": "2",
+    "resources": {
+      "memory.max": "3221225472",
+      "memory.current": "2151600128",
+      "memory.peak": "2836746240",
+      "cpu.max": "max 100000"
+    },
+    "provisioning": {
+      "operator_enabled": true,
+      "minimum_memory_bytes": 2147483648,
+      "minimum_headroom_bytes": 1610612736,
+      "measured_limit_bytes": 3221225472,
+      "measured_current_bytes": 2151608320,
+      "result": "insufficient_or_unknown_memory_headroom"
+    }
+  },
+  "unknown_html_a4_evidence_visible": true,
+  "review_export_consistent": true,
+  "unknown_date_abstention": true,
+  "confirmed_date_conflicts": true,
+  "original_gross_abstentions_preserved": true,
+  "html_json_consistent": true,
+  "review_preserved": true,
+  "precise_png_matches_worker": true,
+  "mobile_no_overflow": true,
+  "session_isolation": true,
+  "report_and_selection_invalidation": true
+}

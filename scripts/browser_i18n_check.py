@@ -14,7 +14,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from polisdiff.i18n import LANGUAGES, tr
 from polisdiff.models import Report
-from polisdiff.presentation import summary, labels, STATUS_LABELS, rule_name
+from polisdiff.presentation import summary, labels, STATUS_LABELS, rule_name, readiness_message
 from scripts.browser_check import settled, set_date, click_tab
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -99,7 +99,7 @@ def main():
         expect(page.get_by_role('heading',name=tr('Условия полиса, с доказательствами'),exact=True)).to_be_visible()
         for language in ['uz-Latn','uz-Cyrl','en']:
             choose_language(page,language)
-            expect(page.get_by_text(tr('Дата договора неизвестна или не указана. Можно найти связанный текст, но все три числовые проверки останутся без вывода о соответствии.',language),exact=True)).to_be_visible()
+            expect(page.get_by_text(readiness_message(language),exact=True)).to_be_visible()
             page.get_by_text(tr('Я подтверждаю дату применимости договора',language),exact=True).click()
             set_date(page,tr('Дата применимости договора',language),'2026-01-05')
             page.get_by_text(tr('Дополнительные настройки поиска',language),exact=True).click()
